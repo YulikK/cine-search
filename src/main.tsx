@@ -7,13 +7,15 @@ import { MoviesItem, QueryParams } from './types/api';
 import { DEFAULT_PAGE } from './common/constant';
 import { getSearchQuery, saveSearchQuery } from './services/storage';
 import Loader from './components/loader';
+import ErrorBoundary from './components/error-boundary';
+import ErrorGenerator from './components/error-generator';
 
 interface AppProps {}
 interface AppState {
   movies: MoviesItem[];
   page: number;
   searchQuery: string;
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -59,7 +61,10 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <React.StrictMode>
         <SearchBar onSearch={this.onSearch} value={this.state.searchQuery} />
-        {this.state.isLoading ? <Loader /> : <ListView data={this.state.movies} />}
+        <ErrorBoundary>
+          <ErrorGenerator/>
+          {this.state.isLoading ? <Loader /> : <ListView data={this.state.movies} />}
+        </ErrorBoundary>
       </React.StrictMode>
     );
   }
