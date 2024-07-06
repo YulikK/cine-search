@@ -1,5 +1,6 @@
 import React from 'react';
 import { MoviesItem } from '../types/api';
+import { MovieCard } from './movie-card';
 
 interface ListViewProps {
   data: MoviesItem[];
@@ -10,12 +11,9 @@ export class ListView extends React.Component<ListViewProps> {
     const { data } = this.props;
 
     return (
-      <ul>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data.map((item, index) => (
-          <li key={index}>
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-          </li>
+          <MovieCard key={index} movie={item} />
         ))}
       </ul>
     );

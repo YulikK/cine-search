@@ -8,7 +8,7 @@ import { DEFAULT_PAGE } from './common/constant';
 import { getSearchQuery, saveSearchQuery } from './services/storage';
 import Loader from './components/loader';
 import ErrorBoundary from './components/error-boundary';
-import ErrorGenerator from './components/error-generator';
+import './assets/styles/global.scss';
 
 interface AppProps {}
 interface AppState {
@@ -45,7 +45,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getMovie(queryParams: QueryParams) {
-    this.setState({ isLoading: true }); 
+    this.setState({ isLoading: true });
     ApiService.fetchMovie(queryParams).then((movies) => {
       this.setState({ movies, isLoading: false });
     });
@@ -60,11 +60,19 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <React.StrictMode>
-        <SearchBar onSearch={this.onSearch} value={this.state.searchQuery} />
-        <ErrorBoundary>
-          <ErrorGenerator/>
-          {this.state.isLoading ? <Loader /> : <ListView data={this.state.movies} />}
-        </ErrorBoundary>
+        <div className="container mx-auto px-4 py-8">
+          <ErrorBoundary>
+            <SearchBar
+              onSearch={this.onSearch}
+              value={this.state.searchQuery}
+            />
+          </ErrorBoundary>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <ListView data={this.state.movies} />
+          )}
+        </div>
       </React.StrictMode>
     );
   }

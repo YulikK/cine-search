@@ -20,8 +20,11 @@ export class ApiService {
       .then((response) => response.json())
       .then((data) =>
         data.results.map((movie: Movie) => ({
+          id: movie.id,
           name: movie.title,
           description: `Release date: ${movie.release_date}`,
+          posterPath: movie.poster_path,
+          rating: movie.vote_average.toFixed(1),
         }))
       )
       .catch((error) => console.error('Error fetching data:', error));

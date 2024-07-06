@@ -16,8 +16,11 @@ export interface Movie {
 }
 
 export interface MoviesItem {
+  id: string;
   name: string;
   description: string;
+  posterPath: string;
+  rating: number;
 }
 
 export interface QueryParams {
