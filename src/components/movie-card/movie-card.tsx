@@ -1,7 +1,8 @@
 import React from 'react';
-import { MoviesItem } from '../types/api';
-import { URL_POSTER } from '../common/constant';
-import StarIcon from './star-icon';
+import { MoviesItem } from '../../types/api';
+import { URL_POSTER } from '../../common/constant';
+import StarIcon from '../star-icon';
+import styles from './movie-card.module.scss';
 
 interface Props {
   movie: MoviesItem;
@@ -14,11 +15,15 @@ export class MovieCard extends React.Component<Props> {
     return (
       <li className="bg-background rounded-lg overflow-hidden shadow-lg">
         <img
-          src={`${URL_POSTER}${movie.posterPath}`}
+          src={
+            movie.posterPath
+              ? `${URL_POSTER}${movie.posterPath}`
+              : './src/assets/img/placeholder.svg'
+          }
           alt={movie.name}
           width="300"
           height="450"
-          className="w-full h-[450px] object-cover"
+          className={`w-full h-[450px] object-cover ${movie.posterPath ? '' : styles.noPoster}`}
           style={{ aspectRatio: '300 / 450', objectFit: 'cover' }}
         />
         <div className="p-4">

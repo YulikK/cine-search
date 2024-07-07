@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoviesItem } from '../types/api';
-import { MovieCard } from './movie-card';
+import { MovieCard } from './movie-card/movie-card';
 
 interface ListViewProps {
   data: MoviesItem[];
