@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly noPoster: "noPoster";
+  readonly noPoster: 'noPoster';
 };
 export = classNames;
