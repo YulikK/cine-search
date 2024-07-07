@@ -1,7 +1,5 @@
 {
-  "cSpell.words": [
-    "tsbuildinfo"
-  ],
+  "cSpell.words": ["tsbuildinfo"],
   "css.customData": [".vscode/tailwind.json"],
   "scss.lint.unknownAtRules": "ignore"
 }
