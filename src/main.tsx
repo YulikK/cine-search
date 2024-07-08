@@ -60,19 +60,20 @@ class App extends React.Component<AppProps, AppState> {
   render() {
     return (
       <React.StrictMode>
-        <div className="container mx-auto px-4 py-8">
-          <ErrorBoundary>
+        <ErrorBoundary>
+          <div className="container mx-auto px-4 py-8">
             <SearchBar
               onSearch={this.onSearch}
               value={this.state.searchQuery}
             />
-          </ErrorBoundary>
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
-            <ListView data={this.state.movies} />
-          )}
-        </div>
+
+            {this.state.isLoading ? (
+              <Loader />
+            ) : (
+              <ListView data={this.state.movies} />
+            )}
+          </div>
+        </ErrorBoundary>
       </React.StrictMode>
     );
   }
