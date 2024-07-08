@@ -1,7 +1,7 @@
 import React from 'react';
 import { MoviesItem } from '../../types/api';
 import { URL_POSTER } from '../../common/constant';
-import StarIcon from '../star-icon';
+import StarIcon from '../icons/star-icon';
 import styles from './movie-card.module.scss';
 
 interface Props {

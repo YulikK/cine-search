@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchIcon from './search-icon';
+import SearchIcon from './icons/search-icon';
 import ErrorGenerator from './error-generator';
 
 interface SearchBarProps {

@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import AlertIcon from './alert-icon';
+import AlertIcon from './icons/alert-icon';
 
 interface Props {
   children: ReactNode;

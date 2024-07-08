@@ -1,6 +1,6 @@
 import {
-  ACCEPT,
-  METHOD,
+  JSON_ACCEPT_HEADER,
+  HTTP_METHODS,
   TOKEN,
   URL_API,
   URL_SEARCH_API,
@@ -11,10 +11,10 @@ export class ApiService {
   static fetchMovie(params: QueryParams) {
     const fetchUrl = ApiService.makeURL(params);
     return fetch(fetchUrl, {
-      method: METHOD.GET,
+      method: HTTP_METHODS.GET,
       headers: {
         Authorization: `Bearer ${TOKEN}`,
-        accept: ACCEPT,
+        accept: JSON_ACCEPT_HEADER,
       },
     })
       .then((response) => response.json())
