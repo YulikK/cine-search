@@ -1,8 +1,9 @@
 import React from 'react';
 import { MoviesItem } from '../../types/api';
-import { NO_POSTER_IMG, URL_POSTER } from '../../common/constant';
+import { URL_POSTER } from '../../common/constant';
 import { StarIcon } from '../icons/star-icon';
 import styles from './movie-card.module.scss';
+import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 
 interface MovieCardProps {
   movie: MoviesItem;

@@ -8,7 +8,6 @@ export const TOKEN =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMTMxYTdhYzY0ZmNlOGQzN2RlOGQxZDcwMGZkNjJhZSIsIm5iZiI6MTcyMDA5NzE4NS4zODc5NzYsInN1YiI6IjY2ODY5N2E5YzJjY2Y5Nzg0ZjI1OTk5NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gjma8G8TLmaG68y4mybcZDKv3PBmvG3HA0bO3kfqOBA';
 export const API_KEY = '3131a7ac64fce8d37de8d1d700fd62ae';
 
-export const NO_POSTER_IMG = './src/assets/img/placeholder.svg';
 export const HTTP_METHODS = {
   GET: 'GET',
   POST: 'POST',
