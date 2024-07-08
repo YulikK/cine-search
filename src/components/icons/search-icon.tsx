@@ -1,9 +1,9 @@
 import React from 'react';
 
 type SearchIconProps = React.HTMLAttributes<HTMLElement>;
-const SearchIcon: React.FC<SearchIconProps & React.SVGProps<SVGSVGElement>> = (
-  props
-) => {
+export const SearchIcon: React.FC<
+  SearchIconProps & React.SVGProps<SVGSVGElement>
+> = (props) => {
   return (
     <svg
       {...props}
@@ -22,5 +22,3 @@ const SearchIcon: React.FC<SearchIconProps & React.SVGProps<SVGSVGElement>> = (
     </svg>
   );
 };
-
-export default SearchIcon;

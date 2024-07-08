@@ -1,9 +1,9 @@
 import React from 'react';
 
 type StarIconProps = React.HTMLAttributes<HTMLElement>;
-const StarIcon: React.FC<StarIconProps & React.SVGProps<SVGSVGElement>> = (
-  props
-) => {
+export const StarIcon: React.FC<
+  StarIconProps & React.SVGProps<SVGSVGElement>
+> = (props) => {
   return (
     <svg
       {...props}
@@ -21,5 +21,3 @@ const StarIcon: React.FC<StarIconProps & React.SVGProps<SVGSVGElement>> = (
     </svg>
   );
 };
-
-export default StarIcon;

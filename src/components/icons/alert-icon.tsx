@@ -1,9 +1,10 @@
 import React from 'react';
 
 type AlertIconProps = React.HTMLAttributes<HTMLElement>;
-const AlertIcon: React.FC<AlertIconProps & React.SVGProps<SVGSVGElement>> = (
-  props
-) => {
+
+export const AlertIcon: React.FC<
+  AlertIconProps & React.SVGProps<SVGSVGElement>
+> = (props) => {
   return (
     <svg
       {...props}
@@ -23,5 +24,3 @@ const AlertIcon: React.FC<AlertIconProps & React.SVGProps<SVGSVGElement>> = (
     </svg>
   );
 };
-
-export default AlertIcon;

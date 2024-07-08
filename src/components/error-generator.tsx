@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ErrorGenerator extends React.Component {
+export class ErrorGenerator extends React.Component {
   state = {
     throwError: false,
   };
@@ -24,5 +24,3 @@ class ErrorGenerator extends React.Component {
     );
   }
 }
-
-export default ErrorGenerator;
