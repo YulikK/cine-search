@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoviesItem } from '../../types/api';
-import { URL_POSTER } from '../../common/constant';
+import { NO_POSTER_IMG, URL_POSTER } from '../../common/constant';
 import { StarIcon } from '../icons/star-icon';
 import styles from './movie-card.module.scss';
 
@@ -18,7 +18,7 @@ export class MovieCard extends React.Component<MovieCardProps> {
           src={
             movie.posterPath
               ? `${URL_POSTER}${movie.posterPath}`
-              : './src/assets/img/placeholder.svg'
+              : NO_POSTER_IMG
           }
           alt={movie.name}
           width="300"
