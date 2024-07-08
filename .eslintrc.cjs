@@ -6,11 +6,10 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
-    'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'react-compiler', 'prettier'],
+  plugins: ['react-refresh', 'react-compiler'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -18,7 +17,6 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     'react-compiler/react-compiler': 'error',
-    'prettier/prettier': 'error',
   },
   settings: {
     react: {
