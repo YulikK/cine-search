@@ -4,11 +4,11 @@ import { URL_POSTER } from '../../common/constant';
 import { StarIcon } from '../icons/star-icon';
 import styles from './movie-card.module.scss';
 
-interface Props {
+interface MovieCardProps {
   movie: MoviesItem;
 }
 
-export class MovieCard extends React.Component<Props> {
+export class MovieCard extends React.Component<MovieCardProps> {
   render() {
     const { movie } = this.props;
 

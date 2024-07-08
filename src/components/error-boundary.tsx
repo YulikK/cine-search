@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { AlertIcon } from './icons/alert-icon';
 
-interface Props {
+interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
@@ -10,7 +10,7 @@ interface State {
   errorMessage: string;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
   state: State = {
     hasError: false,
     errorMessage: '',
