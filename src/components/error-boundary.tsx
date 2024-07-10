@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { AlertIcon } from './icons/alert-icon';
+import { AlertIcon } from './icons/alert-icon.tsx';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -20,12 +20,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
     return { hasError: true, errorMessage: '' };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     console.error('Uncaught error:', error, errorInfo);
     this.setState({ errorMessage: error.toString() });
   }
 
-  render() {
+  render(): ReactNode {
     if (this.state.hasError) {
       return (
         <div className="mb-6 flex items-center justify-center bg-background">

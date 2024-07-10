@@ -4,11 +4,12 @@ import {
   TOKEN,
   URL_API,
   URL_SEARCH_API,
-} from '../common/constant';
-import { Movie, QueryParams } from '../types/api';
+} from '../common/constant.tsx';
+import { Movie, MoviesItem, QueryParams } from '../types/api.tsx';
+import { isMovieData } from '../types/validation.tsx';
 
 export class ApiService {
-  static fetchMovie(params: QueryParams) {
+  static fetchMovie(params: QueryParams): Promise<MoviesItem[] | null> {
     const fetchUrl = ApiService.makeURL(params);
     return fetch(fetchUrl, {
       method: HTTP_METHODS.GET,
@@ -17,17 +18,27 @@ export class ApiService {
         accept: JSON_ACCEPT_HEADER,
       },
     })
-      .then((response) => response.json())
-      .then((data) =>
-        data.results.map((movie: Movie) => ({
-          id: movie.id,
-          name: movie.title,
-          description: `Release date: ${movie.release_date}`,
-          posterPath: movie.poster_path,
-          rating: movie.vote_average.toFixed(1),
-        }))
-      )
-      .catch((error) => console.error('Error fetching data:', error));
+      .then((response: Response) => response.json())
+      .then((data: unknown): MoviesItem[] | null => {
+        if (isMovieData(data)) {
+          return ApiService.adaptToClient(data.results);
+        }
+        return null;
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        return null;
+      });
+  }
+
+  static adaptToClient(data: Movie[]): MoviesItem[] {
+    return data.map((item) => ({
+      id: item.id.toString(),
+      name: item.title,
+      description: item.overview,
+      posterPath: item.poster_path || '',
+      rating: item.vote_average,
+    }));
   }
 
   static makeURL(params: QueryParams): string {

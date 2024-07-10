@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { SearchBar } from './components/search-bar';
-import { ListView } from './components/list-view';
-import { ApiService } from './services/api';
-import { MoviesItem, QueryParams } from './types/api';
-import { DEFAULT_PAGE } from './common/constant';
-import { getSearchQuery, saveSearchQuery } from './services/storage';
-import { Loader } from './components/loader';
-import { ErrorBoundary } from './components/error-boundary';
+import { SearchBar } from './components/search-bar.tsx';
+import { ListView } from './components/list-view.tsx';
+import { ApiService } from './services/api.tsx';
+import { MoviesItem, QueryParams } from './types/api.tsx';
+import { DEFAULT_PAGE } from './common/constant.tsx';
+import { getSearchQuery, saveSearchQuery } from './services/storage.tsx';
+import { Loader } from './components/loader.tsx';
+import { ErrorBoundary } from './components/error-boundary.tsx';
 import './assets/styles/global.scss';
 
 interface AppProps {}
@@ -29,35 +29,40 @@ class App extends React.Component<AppProps, AppState> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.updateSearchQuery(getSearchQuery());
   }
 
-  onSearch = (query: string) => {
+  onSearch = (query: string): void => {
     this.updateSearchQuery(query);
   };
 
-  updateSearchQuery(query: string) {
+  updateSearchQuery(query: string): void {
     this.setState({ searchQuery: query }, () => {
       saveSearchQuery(query);
       this.getMovie(this.getQueryParams());
     });
   }
 
-  getMovie(queryParams: QueryParams) {
+  getMovie(queryParams: QueryParams): void {
     this.setState({ isLoading: true });
-    ApiService.fetchMovie(queryParams).then((movies) => {
-      this.setState({ movies, isLoading: false });
-    });
+    ApiService.fetchMovie(queryParams)
+      .then((movies) => {
+        this.setState({ movies: movies || [], isLoading: false });
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }
 
-  getQueryParams() {
+  getQueryParams(): QueryParams {
     return {
       query: this.state.searchQuery,
       page: this.state.page,
     };
   }
-  render() {
+
+  render(): ReactNode {
     return (
       <React.StrictMode>
         <ErrorBoundary>

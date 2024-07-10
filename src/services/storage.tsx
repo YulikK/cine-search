@@ -1,6 +1,6 @@
-import { GUID_STORE } from '../common/constant';
+import { GUID_STORE } from '../common/constant.tsx';
 
-export const saveSearchQuery = (query: string) => {
+export const saveSearchQuery = (query: string): void => {
   const search = query.trim();
   if (search) {
     localStorage.setItem(GUID_STORE, query);
@@ -9,6 +9,5 @@ export const saveSearchQuery = (query: string) => {
   }
 };
 
-export const getSearchQuery = (): string => {
-  return localStorage.getItem(GUID_STORE) || '';
-};
+export const getSearchQuery = (): string =>
+  localStorage.getItem(GUID_STORE) || '';

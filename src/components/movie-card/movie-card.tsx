@@ -1,7 +1,7 @@
-import React from 'react';
-import { MoviesItem } from '../../types/api';
-import { URL_POSTER } from '../../common/constant';
-import { StarIcon } from '../icons/star-icon';
+import React, { ReactNode } from 'react';
+import { MoviesItem } from '../../types/api.tsx';
+import { URL_POSTER } from '../../common/constant.tsx';
+import { StarIcon } from '../icons/star-icon.tsx';
 import styles from './movie-card.module.scss';
 import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 
@@ -10,7 +10,7 @@ interface MovieCardProps {
 }
 
 export class MovieCard extends React.Component<MovieCardProps> {
-  render() {
+  render(): ReactNode {
     const { movie } = this.props;
 
     return (

@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export class ErrorGenerator extends React.Component {
   state = {
     throwError: false,
   };
 
-  generateError = () => {
+  generateError = (): void => {
     this.setState({ throwError: true });
   };
 
-  render() {
+  render(): ReactNode {
     if (this.state.throwError) {
       throw new Error('This is a test error');
     }

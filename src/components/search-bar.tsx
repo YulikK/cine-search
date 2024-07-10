@@ -1,6 +1,6 @@
-import React from 'react';
-import { SearchIcon } from './icons/search-icon';
-import { ErrorGenerator } from './error-generator';
+import React, { ReactNode } from 'react';
+import { SearchIcon } from './icons/search-icon.tsx';
+import { ErrorGenerator } from './error-generator.tsx';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -17,17 +17,17 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     this.state = { searchQuery: props.value };
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({ searchQuery: event.target.value });
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const trimmedQuery = this.state.searchQuery.trim();
     this.props.onSearch(trimmedQuery);
   };
 
-  render() {
+  render(): ReactNode {
     return (
       <form
         onSubmit={this.handleSubmit}
