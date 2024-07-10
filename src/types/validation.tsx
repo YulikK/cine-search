@@ -1,6 +1,6 @@
-import { MovieResponse } from './api.tsx';
+import { MovieServerResponse } from './api.tsx';
 
-export function isMovieData(data: unknown): data is MovieResponse {
+export function isMovieData(data: unknown): data is MovieServerResponse {
   return Boolean(
     typeof data === 'object' &&
       data &&

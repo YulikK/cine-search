@@ -15,7 +15,7 @@ export interface Movie {
   video: boolean;
 }
 
-export interface MovieResponse {
+export interface MovieServerResponse {
   page: number;
   total_results: number;
   total_pages: number;
@@ -29,6 +29,10 @@ export interface MoviesItem {
   rating: number;
 }
 
+export interface MovieAdaptResponse {
+  totalPages: number;
+  results: MoviesItem[];
+}
 export interface QueryParams {
   query: string;
   page: number;

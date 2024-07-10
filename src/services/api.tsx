@@ -5,11 +5,16 @@ import {
   URL_API,
   URL_SEARCH_API,
 } from '../common/constant.tsx';
-import { Movie, MoviesItem, QueryParams } from '../types/api.tsx';
+import {
+  Movie,
+  MovieAdaptResponse,
+  MoviesItem,
+  QueryParams,
+} from '../types/api.tsx';
 import { isMovieData } from '../types/validation.tsx';
 
 export class ApiService {
-  static fetchMovie(params: QueryParams): Promise<MoviesItem[] | null> {
+  static fetchMovie(params: QueryParams): Promise<MovieAdaptResponse | null> {
     const fetchUrl = ApiService.makeURL(params);
     return fetch(fetchUrl, {
       method: HTTP_METHODS.GET,
@@ -19,9 +24,13 @@ export class ApiService {
       },
     })
       .then((response: Response) => response.json())
-      .then((data: unknown): MoviesItem[] | null => {
+      .then((data: unknown): MovieAdaptResponse | null => {
         if (isMovieData(data)) {
-          return ApiService.adaptToClient(data.results);
+          const result: MovieAdaptResponse = {
+            totalPages: data.total_pages,
+            results: ApiService.adaptToClient(data.results),
+          };
+          return result;
         }
         return null;
       })
