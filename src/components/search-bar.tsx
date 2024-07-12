@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchIcon } from './icons/search-icon.tsx';
 import { ErrorGenerator } from './error-generator.tsx';
+import { useRequestParams } from '../hooks/use-request-params.tsx';
+import { DEFAULT_PAGE } from '../common/constant.tsx';
 
-interface SearchBarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
+export const SearchBar: React.FC = () => {
+  const { searchParams, setSearchParams } = useRequestParams();
+  const [inputValue, setInputValue] = useState(searchParams.get('query') || '');
 
-export const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
-  const { searchQuery, setSearchQuery } = props;
-  const [inputValue, setInputValue] = useState(searchQuery);
+  useEffect(() => {
+    setInputValue(searchParams.get('query') || '');
+  }, [searchParams]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setInputValue(event.target.value);
@@ -18,7 +19,10 @@ export const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     const trimmedQuery = inputValue.trim();
-    setSearchQuery(trimmedQuery);
+    setSearchParams({
+      query: trimmedQuery,
+      page: DEFAULT_PAGE.toString(),
+    });
   }
 
   return (

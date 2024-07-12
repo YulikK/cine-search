@@ -1,25 +1,24 @@
 import React from 'react';
 import { ChevronLeftIcon } from './icons/chevron-left-icon.tsx';
 import { ChevronRightIcon } from './icons/chevron-right-icon.tsx';
+import { useRequestParams } from '../hooks/use-request-params.tsx';
+import { DEFAULT_PAGE } from '../common/constant.tsx';
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
 }
-export const Pagination: React.FC<PaginationProps> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) => {
+export const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
+  const { searchParams, setSearchParams } = useRequestParams();
+  const page = parseInt(searchParams.get('page') || `${DEFAULT_PAGE}`, 10);
   const getPageNumbers = (): number[] => {
     const maxPagesToShow = 5;
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
+    let startPage = Math.max(1, page - 2);
+    let endPage = Math.min(totalPages, page + 2);
 
-    if (currentPage <= 3) {
+    if (page <= 3) {
       endPage = Math.min(totalPages, maxPagesToShow);
-    } else if (currentPage + 2 >= totalPages) {
+    } else if (page + 2 >= totalPages) {
       startPage = Math.max(1, totalPages - maxPagesToShow + 1);
     }
 
@@ -31,36 +30,48 @@ export const Pagination: React.FC<PaginationProps> = ({
   };
 
   const handlePrevious = (): void => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
+    if (page > 1) {
+      const newPage = page - 1;
+      setSearchParams({
+        page: newPage.toString(),
+      });
     }
   };
 
   const handleNext = (): void => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setSearchParams({
+        page: newPage.toString(),
+      });
     }
+  };
+
+  const onPageClick = (newPage: number): void => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('page', newPage.toString());
+    setSearchParams(Object.fromEntries(newSearchParams.entries()));
   };
 
   return (
     <nav className="flex items-center justify-center space-x-2 mt-10">
-      <button onClick={handlePrevious} disabled={currentPage === 1}>
+      <button onClick={handlePrevious} disabled={page === 1}>
         <ChevronLeftIcon className="h-4 w-4" />
       </button>
-      {getPageNumbers().map((page) => (
+      {getPageNumbers().map((pageItem) => (
         <button
-          key={page}
-          onClick={() => onPageChange(page)}
+          key={pageItem}
+          onClick={() => onPageClick(pageItem)}
           className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-3 py-2 gap-1 ${
-            page === currentPage
+            pageItem === page
               ? 'bg-primary text-primary-foreground'
               : 'hover:bg-accent hover:text-accent-foreground'
           }`}
         >
-          {page}
+          {pageItem}
         </button>
       ))}
-      <button onClick={handleNext} disabled={currentPage === totalPages}>
+      <button onClick={handleNext} disabled={page === totalPages}>
         <ChevronRightIcon className="h-4 w-4" />
       </button>
     </nav>
