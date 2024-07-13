@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
 import { MoviesDetails } from '../types/api.tsx';
 import { XIcon } from './icons/x-icon.tsx';
 import { StarIcon } from './icons/star-icon.tsx';
@@ -17,6 +18,8 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   const navigate = useNavigate();
   const { searchParams, setSearchParams } = useRequestParams();
 
+  const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
+
   const handleCloseClick = (): void => {
     const saveSearchParams = new URLSearchParams(searchParams.toString());
     navigate(`/`);
@@ -33,15 +36,17 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
       </div>
       <div className="grid gap-4">
         <img
-          src={
-            selectedMovie.posterPath
-              ? `${URL_POSTER}${selectedMovie.backdropPath}`
-              : NO_POSTER_IMG
-          }
+          src={poster ? `${URL_POSTER}${poster}` : NO_POSTER_IMG}
           alt={selectedMovie.title}
           width={300}
           height={450}
-          className="w-full h-[450px] object-cover rounded-lg"
+          className={classNames(
+            'w-full',
+            'h-[450px]',
+            'object-cover',
+            'rounded-lg',
+            { noPoster: !poster }
+          )}
         />
         <div className="grid gap-2">
           <div className="grid grid-cols-2 gap-2">

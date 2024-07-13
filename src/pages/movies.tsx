@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { MoviesItem, QueryParams } from '../types/api.tsx';
 import { DEFAULT_PAGE } from '../common/constant.tsx';
 import { useRequestParams } from '../hooks/use-request-params.tsx';
@@ -16,6 +16,7 @@ export const Movies: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { searchParams, setSearchParams } = useRequestParams();
+  const { movieId } = useParams();
 
   useEffect(() => {
     function getMovie(queryParams: QueryParams): void {
@@ -46,9 +47,17 @@ export const Movies: React.FC = () => {
     setSearchParams(Object.fromEntries(saveSearchParams.entries()));
   };
 
+  const handlerPageClick = (): void => {
+    if (movieId) {
+      const saveSearchParams = new URLSearchParams(searchParams.toString());
+      navigate(`/`);
+      setSearchParams(Object.fromEntries(saveSearchParams.entries()));
+    }
+  };
+
   return (
     <ErrorBoundary>
-      <div className="flex h-screen w-full">
+      <div className="flex h-screen w-full" onClick={handlerPageClick}>
         <div className="flex-1 border-r bg-muted p-4 overflow-y-auto">
           <SearchBar />
           {isLoading ? (

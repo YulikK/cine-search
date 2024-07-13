@@ -1,8 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon.tsx';
-import styles from './movie-card.module.scss';
 import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 
 interface MovieCardProps {
@@ -25,7 +25,9 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
         alt={movie.name}
         width="300"
         height="450"
-        className={`w-full h-[450px] object-cover ${movie.posterPath ? '' : styles.noPoster}`}
+        className={classNames('w-full', 'h-[450px]', 'object-cover', {
+          noPoster: !movie.posterPath,
+        })}
         style={{ aspectRatio: '300 / 450', objectFit: 'cover' }}
       />
       <div className="p-4">

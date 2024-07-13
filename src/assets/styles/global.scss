@@ -46,3 +46,7 @@
     @apply font-heading;
   }
 }
+
+.noPoster {
+  filter: sepia(0.3) hue-rotate(-60deg) saturate(0.5) opacity(0.8);
+}
