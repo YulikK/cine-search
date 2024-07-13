@@ -7,13 +7,17 @@ import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 
 interface MovieCardProps {
   movie: MoviesItem;
+  onMovieClick: (id: string) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
 
   return (
-    <li className="bg-background rounded-lg overflow-hidden shadow-lg">
+    <li
+      className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4"
+      onClick={() => props.onMovieClick(movie.id)}
+    >
       <img
         src={
           movie.posterPath ? `${URL_POSTER}${movie.posterPath}` : NO_POSTER_IMG

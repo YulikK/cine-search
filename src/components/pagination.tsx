@@ -3,6 +3,7 @@ import { ChevronLeftIcon } from './icons/chevron-left-icon.tsx';
 import { ChevronRightIcon } from './icons/chevron-right-icon.tsx';
 import { useRequestParams } from '../hooks/use-request-params.tsx';
 import { DEFAULT_PAGE } from '../common/constant.tsx';
+import { updateParams } from '../utils/params.tsx';
 
 interface PaginationProps {
   currentPage: number;
@@ -48,9 +49,7 @@ export const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
   };
 
   const onPageClick = (newPage: number): void => {
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-    newSearchParams.set('page', newPage.toString());
-    setSearchParams(Object.fromEntries(newSearchParams.entries()));
+    setSearchParams(updateParams('page', newPage.toString(), searchParams));
   };
 
   return (

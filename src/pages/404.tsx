@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonBackHome } from '../button-back-home.tsx';
+import { ButtonBackHome } from '../components/button-back-home.tsx';
 
 export const Page404: React.FC = () => (
   <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">

@@ -5,14 +5,14 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import { Page404 } from './components/pages/404.tsx';
-import { Movies } from './components/pages/movies.tsx';
-import { Layout } from './components/layout.tsx';
+import { Page404 } from './pages/404.tsx';
+import { Movies } from './pages/movies.tsx';
+import { MovieDetails } from './components/movie-details.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route index element={<Movies />} />
+    <Route path="/" element={<Movies />}>
+      <Route path=":movieId" element={<MovieDetails />} />
       <Route path="*" element={<Page404 />} />
     </Route>
   )

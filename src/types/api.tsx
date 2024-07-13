@@ -29,6 +29,47 @@ export interface MoviesItem {
   rating: number;
 }
 
+export interface MoviesDetails {
+  id: string;
+  title: string;
+  overview: string;
+  backdropPath: string;
+  posterPath: string;
+  genres: string[];
+  originalLanguage: string;
+  releaseDate: string;
+  adult: boolean;
+  budget: number;
+  revenue: number;
+  runtime: string;
+  status: string;
+  tagline: string;
+  voteAverage: number;
+}
+
+type genresServer = {
+  id: number;
+  name: string;
+};
+
+export interface MoviesDetailsServerResponse {
+  id: string;
+  title: string;
+  overview: string;
+  backdrop_path: string;
+  poster_path: string;
+  genres: genresServer[];
+  original_language: string;
+  release_date: string;
+  adult: boolean;
+  budget: number;
+  revenue: number;
+  runtime: number;
+  status: string;
+  tagline: string;
+  vote_average: number;
+}
+
 export interface MovieAdaptResponse {
   totalPages: number;
   results: MoviesItem[];
