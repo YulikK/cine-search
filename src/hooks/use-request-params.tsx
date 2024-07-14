@@ -10,16 +10,18 @@ interface RequestParamsHook {
 export const useRequestParams = (): RequestParamsHook => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isFirstRender = useRef(true);
+  const queryRef = useRef(getSearchQuery(''));
 
   useEffect(() => {
-    const saveQuery = getSearchQuery('');
+    const saveQuery = getSearchQuery(queryRef.current);
     const currentQuery = isFirstRender.current
       ? searchParams.get('query') || saveQuery || ''
-      : searchParams.get('query') || '';
+      : queryRef.current;
 
     if (isFirstRender.current) {
       isFirstRender.current = false;
     }
+
     const currentPage = parseInt(
       searchParams.get('page') || `${DEFAULT_PAGE}`,
       10
@@ -32,9 +34,10 @@ export const useRequestParams = (): RequestParamsHook => {
       });
     }
 
+    queryRef.current = currentQuery;
+
     return (): void => {
-      const newQuery = searchParams.get('query') || '';
-      saveSearchQuery(newQuery);
+      saveSearchQuery(queryRef.current);
     };
   }, [searchParams, setSearchParams]);
 

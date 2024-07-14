@@ -5,9 +5,9 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import { Page404 } from './pages/404.tsx';
-import { Movies } from './pages/movies.tsx';
-import { MovieDetails } from './components/movie-details.tsx';
+import { Page404 } from './pages/404/404.tsx';
+import { Movies } from './pages/movies/movies.tsx';
+import { MovieDetails } from './components/movie-details/movie-details.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

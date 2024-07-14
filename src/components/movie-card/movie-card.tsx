@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
-import { StarIcon } from '../icons/star-icon.tsx';
+import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 
 interface MovieCardProps {

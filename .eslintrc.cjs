@@ -28,6 +28,16 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'error',
     'react-compiler/react-compiler': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/*.spec.tsx',
+          '**/*.spec.ts',
+          '**/vitest.setup.ts',
+        ],
+      },
+    ],
   },
 
   settings: {
