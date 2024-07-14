@@ -9,18 +9,11 @@ interface RequestParamsHook {
 }
 export const useRequestParams = (): RequestParamsHook => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const isFirstRender = useRef(true);
   const queryRef = useRef(getSearchQuery(''));
 
   useEffect(() => {
-    const saveQuery = getSearchQuery(queryRef.current);
-    const currentQuery = isFirstRender.current
-      ? searchParams.get('query') || saveQuery || ''
-      : queryRef.current;
-
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    }
+    const urlQuery = searchParams.get('query');
+    const currentQuery = urlQuery === null ? queryRef.current : urlQuery;
 
     const currentPage = parseInt(
       searchParams.get('page') || `${DEFAULT_PAGE}`,
