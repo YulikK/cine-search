@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { ButtonBackHome } from './button-back-home.tsx';
 
@@ -18,13 +18,20 @@ describe('ButtonBackHome', () => {
 
   test('navigates to the homepage on click', async () => {
     render(
-      <MemoryRouter>
-        <ButtonBackHome />
+      <MemoryRouter initialEntries={['/initial']}>
+        <Routes>
+          <Route path="/initial" element={<ButtonBackHome />} />
+          <Route path="/" element={<h1>Homepage</h1>} />
+        </Routes>
       </MemoryRouter>
     );
 
     await userEvent.click(
       screen.getByRole('link', { name: /back to homepage/i })
     );
+
+    expect(
+      screen.getByRole('heading', { name: /homepage/i })
+    ).toBeInTheDocument();
   });
 });

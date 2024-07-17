@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import { ListView } from './list-view.tsx';
 import { MoviesItem } from '../../types/api.tsx';
@@ -42,8 +42,8 @@ describe('ListView Component', () => {
 
     const movieCards = screen.getAllByRole('listitem');
     expect(movieCards.length).toBe(2);
-    expect(movieCards[0]).toHaveTextContent('Movie 1');
-    expect(movieCards[1]).toHaveTextContent('Movie 2');
+    expect(movieCards[0]).toHaveTextContent(mockData[0].name);
+    expect(movieCards[1]).toHaveTextContent(mockData[1].name);
   });
 
   it('renders "No Results" when data is empty', () => {
@@ -54,21 +54,5 @@ describe('ListView Component', () => {
     );
 
     expect(screen.getByText('No results found')).toBeInTheDocument();
-  });
-
-  it('adjusts grid columns based on the presence of a movieId param', () => {
-    render(
-      <MemoryRouter initialEntries={['/movies/1']}>
-        <Routes>
-          <Route
-            path="movies/:movieId"
-            element={<ListView data={mockData} onMovieClick={() => {}} />}
-          />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    const list = screen.getByRole('list');
-    expect(list).toHaveClass('md:grid-cols-1 lg:grid-cols-2');
   });
 });

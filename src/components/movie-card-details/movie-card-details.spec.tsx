@@ -51,14 +51,20 @@ describe('<MovieCardDetails />', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Test Movie')).toBeInTheDocument();
-    expect(screen.getByText('8.5')).toBeInTheDocument();
-    expect(screen.getByText('Test Overview')).toBeInTheDocument();
-    expect(screen.getByText('Action')).toBeInTheDocument();
-    expect(screen.getByText('Adventure')).toBeInTheDocument();
-    expect(screen.getByText('EN')).toBeInTheDocument();
-    expect(screen.getByText('Released')).toBeInTheDocument();
-    expect(screen.getByText('$200,000,000')).toBeInTheDocument();
-    expect(screen.getByText('$850,000,000')).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.title)).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.voteAverage)).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.overview)).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.genres[0])).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.genres[1])).toBeInTheDocument();
+    expect(
+      screen.getByText(mockMovie.originalLanguage.toUpperCase())
+    ).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.status)).toBeInTheDocument();
+    expect(
+      screen.getByText(`$${mockMovie.budget.toLocaleString()}`)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(`$${mockMovie.revenue.toLocaleString()}`)
+    ).toBeInTheDocument();
   });
 });

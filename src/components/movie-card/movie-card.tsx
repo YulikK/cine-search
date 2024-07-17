@@ -15,7 +15,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
 
   return (
     <li
-      className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4"
+      className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
       onClick={() => props.onMovieClick(movie.id)}
     >
       <img
@@ -25,10 +25,17 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
         alt={movie.name}
         width="300"
         height="450"
-        className={classNames('w-full', 'h-[450px]', 'object-cover', {
-          noPoster: !movie.posterPath,
-        })}
-        style={{ aspectRatio: '300 / 450', objectFit: 'cover' }}
+        className={classNames(
+          'w-full',
+          'h-[450px]',
+          'w-[300px]',
+          'object-contain',
+          {
+            noPoster: !movie.posterPath,
+            'object-cover': !movie.posterPath,
+          }
+        )}
+        style={{ aspectRatio: '300 / 450' }}
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-2">{movie.name}</h3>

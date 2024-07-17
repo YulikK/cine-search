@@ -57,12 +57,10 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
                   {selectedMovie.voteAverage}
                 </div>
               </div>
-              {selectedMovie.adult ? (
+              {selectedMovie.adult && (
                 <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                   18+
                 </div>
-              ) : (
-                <></>
               )}
             </div>
             <div className="flex items-center justify-self-end gap-4">

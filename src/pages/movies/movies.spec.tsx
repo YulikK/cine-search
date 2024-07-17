@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import { Movies } from './movies.tsx';
@@ -39,13 +39,15 @@ describe('Movies Page Component', () => {
     },
   }));
 
-  it('renders loading state initially', () => {
+  it('renders loading state initially', async () => {
     render(
       <MemoryRouter>
         <Movies />
       </MemoryRouter>
     );
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
   });
 
   it('renders movies after loading', async () => {
