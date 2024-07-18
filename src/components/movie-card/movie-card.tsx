@@ -1,22 +1,56 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
+import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
+import { useRequestParams } from '../../hooks/use-request-params.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
-  onMovieClick: (id: string) => void;
+  // onMovieClick: (id: string) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
+  const navigate = useNavigate();
+  const { searchParams, setSearchParams } = useRequestParams();
+
+  const handleMovieClick: React.MouseEventHandler<HTMLLIElement> = (evt) => {
+    const isClickInsideFavoriteButton = (
+      target: HTMLElement | SVGElement | null
+    ): boolean => {
+      let element: HTMLElement | SVGElement | null = target;
+      while (element && element !== evt.currentTarget) {
+        if (
+          element.tagName === 'BUTTON' &&
+          element.classList.contains('favorite-button')
+        ) {
+          return true;
+        }
+        element = element.parentElement;
+      }
+      return false;
+    };
+
+    if (
+      evt.target instanceof SVGElement &&
+      isClickInsideFavoriteButton(evt.target)
+    ) {
+      return;
+    }
+
+    const saveSearchParams = new URLSearchParams(searchParams.toString());
+    navigate(`/${movie.id}`);
+    setSearchParams(Object.fromEntries(saveSearchParams.entries()));
+  };
 
   return (
     <li
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
-      onClick={() => props.onMovieClick(movie.id)}
+      onClick={handleMovieClick}
     >
       <img
         src={
@@ -38,7 +72,10 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
         style={{ aspectRatio: '300 / 450' }}
       />
       <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{movie.name}</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold mb-2">{movie.name}</h3>
+          <FavoriteButton movieId={movie.id} />
+        </div>
         <div className="flex items-center mb-2">
           <StarIcon className="h-5 w-5 text-yellow-500 mr-1" />
           <span className="text-sm font-medium">{movie.rating}</span>

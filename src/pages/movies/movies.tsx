@@ -13,19 +13,10 @@ export const Movies: React.FC = () => {
   const navigate = useNavigate();
   const { searchParams, setSearchParams } = useRequestParams();
   const { movieId } = useParams();
-
   const query = searchParams.get('query') || '';
   const page = parseInt(searchParams.get('page') || `${DEFAULT_PAGE}`, 10);
-
   const { data, error, isLoading } = useGetMovieQuery({ query, page });
-
   const { results, totalPages } = data || {};
-
-  const handleMovieClick = (id: string): void => {
-    const saveSearchParams = new URLSearchParams(searchParams.toString());
-    navigate(`/${id}`);
-    setSearchParams(Object.fromEntries(saveSearchParams.entries()));
-  };
 
   const handlerPageClick = (): void => {
     if (movieId) {
@@ -41,7 +32,7 @@ export const Movies: React.FC = () => {
 
     return (
       <>
-        <ListView data={results || []} onMovieClick={handleMovieClick} />
+        <ListView data={results || []} />
         <Pagination
           currentPage={page}
           totalPages={totalPages || DEFAULT_PAGE}

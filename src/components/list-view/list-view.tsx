@@ -6,7 +6,7 @@ import { NoResults } from '../no-results/no-results.tsx';
 
 interface ListViewProps {
   data: MoviesItem[];
-  onMovieClick: (id: string) => void;
+  // onMovieClick: (id: string) => void;
 }
 
 export const ListView: React.FC<ListViewProps> = (props) => {
@@ -15,7 +15,7 @@ export const ListView: React.FC<ListViewProps> = (props) => {
   return data.length ? (
     <ul className={classNames('gap-4', 'flex', 'flex-wrap', 'justify-evenly')}>
       {data.map((item, index) => (
-        <MovieCard key={index} movie={item} onMovieClick={props.onMovieClick} />
+        <MovieCard key={index} movie={item} />
       ))}
     </ul>
   ) : (
