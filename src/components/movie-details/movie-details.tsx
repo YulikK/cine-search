@@ -1,53 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { MoviesDetails } from '../../types/api.tsx';
-import { ApiService } from '../../services/api.tsx';
+import { useGetMovieByIDQuery } from '../../services/api.tsx';
 import { MovieCardDetails } from '../movie-card-details/movie-card-details.tsx';
 import { Loader } from '../loader/loader.tsx';
 import { NoResults } from '../no-results/no-results.tsx';
 
 export const MovieDetails: React.FC = () => {
   const { movieId } = useParams();
-  const [selectedMovie, setSelectedMovie] = useState<MoviesDetails | null>(
-    null
-  );
-  const [isDetailLoading, setIsDetailLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    function getMovieById(id: string): void {
-      setIsDetailLoading(true);
-      ApiService.fetchMovieByID(id)
-        .then((movieData) => {
-          setSelectedMovie(movieData);
-          setIsDetailLoading(false);
-        })
-        .catch((error: Error) => {
-          console.error('Error fetching data:', error);
-        });
-    }
+  const {
+    data: selectedMovie,
+    error,
+    isLoading: isDetailLoading,
+  } = useGetMovieByIDQuery(movieId ?? '');
 
-    if (movieId) {
-      getMovieById(movieId);
-    } else {
-      setSelectedMovie(null);
-    }
-  }, [movieId]);
+  if (isDetailLoading) {
+    return (
+      <div className="flex-1 bg-background p-6 overflow-y-auto">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex-1 bg-background p-6 overflow-y-auto">
+        Error fetching data
+      </div>
+    );
+  }
+
+  if (!selectedMovie) {
+    return (
+      <div className="flex-1 bg-background p-6 overflow-y-auto">
+        <NoResults />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 bg-background p-6 overflow-y-auto">
-      {isDetailLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {selectedMovie ? (
-            <MovieCardDetails movie={selectedMovie} />
-          ) : (
-            <>
-              <NoResults />
-            </>
-          )}
-        </>
-      )}
+      <MovieCardDetails movie={selectedMovie} />
     </div>
   );
 };

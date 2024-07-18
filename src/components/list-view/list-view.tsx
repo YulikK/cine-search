@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import { MoviesItem } from '../../types/api.tsx';
 import { MovieCard } from '../movie-card/movie-card.tsx';
