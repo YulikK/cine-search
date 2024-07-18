@@ -11,8 +11,8 @@ module.exports = {
     'prettier',
   ],
   parserOptions: {
-    project: './tsconfig.json', // Укажите путь к вашему tsconfig.json
-    tsconfigRootDir: __dirname, // Укажите корневую директорию вашего проекта
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',

@@ -43,8 +43,8 @@ export const Movies: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <div className="flex h-screen w-full" onClick={handlerPageClick}>
-        <div className="flex-1 border-r bg-muted p-4 overflow-y-auto">
+      <div className="flex bg-muted w-full" onClick={handlerPageClick}>
+        <div className="flex-1 border-r p-4 h-full overflow-y-auto">
           <SearchBar />
           {renderContent()}
         </div>

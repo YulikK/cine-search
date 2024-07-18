@@ -6,7 +6,6 @@ import { NoResults } from '../no-results/no-results.tsx';
 
 interface ListViewProps {
   data: MoviesItem[];
-  // onMovieClick: (id: string) => void;
 }
 
 export const ListView: React.FC<ListViewProps> = (props) => {

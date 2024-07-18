@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
 import {
   addFavorite,
@@ -12,6 +13,9 @@ export const FavoriteButton: React.FC<{ movieId: string }> = (props) => {
   const favorites: string[] = useSelector(
     (state: RootState) => state.favorites
   );
+  console.log('favorites: ', favorites);
+  console.log('movieId ', props.movieId);
+  console.log('isFavorite ', favorites.includes(props.movieId));
   const isFavorite = favorites.includes(props.movieId);
 
   const handleFavorite = (): void => {
@@ -24,10 +28,15 @@ export const FavoriteButton: React.FC<{ movieId: string }> = (props) => {
 
   return (
     <button
-      className="favorite-button rounded-full hover:fill-rose-500 text-gray-900"
+      className="favorite-button rounded-full  text-gray-900"
       onClick={handleFavorite}
     >
-      <HeartIcon className="w-5 h-5 text-primary" />
+      <HeartIcon
+        className={classNames('w-5', 'h-5', 'hover:text-primary', {
+          'text-primary': isFavorite,
+          'fill-primary': isFavorite,
+        })}
+      />
       <span className="sr-only">
         {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       </span>

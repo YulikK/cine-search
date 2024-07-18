@@ -10,7 +10,6 @@ import { useRequestParams } from '../../hooks/use-request-params.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
-  // onMovieClick: (id: string) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
@@ -71,7 +70,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
         )}
         style={{ aspectRatio: '300 / 450' }}
       />
-      <div className="p-4">
+      <div className="p-4 w-full">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold mb-2">{movie.name}</h3>
           <FavoriteButton movieId={movie.id} />
