@@ -72,12 +72,16 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
       />
       <div className="p-4 w-full">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold mb-2">{movie.name}</h3>
+          <h3 className="text-lg font-semibold mb-2 text-foreground">
+            {movie.name}
+          </h3>
           <FavoriteButton movieId={movie.id} />
         </div>
         <div className="flex items-center mb-2">
           <StarIcon className="h-5 w-5 text-yellow-500 mr-1" />
-          <span className="text-sm font-medium">{movie.rating}</span>
+          <span className="text-sm font-medium text-muted-foreground">
+            {movie.rating}
+          </span>
         </div>
         <p className="text-sm text-muted-foreground line-clamp-3">
           {movie.description}

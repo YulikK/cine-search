@@ -29,9 +29,11 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold ">{selectedMovie.title}</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          {selectedMovie.title}
+        </h1>
         <button onClick={handleCloseClick}>
-          <XIcon className="w-6 h-6" />
+          <XIcon className="w-6 h-6 text-muted-foreground hover:text-accent-foreground" />
         </button>
       </div>
       <div className="grid gap-4">
@@ -53,7 +55,7 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <StarIcon className="w-5 h-5 text-yellow-500" />
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-foreground">
                   {selectedMovie.voteAverage}
                 </div>
               </div>
@@ -79,7 +81,9 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
             </div>
           </div>
           <div>
-            <div className="text-base italic">{selectedMovie.tagline}</div>
+            <div className="text-base text-foreground italic">
+              {selectedMovie.tagline}
+            </div>
           </div>
 
           <p className="text-muted-foreground mb-5">{selectedMovie.overview}</p>
@@ -102,23 +106,25 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
               <div className="text-sm text-muted-foreground">
                 Original Language
               </div>
-              <div className="text-base">
+              <div className="text-base text-foreground ">
                 {selectedMovie.originalLanguage.toUpperCase()}
               </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Status</div>
-              <div className="text-base">{selectedMovie.status}</div>
+              <div className="text-base text-foreground ">
+                {selectedMovie.status}
+              </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Budget</div>
-              <div className="text-base">
+              <div className="text-base text-foreground ">
                 ${selectedMovie.budget.toLocaleString()}
               </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Revenue</div>
-              <div className="text-base">
+              <div className="text-base text-foreground ">
                 ${selectedMovie.revenue.toLocaleString()}
               </div>
             </div>

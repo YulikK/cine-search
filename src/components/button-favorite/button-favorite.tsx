@@ -13,9 +13,6 @@ export const FavoriteButton: React.FC<{ movieId: string }> = (props) => {
   const favorites: string[] = useSelector(
     (state: RootState) => state.favorites
   );
-  console.log('favorites: ', favorites);
-  console.log('movieId ', props.movieId);
-  console.log('isFavorite ', favorites.includes(props.movieId));
   const isFavorite = favorites.includes(props.movieId);
 
   const handleFavorite = (): void => {
@@ -32,10 +29,16 @@ export const FavoriteButton: React.FC<{ movieId: string }> = (props) => {
       onClick={handleFavorite}
     >
       <HeartIcon
-        className={classNames('w-5', 'h-5', 'hover:text-primary', {
-          'text-primary': isFavorite,
-          'fill-primary': isFavorite,
-        })}
+        className={classNames(
+          'w-5',
+          'h-5',
+          'text-destructive',
+          'hover:fill-destructive',
+          {
+            'text-destructive': isFavorite,
+            'fill-destructive': isFavorite,
+          }
+        )}
       />
       <span className="sr-only">
         {isFavorite ? 'Remove from favorites' : 'Add to favorites'}

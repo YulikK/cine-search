@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { DEFAULT_PAGE } from '../../common/constant.tsx';
 import { useRequestParams } from '../../hooks/use-request-params.tsx';
 import { useGetMovieQuery } from '../../services/api.tsx';
@@ -8,23 +8,15 @@ import { ListView } from '../../components/list-view/list-view.tsx';
 import { Pagination } from '../../components/pagination/pagination.tsx';
 import { ErrorBoundary } from '../../components/error-boundary/error-boundary.tsx';
 import { SearchBar } from '../../components/search-bar/search-bar.tsx';
+import { useTheme } from '../../hooks/use-theme.tsx';
 
 export const Movies: React.FC = () => {
-  const navigate = useNavigate();
-  const { searchParams, setSearchParams } = useRequestParams();
-  const { movieId } = useParams();
+  const { searchParams } = useRequestParams();
   const query = searchParams.get('query') || '';
   const page = parseInt(searchParams.get('page') || `${DEFAULT_PAGE}`, 10);
   const { data, error, isLoading } = useGetMovieQuery({ query, page });
   const { results, totalPages } = data || {};
-
-  const handlerPageClick = (): void => {
-    if (movieId) {
-      const saveSearchParams = new URLSearchParams(searchParams.toString());
-      navigate(`/`);
-      setSearchParams(Object.fromEntries(saveSearchParams.entries()));
-    }
-  };
+  const { isDarkTheme } = useTheme();
 
   const renderContent = (): React.ReactElement => {
     if (isLoading) return <Loader />;
@@ -43,7 +35,10 @@ export const Movies: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <div className="flex bg-muted w-full" onClick={handlerPageClick}>
+      <div
+        data-theme={isDarkTheme ? 'dark' : 'light'}
+        className="flex bg-muted w-full"
+      >
         <div className="flex-1 border-r p-4 h-full overflow-y-auto">
           <SearchBar />
           {renderContent()}
