@@ -9,6 +9,7 @@ import { Pagination } from '../../components/pagination/pagination.tsx';
 import { ErrorBoundary } from '../../components/error-boundary/error-boundary.tsx';
 import { SearchBar } from '../../components/search-bar/search-bar.tsx';
 import { useTheme } from '../../hooks/use-theme.tsx';
+import { FavoritePopup } from '../../components/popup-favorite/popup-favorite.tsx';
 
 export const Movies: React.FC = () => {
   const { searchParams } = useRequestParams();
@@ -29,6 +30,7 @@ export const Movies: React.FC = () => {
           currentPage={page}
           totalPages={totalPages || DEFAULT_PAGE}
         />
+        <FavoritePopup />
       </>
     );
   };
