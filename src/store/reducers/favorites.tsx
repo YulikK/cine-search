@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { MoviesItem } from '../../types/api.tsx';
 
-const initialState: string[] = [];
+const initialState: MoviesItem[] = [];
 
 const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    addFavorite: (state, action: PayloadAction<string>) => {
+    addFavorite: (state, action: PayloadAction<MoviesItem>) => {
       state.push(action.payload);
     },
-    removeFavorite: (state, action: PayloadAction<string>) =>
-      state.filter((movie) => movie !== action.payload),
+    removeFavorite: (state, action: PayloadAction<MoviesItem>) =>
+      state.filter((movie) => movie.id !== action.payload.id),
     clearFavorites: () => [],
   },
 });

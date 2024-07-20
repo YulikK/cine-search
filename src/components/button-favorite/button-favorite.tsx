@@ -7,19 +7,20 @@ import {
   removeFavorite,
 } from '../../store/reducers/favorites.tsx';
 import { RootState } from '../../store/store.tsx';
+import { MoviesItem } from '../../types/api.tsx';
 
-export const FavoriteButton: React.FC<{ movieId: string }> = (props) => {
+export const FavoriteButton: React.FC<{ movie: MoviesItem }> = (props) => {
   const dispatch = useDispatch();
-  const favorites: string[] = useSelector(
+  const favorites: MoviesItem[] = useSelector(
     (state: RootState) => state.favorites
   );
-  const isFavorite = favorites.includes(props.movieId);
+  const isFavorite = favorites.includes(props.movie);
 
   const handleFavorite = (): void => {
     if (isFavorite) {
-      dispatch(removeFavorite(props.movieId));
+      dispatch(removeFavorite(props.movie));
     } else {
-      dispatch(addFavorite(props.movieId));
+      dispatch(addFavorite(props.movie));
     }
   };
 

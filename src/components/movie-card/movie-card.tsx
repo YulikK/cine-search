@@ -75,7 +75,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
           <h3 className="text-lg font-semibold mb-2 text-foreground">
             {movie.name}
           </h3>
-          <FavoriteButton movieId={movie.id} />
+          <FavoriteButton movie={movie} />
         </div>
         <div className="flex items-center mb-2">
           <StarIcon className="h-5 w-5 text-yellow-500 mr-1" />
