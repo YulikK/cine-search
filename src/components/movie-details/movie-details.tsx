@@ -23,7 +23,7 @@ export const MovieDetails: React.FC = () => {
 
   if (isDetailLoading) {
     return (
-      <div className="flex-1 bg-background p-6 overflow-y-auto">
+      <div className="flex-1 bg-background p-6 ">
         <Loader />
       </div>
     );
@@ -31,7 +31,7 @@ export const MovieDetails: React.FC = () => {
 
   if (error) {
     return (
-      <div className="flex-1 bg-background p-6 overflow-y-auto">
+      <div className="flex-1 bg-background p-6 ">
         <NoResults />
       </div>
     );
@@ -39,14 +39,14 @@ export const MovieDetails: React.FC = () => {
 
   if (!selectedMovie) {
     return (
-      <div className="flex-1 bg-background p-6 overflow-y-auto">
+      <div className="flex-1 bg-background p-6 ">
         <NoResults />
       </div>
     );
   }
 
   return (
-    <div className="flex-1 bg-background p-6 overflow-y-auto">
+    <div className="flex-1 bg-background p-6 overflow-y-auto h-screen sticky top-0">
       <MovieCardDetails movie={selectedMovie} />
     </div>
   );

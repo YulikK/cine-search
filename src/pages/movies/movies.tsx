@@ -41,11 +41,13 @@ export const Movies: React.FC = () => {
         data-theme={isDarkTheme ? 'dark' : 'light'}
         className="flex bg-muted w-full"
       >
-        <div className="flex-1 border-r p-4 h-full overflow-y-auto">
-          <SearchBar />
-          {renderContent()}
+        <div className="flex-1 flex">
+          <div className="flex-1 border-r p-4 overflow-y-auto">
+            <SearchBar />
+            {renderContent()}
+          </div>
+          <Outlet />
         </div>
-        <Outlet />
       </div>
     </ErrorBoundary>
   );
