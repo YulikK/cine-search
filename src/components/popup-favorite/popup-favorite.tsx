@@ -37,7 +37,7 @@ export const FavoritePopup: React.FC = () => {
   return (
     <>
       {favorites.length > 0 && (
-        <div className="fixed bottom-4 right-4 bg-background rounded-full shadow-md w-16 h-16 flex items-start justify-center hover:w-16 hover:h-36 transition-all duration-300 group">
+        <div className="fixed bottom-4 right-4 bg-background rounded-full shadow-md w-16 h-16 flex items-start justify-center hover:w-16 hover:h-36 transition-all duration-300 group z-10">
           <div className="flex items-center justify-center gap-4 flex-col px-3 py-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               className="text-secondary-foreground hover:text-destructive"
