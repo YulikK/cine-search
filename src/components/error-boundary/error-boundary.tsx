@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { AlertIcon } from './icons/alert-icon.tsx';
+import { AlertIcon } from '../icons/alert-icon/alert-icon.tsx';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

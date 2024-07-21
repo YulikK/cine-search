@@ -9,5 +9,5 @@ export const saveSearchQuery = (query: string): void => {
   }
 };
 
-export const getSearchQuery = (): string =>
-  localStorage.getItem(GUID_STORE) || '';
+export const getSearchQuery = (initialQuery: string): string =>
+  localStorage.getItem(GUID_STORE) || initialQuery;

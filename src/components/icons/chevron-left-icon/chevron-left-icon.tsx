@@ -1,13 +1,13 @@
 import React from 'react';
 
-type AlertIconProps = React.HTMLAttributes<HTMLElement>;
-
-export const AlertIcon: React.FC<
-  AlertIconProps & React.SVGProps<SVGSVGElement>
+type ChevronLeftIconProps = React.HTMLAttributes<HTMLElement>;
+export const ChevronLeftIcon: React.FC<
+  ChevronLeftIconProps & React.SVGProps<SVGSVGElement>
 > = (props) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
+    role="img"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -17,8 +17,6 @@ export const AlertIcon: React.FC<
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-    <path d="M12 9v4" />
-    <path d="M12 17h.01" />
+    <path d="m15 18-6-6 6-6" />
   </svg>
 );

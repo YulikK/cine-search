@@ -4,4 +4,26 @@ import svgrPlugin from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [react(), svgrPlugin()],
+  define: {
+    global: {},
+  },
+  test: {
+    coverage: {
+      reporter: ['html', 'text'],
+      exclude: [
+        'node_modules/',
+        'dist',
+        '.vite',
+        'vite.config.ts',
+        'postcss.config.js',
+        'tailwind.config.js',
+        '.eslintrc.cjs',
+        'svg.d.ts',
+        'typings.d.ts',
+      ],
+    },
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/vitest.setup.ts',
+  },
 });
