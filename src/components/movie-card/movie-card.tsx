@@ -10,13 +10,14 @@ import { useRequestParams } from '../../hooks/use-request-params.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
+  setRef: (ref: HTMLLIElement | null) => void;
+  setSelectedMovieId: (id: string) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
   const navigate = useNavigate();
   const { searchParams, setSearchParams } = useRequestParams();
-
   const handleMovieClick: React.MouseEventHandler<HTMLLIElement> = (evt) => {
     const isClickInsideFavoriteButton = (
       target: HTMLElement | SVGElement | null
@@ -41,6 +42,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
       return;
     }
 
+    props.setSelectedMovieId(movie.id);
     const saveSearchParams = new URLSearchParams(searchParams.toString());
     navigate(`/${movie.id}`);
     setSearchParams(Object.fromEntries(saveSearchParams.entries()));
@@ -48,6 +50,8 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
 
   return (
     <li
+      key={movie.id}
+      ref={props.setRef}
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
       onClick={handleMovieClick}
     >

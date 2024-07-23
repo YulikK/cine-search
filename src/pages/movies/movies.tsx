@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { DEFAULT_PAGE } from '../../common/constant.tsx';
 import { useRequestParams } from '../../hooks/use-request-params.tsx';
@@ -18,6 +18,25 @@ export const Movies: React.FC = () => {
   const { data, error, isLoading } = useGetMovieQuery({ query, page });
   const { results, totalPages } = data || {};
   const { isDarkTheme } = useTheme();
+  const movieRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
+  const [selectedMovieId, setSelectedMovieId] = useState('');
+
+  const setMovieRef = (id: string, ref: HTMLLIElement | null): void => {
+    movieRefs.current[id] = ref;
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (selectedMovieId && movieRefs.current[selectedMovieId]) {
+      movieRefs.current[selectedMovieId].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedMovieId]);
 
   const renderContent = (): React.ReactElement => {
     if (isLoading) return <Loader />;
@@ -25,7 +44,11 @@ export const Movies: React.FC = () => {
 
     return (
       <>
-        <ListView data={results || []} />
+        <ListView
+          data={results || []}
+          setMovieRef={setMovieRef}
+          setSelectedMovieId={setSelectedMovieId}
+        />
         <Pagination
           currentPage={page}
           totalPages={totalPages || DEFAULT_PAGE}
