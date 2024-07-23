@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
-import { saveAs } from 'file-saver';
 import { RootState } from '../../store/store.tsx';
 import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
 import { DownloadIcon } from '../icons/download-icon/download-icon.tsx';
@@ -20,7 +19,7 @@ export const FavoritePopup: React.FC = () => {
     dispatch(clearFavorites());
   };
 
-  const handleDownloadFavorites = (): void => {
+  const handleDownloadFavorites = (): string => {
     let csvContent = 'id;Name;Description;Rating;URL\n';
 
     favorites.forEach((favorite) => {
@@ -30,20 +29,24 @@ export const FavoritePopup: React.FC = () => {
     });
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `${favorites.length}_movies.csv`);
+    const url = URL.createObjectURL(blob);
+    return url;
   };
+
+  const downloadUrl = handleDownloadFavorites();
 
   return (
     <>
       {favorites.length > 0 && (
         <div className="fixed bottom-4 right-4 bg-background rounded-full shadow-md w-16 h-16 flex items-start justify-center hover:w-16 hover:h-36 transition-all duration-300 group z-10">
           <div className="flex items-center justify-center gap-2 flex-col opacity-0 group-hover:opacity-100 group-hover:gap-4 group-hover:py-3 group-hover:px-3 transition-all ">
-            <button
+            <a
+              href={downloadUrl}
+              download={`${favorites.length}_movies.csv`}
               className="text-secondary-foreground hover:text-destructive"
-              onClick={handleDownloadFavorites}
             >
               <DownloadIcon className="w-6 h-6" />
-            </button>
+            </a>
             <button
               className="text-secondary-foreground hover:text-destructive"
               onClick={handleClearFavorites}
