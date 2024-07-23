@@ -38,6 +38,13 @@ module.exports = {
         ],
       },
     ],
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state'],
+      },
+    ],
   },
 
   settings: {
