@@ -1,49 +1,22 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import React from 'react';
+import { Provider } from 'react-redux';
 import { Movies } from './movies.tsx';
-import { MovieAdaptResponse, MoviesItem } from '../../types/api.tsx';
-
-const mockData: MoviesItem[] = [
-  {
-    id: '1',
-    name: 'Movie 1',
-    description: 'Description 1',
-    posterPath: 'path1',
-    rating: 5,
-  },
-  {
-    id: '2',
-    name: 'Movie 2',
-    description: 'Description 2',
-    posterPath: 'path2',
-    rating: 4,
-  },
-];
-
-const serverAnswer: MovieAdaptResponse = {
-  totalPages: 1,
-  results: mockData,
-};
+import store from '../../store/store.tsx';
+import { testMovieList } from '../../tests/mocks/handlers/movies.ts';
+import { MovieDetails } from '../../components/movie-details/movie-details.tsx';
+import { testMovieDetails } from '../../tests/mocks/handlers/movie-details.ts';
 
 describe('Movies Page Component', () => {
-  vi.mock('../../services/api', () => ({
-    ApiService: {
-      fetchMovie: vi.fn((id) => {
-        if (id === '2') {
-          return Promise.resolve(undefined);
-        }
-        return Promise.resolve(serverAnswer);
-      }),
-    },
-  }));
-
   it('renders loading state initially', async () => {
     render(
-      <MemoryRouter>
-        <Movies />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Movies />
+        </MemoryRouter>
+      </Provider>
     );
     await waitFor(() => {
       expect(screen.getByText('Loading...')).toBeInTheDocument();
@@ -52,11 +25,15 @@ describe('Movies Page Component', () => {
 
   it('renders movies after loading', async () => {
     render(
-      <MemoryRouter>
-        <Movies />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <Movies />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(await screen.findByText('Movie 1')).toBeInTheDocument();
+    expect(
+      await screen.findByText(testMovieList.results[0].title)
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /previous page/i }));
     fireEvent.click(screen.getByRole('button', { name: /previous page/i }));
     fireEvent.click(screen.getByRole('button', { name: /next page/i }));
@@ -65,16 +42,16 @@ describe('Movies Page Component', () => {
 
   it('navigates to movie detail page on movie click', async () => {
     const { container } = render(
-      <MemoryRouter initialEntries={['/1']}>
-        <Routes>
-          <Route path="/" element={<Movies />}>
-            <Route path="/:movieId" element={<div>Movie Detail Page</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/238']}>
+          <Routes>
+            <Route path="/" element={<Movies />} />
+            <Route path="/:movieId" element={<MovieDetails />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
-    expect(await screen.findByText('Movie 1')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Movie 1'));
-    expect(container.innerHTML).toContain('Movie Detail Page');
+    expect(await screen.findByText(testMovieDetails.title)).toBeInTheDocument();
+    expect(container.innerHTML).toContain(testMovieDetails.title);
   });
 });

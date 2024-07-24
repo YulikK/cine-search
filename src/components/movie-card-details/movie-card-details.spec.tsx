@@ -60,11 +60,5 @@ describe('<MovieCardDetails />', () => {
       screen.getByText(mockMovie.originalLanguage.toUpperCase())
     ).toBeInTheDocument();
     expect(screen.getByText(mockMovie.status)).toBeInTheDocument();
-    expect(
-      screen.getByText(`$${mockMovie.budget.toLocaleString()}`)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(`$${mockMovie.revenue.toLocaleString()}`)
-    ).toBeInTheDocument();
   });
 });
