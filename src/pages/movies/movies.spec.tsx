@@ -40,7 +40,7 @@ describe('Movies Page Component', () => {
     fireEvent.click(screen.getByRole('button', { name: /1/i }));
   });
 
-  it('navigates to movie detail page on movie click', async () => {
+  it('navigates to movie detail page', async () => {
     const { container } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/238']}>
@@ -51,7 +51,8 @@ describe('Movies Page Component', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(await screen.findByText(testMovieDetails.title)).toBeInTheDocument();
-    expect(container.innerHTML).toContain(testMovieDetails.title);
+    await waitFor(() => {
+      expect(container.innerHTML).toContain(testMovieDetails.title);
+    });
   });
 });

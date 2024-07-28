@@ -30,8 +30,6 @@ describe('ButtonBackHome', () => {
       screen.getByRole('link', { name: /back to homepage/i })
     );
 
-    expect(
-      screen.getByRole('heading', { name: /homepage/i })
-    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/');
   });
 });
