@@ -3,6 +3,7 @@ import { SearchIcon } from '../icons/search-icon/search-icon.tsx';
 import { ErrorGenerator } from '../error-generator/error-generator.tsx';
 import { useRequestParams } from '../../hooks/use-request-params.tsx';
 import { DEFAULT_PAGE } from '../../common/constant.tsx';
+import { ThemeToggle } from '../button-theme/button-theme.tsx';
 
 export const SearchBar: React.FC = () => {
   const { searchParams, setSearchParams } = useRequestParams();
@@ -40,11 +41,13 @@ export const SearchBar: React.FC = () => {
         />
         <button
           type="submit"
-          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-ring h-10 px-4 py-2"
+          aria-label="search"
         >
           <SearchIcon className="h-5 w-5" />
         </button>
         <ErrorGenerator />
+        <ThemeToggle />
       </div>
     </form>
   );

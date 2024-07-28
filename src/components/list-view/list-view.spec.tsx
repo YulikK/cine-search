@@ -1,10 +1,12 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
+import { Provider } from 'react-redux';
 import { ListView } from './list-view.tsx';
 import { MoviesItem } from '../../types/api.tsx';
+import store from '../../store/store.tsx';
 
 vi.mock('./movie-card/movie-card.tsx', () => ({
   MovieCard: ({ movie }: { movie: MoviesItem }): JSX.Element => (
@@ -14,6 +16,9 @@ vi.mock('./movie-card/movie-card.tsx', () => ({
 vi.mock('./no-results.tsx', () => ({
   NoResults: (): React.ReactElement => <div>No Results Found</div>,
 }));
+
+const setRef = vi.fn();
+const setSelectedMovieId = vi.fn();
 
 const mockData: MoviesItem[] = [
   {
@@ -35,40 +40,33 @@ const mockData: MoviesItem[] = [
 describe('ListView Component', () => {
   it('renders movie cards when data is provided', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <ListView data={mockData} onMovieClick={() => {}} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <ListView
+            data={mockData}
+            setMovieRef={setRef}
+            setSelectedMovieId={setSelectedMovieId}
+          />
+        </MemoryRouter>
+      </Provider>
     );
-
     const movieCards = screen.getAllByRole('listitem');
     expect(movieCards.length).toBe(2);
-    expect(movieCards[0]).toHaveTextContent('Movie 1');
-    expect(movieCards[1]).toHaveTextContent('Movie 2');
+    expect(movieCards[0]).toHaveTextContent(mockData[0].name);
+    expect(movieCards[1]).toHaveTextContent(mockData[1].name);
   });
-
   it('renders "No Results" when data is empty', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <ListView data={[]} onMovieClick={() => {}} />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText('No results found')).toBeInTheDocument();
-  });
-
-  it('adjusts grid columns based on the presence of a movieId param', () => {
-    render(
-      <MemoryRouter initialEntries={['/movies/1']}>
-        <Routes>
-          <Route
-            path="movies/:movieId"
-            element={<ListView data={mockData} onMovieClick={() => {}} />}
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <ListView
+            data={[]}
+            setMovieRef={setRef}
+            setSelectedMovieId={setSelectedMovieId}
           />
-        </Routes>
-      </MemoryRouter>
+        </MemoryRouter>
+      </Provider>
     );
-
-    const list = screen.getByRole('list');
-    expect(list).toHaveClass('md:grid-cols-1 lg:grid-cols-2');
+    expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 });

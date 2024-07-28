@@ -1,9 +1,13 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import userEvent from '@testing-library/user-event';
 import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 import { MoviesItem } from '../../types/api.tsx';
 import { MovieCard } from './movie-card.tsx';
+import store from '../../store/store.tsx';
 
 const mockMovie: MoviesItem = {
   id: '1',
@@ -13,32 +17,64 @@ const mockMovie: MoviesItem = {
   description: 'Test Description',
 };
 
+const setRef = vi.fn();
+const setSelectedMovieId = vi.fn();
+
 describe('MovieCard Component', () => {
   it('renders correctly with movie data', () => {
-    render(<MovieCard movie={mockMovie} onMovieClick={() => {}} />);
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <MovieCard
+            movie={mockMovie}
+            setRef={setRef}
+            setSelectedMovieId={setSelectedMovieId}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    expect(screen.getByText('Test Movie')).toBeInTheDocument();
-    expect(screen.getByText('5')).toBeInTheDocument();
-    expect(screen.getByText('Test Description')).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.name)).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.rating)).toBeInTheDocument();
+    expect(screen.getByText(mockMovie.description)).toBeInTheDocument();
 
-    const image: HTMLImageElement = screen.getByAltText('Test Movie');
-    expect(image.src).toContain('/test-poster.jpg');
+    const image: HTMLImageElement = screen.getByAltText(mockMovie.name);
+    expect(image.src).toContain(mockMovie.posterPath);
   });
 
   it('uses NO_POSTER_IMG when posterPath is not provided', () => {
     const movieWithoutPoster = { ...mockMovie, posterPath: '' };
-    render(<MovieCard movie={movieWithoutPoster} onMovieClick={() => {}} />);
-    const image: HTMLImageElement = screen.getByAltText('Test Movie');
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <MovieCard
+            movie={movieWithoutPoster}
+            setRef={setRef}
+            setSelectedMovieId={setSelectedMovieId}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    const image: HTMLImageElement = screen.getByAltText(mockMovie.name);
     expect(image.src).toContain('/placeholder.svg');
-
     expect(image.src).toContain(NO_POSTER_IMG);
   });
 
-  it('calls onMovieClick with the correct id when clicked', () => {
-    const onMovieClickMock = vi.fn();
-    render(<MovieCard movie={mockMovie} onMovieClick={onMovieClickMock} />);
+  it('navigates to movie page on card click', async () => {
+    const user = userEvent.setup();
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <MovieCard
+            movie={mockMovie}
+            setRef={setRef}
+            setSelectedMovieId={setSelectedMovieId}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    fireEvent.click(screen.getByText('Test Movie'));
-    expect(onMovieClickMock).toHaveBeenCalledWith('1');
+    await user.click(screen.getByText(mockMovie.name));
+    expect(setSelectedMovieId).toHaveBeenCalledWith(mockMovie.id);
   });
 });
