@@ -20,6 +20,7 @@ export default defineConfig({
         '.eslintrc.cjs',
         'svg.d.ts',
         'typings.d.ts',
+        '**/*.spec.{js,jsx,ts,tsx}',
       ],
     },
     environment: 'jsdom',
