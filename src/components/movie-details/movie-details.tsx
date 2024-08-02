@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useGetMovieByIDQuery } from '../../services/api.tsx';
 import { MovieCardDetails } from '../movie-card-details/movie-card-details.tsx';
@@ -9,22 +8,27 @@ import {
   clearMovieDetails,
   setMovieDetails,
 } from '../../store/reducers/details.tsx';
+import { useRouter } from 'next/router';
 
-export const MovieDetails: React.FC = () => {
-  const { movieId } = useParams();
-  const navigate = useNavigate();
+interface MovieDetailsProps {
+  movieId: number;
+}
+export const MovieDetails: React.FC<MovieDetailsProps> = (
+  props: MovieDetailsProps
+) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const {
     data: selectedMovie,
     error,
     isLoading: isDetailLoading,
-  } = useGetMovieByIDQuery(movieId ?? '');
+  } = useGetMovieByIDQuery(props.movieId?.toString() ?? '');
 
   useEffect(() => {
-    if (!movieId || Number.isNaN(Number(movieId))) {
-      navigate('/404', { replace: true });
+    if (!props.movieId || Number.isNaN(Number(props.movieId))) {
+      router.push('/404');
     }
-  }, [movieId, navigate, dispatch, selectedMovie]);
+  }, [props.movieId]);
 
   useEffect(() => {
     if (selectedMovie) {

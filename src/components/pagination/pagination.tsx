@@ -1,17 +1,15 @@
 import React from 'react';
 import { ChevronLeftIcon } from '../icons/chevron-left-icon/chevron-left-icon.tsx';
 import { ChevronRightIcon } from '../icons/chevron-right-icon/chevron-right-icon.tsx';
-import { useRequestParams } from '../../hooks/use-request-params.tsx';
-import { DEFAULT_PAGE } from '../../common/constant.tsx';
-import { updateParams } from '../../utils/params.tsx';
+import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
 }
 export const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
-  const { searchParams, setSearchParams } = useRequestParams();
-  const page = parseInt(searchParams.get('page') || `${DEFAULT_PAGE}`, 10);
+  const { params, setParams } = useRequestParamsContext();
+  const { page } = params;
   const getPageNumbers = (): number[] => {
     const maxPagesToShow = 5;
     let startPage = Math.max(1, page - 2);
@@ -32,24 +30,18 @@ export const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
 
   const handlePrevious = (): void => {
     if (page > 1) {
-      const newPage = page - 1;
-      setSearchParams({
-        page: newPage.toString(),
-      });
+      setParams({ ...params, page: params.page - 1 });
     }
   };
 
   const handleNext = (): void => {
     if (page < totalPages) {
-      const newPage = page + 1;
-      setSearchParams({
-        page: newPage.toString(),
-      });
+      setParams({ ...params, page: params.page + 1 });
     }
   };
 
   const onPageClick = (newPage: number): void => {
-    setSearchParams(updateParams('page', newPage.toString(), searchParams));
+    setParams({ ...params, page: newPage });
   };
 
   return (

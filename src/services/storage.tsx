@@ -1,13 +1,21 @@
+'use client';
+
 import { GUID_STORE } from '../common/constant.tsx';
 
 export const saveSearchQuery = (query: string): void => {
-  const search = query.trim();
-  if (search) {
-    localStorage.setItem(GUID_STORE, query);
-  } else {
-    localStorage.removeItem(GUID_STORE);
+  if (typeof window !== 'undefined') {
+    const search = query.trim();
+    if (search) {
+      window.localStorage.setItem(GUID_STORE, query);
+    } else {
+      window.localStorage.removeItem(GUID_STORE);
+    }
   }
 };
 
-export const getSearchQuery = (initialQuery: string): string =>
-  localStorage.getItem(GUID_STORE) || initialQuery;
+export const getSearchQuery = (initialQuery: string): string => {
+  if (typeof window !== 'undefined') {
+    return window.localStorage.getItem(GUID_STORE) || initialQuery;
+  }
+  return initialQuery;
+};

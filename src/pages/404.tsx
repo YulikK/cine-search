@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { ButtonBackHome } from '../../components/button-back-home/button-back-home.tsx';
-import { useTheme } from '../../hooks/use-theme.tsx';
 
-export const Page404: React.FC = () => {
-  const [, setSearchParams] = useSearchParams();
+import { ButtonBackHome } from '../components/button-back-home/button-back-home';
+import { useRequestParamsContext } from '../hooks/params-provider';
+import { useTheme } from '../hooks/theme-provider';
+
+const Page404: React.FC = () => {
+  const { setParams } = useRequestParamsContext();
   const { isDarkTheme } = useTheme();
 
   useEffect(() => {
-    setSearchParams({});
-  }, [setSearchParams]);
+    console.log('setParams');
+    setParams({ page: 0, query: '', details: 0 });
+  }, []);
 
   return (
     <div
@@ -29,3 +31,5 @@ export const Page404: React.FC = () => {
     </div>
   );
 };
+
+export default Page404;

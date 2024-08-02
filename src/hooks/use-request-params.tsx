@@ -1,41 +1,57 @@
-import { useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { getSearchQuery, saveSearchQuery } from '../services/storage.tsx';
+import { useRouter } from 'next/router';
+import { getParams } from '../utils/params.tsx';
+import { QueryParams } from '../types/api.tsx';
 import { DEFAULT_PAGE } from '../common/constant.tsx';
 
-interface RequestParamsHook {
-  searchParams: URLSearchParams;
-  setSearchParams: (params: Record<string, string>) => void;
+export interface RequestParamsHook {
+  params: QueryParams;
+  setParams: (params: QueryParams) => void;
 }
 export const useRequestParams = (): RequestParamsHook => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
   const queryRef = useRef(getSearchQuery(''));
+  const [params, setParams] = useState<QueryParams>({
+    query: queryRef.current,
+    page: DEFAULT_PAGE,
+    details: 0,
+  });
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
-    const urlQuery = searchParams.get('query');
-    const currentQuery = urlQuery === null ? queryRef.current : urlQuery;
+    if (isFirstLoad.current && router.isReady) {
+      const initialParams = getParams(router, queryRef.current);
+      setParams(initialParams);
+      queryRef.current = initialParams.query;
+      saveSearchQuery(queryRef.current);
+      isFirstLoad.current = false;
+    }
+  }, [router]);
 
-    const currentPage = parseInt(
-      searchParams.get('page') || `${DEFAULT_PAGE}`,
-      10
-    );
-
-    if (!searchParams.get('query') || !searchParams.get('page')) {
-      setSearchParams({
-        page: currentPage.toString(),
-        ...(currentQuery && { query: currentQuery }),
+  useEffect(() => {
+    if (
+      (!params.page || !params.query || !params.details) &&
+      !isFirstLoad.current
+    ) {
+      router.push({
+        pathname: router.pathname,
+        query: {
+          ...(params.page && { page: params.page }),
+          ...(params.query && { query: params.query }),
+          ...(params.details && { details: params.details }),
+        },
       });
     }
 
-    queryRef.current = currentQuery;
-
+    queryRef.current = params.query;
+    saveSearchQuery(queryRef.current);
     return (): void => {
       saveSearchQuery(queryRef.current);
     };
-  }, [searchParams, setSearchParams]);
+  }, [params]);
 
-  return {
-    searchParams,
-    setSearchParams,
-  };
+  return { params, setParams };
 };

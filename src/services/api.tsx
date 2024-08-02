@@ -46,7 +46,7 @@ export const moviesApi = createApi({
       }): MovieAdaptResponse => ({
         totalPages: response.total_pages,
         results: response.results.map((item) => ({
-          id: item.id.toString(),
+          id: parseInt(item.id.toString()),
           name: item.title,
           description: item.overview,
           posterPath: item.poster_path || '',

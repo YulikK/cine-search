@@ -3,11 +3,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Movies } from './movies.tsx';
+
 import store from '../../store/store.tsx';
 import { testMovieList } from '../../tests/mocks/handlers/movies.ts';
-import { MovieDetails } from '../../components/movie-details/movie-details.tsx';
+
 import { testMovieDetails } from '../../tests/mocks/handlers/movie-details.ts';
+import Movies from '../index.tsx';
+import { MovieDetails } from '../../components/movie-details/movie-details.tsx';
 
 describe('Movies Page Component', () => {
   it('renders loading state initially', async () => {
@@ -46,7 +48,10 @@ describe('Movies Page Component', () => {
         <MemoryRouter initialEntries={['/238']}>
           <Routes>
             <Route path="/" element={<Movies />} />
-            <Route path="/:movieId" element={<MovieDetails />} />
+            <Route
+              path="/:movieId"
+              element={<MovieDetails movieId={testMovieDetails.id} />}
+            />
           </Routes>
         </MemoryRouter>
       </Provider>

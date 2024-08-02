@@ -22,7 +22,7 @@ export interface MovieServerResponse {
   results: Movie[];
 }
 export interface MoviesItem {
-  id: string;
+  id: number;
   name: string;
   description: string;
   posterPath: string;
@@ -77,4 +77,5 @@ export interface MovieAdaptResponse {
 export interface QueryParams {
   query: string;
   page: number;
+  details: number;
 }

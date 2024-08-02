@@ -1,23 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
-import { useRequestParams } from '../../hooks/use-request-params.tsx';
+import Image from 'next/image';
+import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
   setRef: (ref: HTMLLIElement | null) => void;
-  setSelectedMovieId: (id: string) => void;
+  setSelectedMovieId: (id: number) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
-  const navigate = useNavigate();
-  const { searchParams, setSearchParams } = useRequestParams();
+  const { params, setParams } = useRequestParamsContext();
   const handleMovieClick: React.MouseEventHandler<HTMLLIElement> = (evt) => {
     const isClickInsideFavoriteButton = (
       target: HTMLElement | SVGElement | null
@@ -43,9 +41,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
     }
 
     props.setSelectedMovieId(movie.id);
-    const saveSearchParams = new URLSearchParams(searchParams.toString());
-    navigate(`/${movie.id}`);
-    setSearchParams(Object.fromEntries(saveSearchParams.entries()));
+    setParams({ ...params, details: movie.id });
   };
 
   return (
@@ -55,24 +51,20 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
       onClick={handleMovieClick}
     >
-      <img
+      <Image
         src={
-          movie.posterPath ? `${URL_POSTER}${movie.posterPath}` : NO_POSTER_IMG
+          movie.posterPath
+            ? `${URL_POSTER}${movie.posterPath}`
+            : '/images/placeholder.svg'
         }
         alt={movie.name}
-        width="300"
-        height="450"
-        className={classNames(
-          'w-full',
-          'h-[450px]',
-          'w-[300px]',
-          'object-contain',
-          {
-            noPoster: !movie.posterPath,
-            'object-cover': !movie.posterPath,
-          }
-        )}
-        style={{ aspectRatio: '300 / 450' }}
+        height={450}
+        width={300}
+        className={classNames('w-full', 'w-[300px]', 'object-contain', {
+          noPoster: !movie.posterPath,
+          'object-cover': !movie.posterPath,
+        })}
+        priority={true}
       />
       <div className="p-4 w-full">
         <div className="flex items-center justify-between">

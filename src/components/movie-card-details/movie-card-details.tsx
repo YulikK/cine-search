@@ -1,29 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { MoviesDetails } from '../../types/api.tsx';
 import { XIcon } from '../icons/x-icon/x-icon.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
-import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
-import { useRequestParams } from '../../hooks/use-request-params.tsx';
+import Image from 'next/image';
+import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 
 interface MovieDetailsProps {
   movie: MoviesDetails;
 }
 export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   const selectedMovie = props.movie;
-  const navigate = useNavigate();
-  const { searchParams, setSearchParams } = useRequestParams();
+  const { params, setParams } = useRequestParamsContext();
 
   const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
 
   const handleCloseClick = (): void => {
-    const saveSearchParams = new URLSearchParams(searchParams.toString());
-    navigate(`/`);
-    setSearchParams(Object.fromEntries(saveSearchParams.entries()));
+    setParams({ ...params, details: 0 });
   };
 
   return (
@@ -37,18 +33,15 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
         </button>
       </div>
       <div className="grid gap-4">
-        <img
-          src={poster ? `${URL_POSTER}${poster}` : NO_POSTER_IMG}
+        <Image
+          src={poster ? `${URL_POSTER}${poster}` : '/images/no-poster.png'}
           alt={selectedMovie.title}
-          width={300}
           height={450}
-          className={classNames(
-            'w-full',
-            'h-[450px]',
-            'object-cover',
-            'rounded-lg',
-            { noPoster: !poster }
-          )}
+          width={300}
+          className={classNames('w-full', 'object-cover', 'rounded-lg', {
+            noPoster: !poster,
+          })}
+          priority={true}
         />
         <div className="grid gap-2">
           <div className="flex items-center justify-between gap-4">

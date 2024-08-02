@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme } from '../../hooks/use-theme.tsx';
 import { MoonIcon } from '../icons/moon-icon/moon-icon.tsx';
 import { SunIcon } from '../icons/sun-icon/sun-icon.tsx';
+import { useTheme } from '../../hooks/theme-provider.tsx';
 
 export const ThemeToggle: React.FC = () => {
   const { isDarkTheme, toggleTheme } = useTheme();
