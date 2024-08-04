@@ -3,7 +3,7 @@ import { moviesApi, useGetMovieQuery } from '../services/api';
 import { Loader } from '../components/loader/loader';
 import { ListView } from '../components/list-view/list-view';
 import { Pagination } from '../components/pagination/pagination';
-import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
+import { DEFAULT_PAGE } from '../common/constant';
 import { FavoritePopup } from '../components/popup-favorite/popup-favorite';
 import { SearchBar } from '../components/search-bar/search-bar';
 import { MovieDetails } from '../components/movie-details/movie-details';
@@ -42,7 +42,6 @@ const Movies: React.FC<MoviesProps> = ({
   initialDataList,
   initialDataDetails,
 }) => {
-  console.log('initialDataDetails', initialDataDetails);
   const router = useRouter();
   const { params } = useRequestParamsContext();
   const { data, error, isLoading } = useGetMovieQuery(params, {
@@ -85,11 +84,7 @@ const Movies: React.FC<MoviesProps> = ({
 
     return (
       <>
-        <ListView
-          data={results || []}
-          setMovieRef={setMovieRef}
-          // setSelectedMovieId={setSelectedMovieId}
-        />
+        <ListView data={results || []} setMovieRef={setMovieRef} />
         <Pagination
           currentPage={params.page}
           totalPages={totalPages || DEFAULT_PAGE}
@@ -109,11 +104,8 @@ const Movies: React.FC<MoviesProps> = ({
           <SearchBar />
           {renderContent()}
         </div>
-        {params.details !== DEFAULT_DETAILS && (
-          <MovieDetails
-            movieId={params.details}
-            initialData={initialDataDetails}
-          />
+        {initialDataDetails && (
+          <MovieDetails selectedMovie={initialDataDetails} />
         )}
       </div>
     </div>

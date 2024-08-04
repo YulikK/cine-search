@@ -10,7 +10,6 @@ const Page404: React.FC = () => {
   const { isDarkTheme } = useTheme();
 
   useEffect(() => {
-    console.log('setParams');
     setParams({ page: 0, query: '', details: DEFAULT_DETAILS });
   }, []);
 

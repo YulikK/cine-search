@@ -10,12 +10,12 @@ import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 interface MovieCardProps {
   movie: MoviesItem;
   setRef: (ref: HTMLLIElement | null) => void;
-  // setSelectedMovieId: (id: number) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
   const { params, setParams } = useRequestParamsContext();
+
   const handleMovieClick: React.MouseEventHandler<HTMLLIElement> = (evt) => {
     const isClickInsideFavoriteButton = (
       target: HTMLElement | SVGElement | null
@@ -39,8 +39,6 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
     ) {
       return;
     }
-
-    // props.setSelectedMovieId(movie.id);
     setParams({ ...params, details: movie.id });
   };
 
@@ -64,7 +62,6 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
           noPoster: !movie.posterPath,
           'object-cover': !movie.posterPath,
         })}
-        priority={true}
       />
       <div className="p-4 w-full">
         <div className="flex items-center justify-between">

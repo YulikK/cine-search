@@ -7,7 +7,6 @@ import { NoResults } from '../no-results/no-results.tsx';
 interface ListViewProps {
   data: MoviesItem[];
   setMovieRef: (id: number, ref: HTMLLIElement | null) => void;
-  // setSelectedMovieId: (id: number) => void;
 }
 
 export const ListView: React.FC<ListViewProps> = (props) => {
@@ -22,12 +21,7 @@ export const ListView: React.FC<ListViewProps> = (props) => {
   return data.length ? (
     <ul className={classNames('gap-4', 'flex', 'flex-wrap', 'justify-evenly')}>
       {data.map((item, index) => (
-        <MovieCard
-          key={index}
-          movie={item}
-          setRef={setRef(item.id)}
-          // setSelectedMovieId={props.setSelectedMovieId}
-        />
+        <MovieCard key={index} movie={item} setRef={setRef(item.id)} />
       ))}
     </ul>
   ) : (

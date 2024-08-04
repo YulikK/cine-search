@@ -8,6 +8,7 @@ import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
 import Image from 'next/image';
 import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
+import { formatNumber } from '../../utils/format.ts';
 
 interface MovieDetailsProps {
   movie: MoviesDetails;
@@ -112,13 +113,13 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
             <div>
               <div className="text-sm text-muted-foreground">Budget</div>
               <div className="text-base text-foreground ">
-                ${selectedMovie.budget.toLocaleString()}
+                ${formatNumber(selectedMovie.budget)}
               </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Revenue</div>
               <div className="text-base text-foreground ">
-                ${selectedMovie.revenue.toLocaleString()}
+                ${formatNumber(selectedMovie.revenue)}
               </div>
             </div>
           </div>

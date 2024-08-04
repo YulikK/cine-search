@@ -35,7 +35,6 @@ export const moviesApi = createApi({
           : `${URL_API}/${DEFAULT_MOVIE_LIST}`;
         const page = params.page ? params.page : 1;
         let result = `${url}?page=${page}`;
-        console.log('result', result);
         if (params.query) {
           result += `&query=${encodeURIComponent(params.query)}`;
         }

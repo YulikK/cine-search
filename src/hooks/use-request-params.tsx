@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getSearchQuery, saveSearchQuery } from '../services/storage.tsx';
 import { useRouter } from 'next/router';
 import { getParams } from '../utils/params.tsx';
@@ -12,44 +12,41 @@ export interface RequestParamsHook {
 export const useRequestParams = (): RequestParamsHook => {
   const router = useRouter();
   const queryRef = useRef(getSearchQuery(''));
-  const [params, setParams] = useState<QueryParams>({
-    query: queryRef.current,
-    page: DEFAULT_PAGE,
-    details: DEFAULT_DETAILS,
-  });
-  const isFirstLoad = useRef(true);
+  const initialParams = useMemo(() => {
+    if (router.isReady) {
+      return getParams(router, queryRef.current);
+    }
+    return {
+      query: queryRef.current,
+      page: DEFAULT_PAGE,
+      details: DEFAULT_DETAILS,
+    };
+  }, [router.isReady]);
+  const [params, setParams] = useState<QueryParams>(initialParams);
+  const prevParamsRef = useRef<QueryParams>(initialParams);
+  const memoizedParams = useMemo(() => {
+    if (JSON.stringify(prevParamsRef.current) !== JSON.stringify(params)) {
+      prevParamsRef.current = params;
+    }
+    return prevParamsRef.current;
+  }, [params]);
 
   useEffect(() => {
-    if (isFirstLoad.current && router.isReady) {
-      const initialParams = getParams(router, queryRef.current);
-      setParams(initialParams);
-      queryRef.current = initialParams.query;
-      saveSearchQuery(queryRef.current);
-      isFirstLoad.current = false;
-    }
-  }, [router]);
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...(memoizedParams.page && { page: memoizedParams.page }),
+        ...(memoizedParams.query && { query: memoizedParams.query }),
+        ...(memoizedParams.details && { details: memoizedParams.details }),
+      },
+    });
 
-  useEffect(() => {
-    if (
-      (!params.page || !params.query || !params.details) &&
-      !isFirstLoad.current
-    ) {
-      router.push({
-        pathname: router.pathname,
-        query: {
-          ...(params.page && { page: params.page }),
-          ...(params.query && { query: params.query }),
-          ...(params.details && { details: params.details }),
-        },
-      });
-    }
-
-    queryRef.current = params.query;
+    queryRef.current = memoizedParams.query;
     saveSearchQuery(queryRef.current);
     return (): void => {
       saveSearchQuery(queryRef.current);
     };
-  }, [params]);
+  }, [memoizedParams]);
 
   return { params, setParams };
 };
