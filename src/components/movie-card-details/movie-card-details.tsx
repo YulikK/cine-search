@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { MoviesDetails } from '../../types/api.tsx';
 import { XIcon } from '../icons/x-icon/x-icon.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import { URL_POSTER } from '../../common/constant.tsx';
+import { DEFAULT_DETAILS, URL_POSTER } from '../../common/constant.tsx';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
 import Image from 'next/image';
@@ -19,7 +19,7 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
 
   const handleCloseClick = (): void => {
-    setParams({ ...params, details: 0 });
+    setParams({ ...params, details: DEFAULT_DETAILS });
   };
 
   return (

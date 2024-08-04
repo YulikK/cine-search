@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import React from 'react';
 import { useRequestParamsContext } from '../../hooks/params-provider';
-import { DEFAULT_PAGE } from '../../common/constant';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../../common/constant';
 
 export const ButtonBackHome: React.FC = () => {
   const { setParams } = useRequestParamsContext();
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
-    setParams({ page: DEFAULT_PAGE, query: '', details: 0 });
+    setParams({ page: DEFAULT_PAGE, query: '', details: DEFAULT_DETAILS });
   };
 
   return (

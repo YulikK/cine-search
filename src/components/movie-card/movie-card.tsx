@@ -10,7 +10,7 @@ import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 interface MovieCardProps {
   movie: MoviesItem;
   setRef: (ref: HTMLLIElement | null) => void;
-  setSelectedMovieId: (id: number) => void;
+  // setSelectedMovieId: (id: number) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
@@ -40,7 +40,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
       return;
     }
 
-    props.setSelectedMovieId(movie.id);
+    // props.setSelectedMovieId(movie.id);
     setParams({ ...params, details: movie.id });
   };
 

@@ -9,9 +9,11 @@ import {
   setMovieDetails,
 } from '../../store/reducers/details.tsx';
 import { useRouter } from 'next/router';
+import { MoviesDetails } from '../../types/api.tsx';
 
 interface MovieDetailsProps {
   movieId: number;
+  initialData?: MoviesDetails;
 }
 export const MovieDetails: React.FC<MovieDetailsProps> = (
   props: MovieDetailsProps
@@ -19,10 +21,14 @@ export const MovieDetails: React.FC<MovieDetailsProps> = (
   const router = useRouter();
   const dispatch = useDispatch();
   const {
-    data: selectedMovie,
+    data,
     error,
     isLoading: isDetailLoading,
-  } = useGetMovieByIDQuery(props.movieId?.toString() ?? '');
+  } = useGetMovieByIDQuery(props.movieId?.toString() ?? '', {
+    skip: !!props.initialData,
+  });
+
+  const selectedMovie = data || props.initialData;
 
   useEffect(() => {
     if (!props.movieId || Number.isNaN(Number(props.movieId))) {

@@ -7,7 +7,7 @@ import { NoResults } from '../no-results/no-results.tsx';
 interface ListViewProps {
   data: MoviesItem[];
   setMovieRef: (id: number, ref: HTMLLIElement | null) => void;
-  setSelectedMovieId: (id: number) => void;
+  // setSelectedMovieId: (id: number) => void;
 }
 
 export const ListView: React.FC<ListViewProps> = (props) => {
@@ -26,7 +26,7 @@ export const ListView: React.FC<ListViewProps> = (props) => {
           key={index}
           movie={item}
           setRef={setRef(item.id)}
-          setSelectedMovieId={props.setSelectedMovieId}
+          // setSelectedMovieId={props.setSelectedMovieId}
         />
       ))}
     </ul>

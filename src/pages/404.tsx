@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { ButtonBackHome } from '../components/button-back-home/button-back-home';
 import { useRequestParamsContext } from '../hooks/params-provider';
 import { useTheme } from '../hooks/theme-provider';
+import { DEFAULT_DETAILS } from '../common/constant';
 
 const Page404: React.FC = () => {
   const { setParams } = useRequestParamsContext();
@@ -10,7 +11,7 @@ const Page404: React.FC = () => {
 
   useEffect(() => {
     console.log('setParams');
-    setParams({ page: 0, query: '', details: 0 });
+    setParams({ page: 0, query: '', details: DEFAULT_DETAILS });
   }, []);
 
   return (

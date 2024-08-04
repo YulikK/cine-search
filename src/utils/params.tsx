@@ -1,6 +1,13 @@
 import { NextRouter } from 'next/router';
-import { DEFAULT_PAGE } from '../common/constant';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
 import { QueryParams } from '../types/api';
+
+type queryType = string | string[] | undefined;
+type queryParamsType = {
+  query: queryType;
+  page: queryType;
+  details: queryType;
+};
 
 export function updateParams(
   params: string,
@@ -37,4 +44,21 @@ export function getParams(
     details: currentDetails,
   };
   return queryParams;
+}
+
+export function parseParams(queryParams: queryParamsType): QueryParams {
+  const { query, page, details } = queryParams;
+  const urlQuery = Array.isArray(query) ? query[0] : query;
+  const urlPage = Array.isArray(page) ? page[0] : page;
+  const urlDetails = Array.isArray(details) ? details[0] : details;
+
+  const currentQuery = urlQuery || '';
+  const currentPage = parseInt(urlPage || DEFAULT_PAGE.toString(), 10);
+  const currentDetails = parseInt(urlDetails || DEFAULT_DETAILS.toString(), 10);
+  const params: QueryParams = {
+    query: currentQuery,
+    page: currentPage,
+    details: currentDetails,
+  };
+  return params;
 }

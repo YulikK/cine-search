@@ -1,11 +1,9 @@
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
 import { getSearchQuery, saveSearchQuery } from '../services/storage.tsx';
 import { useRouter } from 'next/router';
 import { getParams } from '../utils/params.tsx';
 import { QueryParams } from '../types/api.tsx';
-import { DEFAULT_PAGE } from '../common/constant.tsx';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant.tsx';
 
 export interface RequestParamsHook {
   params: QueryParams;
@@ -17,7 +15,7 @@ export const useRequestParams = (): RequestParamsHook => {
   const [params, setParams] = useState<QueryParams>({
     query: queryRef.current,
     page: DEFAULT_PAGE,
-    details: 0,
+    details: DEFAULT_DETAILS,
   });
   const isFirstLoad = useRef(true);
 

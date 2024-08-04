@@ -27,3 +27,4 @@ export const HTTP_METHODS = {
 export const JSON_ACCEPT_HEADER = 'application/json';
 
 export const DEFAULT_PAGE = 1;
+export const DEFAULT_DETAILS = 0;

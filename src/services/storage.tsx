@@ -1,5 +1,3 @@
-'use client';
-
 import { GUID_STORE } from '../common/constant.tsx';
 
 export const saveSearchQuery = (query: string): void => {

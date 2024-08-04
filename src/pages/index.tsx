@@ -1,35 +1,83 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useGetMovieQuery } from '../services/api';
+import React, { useEffect, useRef } from 'react';
+import { moviesApi, useGetMovieQuery } from '../services/api';
 import { Loader } from '../components/loader/loader';
 import { ListView } from '../components/list-view/list-view';
 import { Pagination } from '../components/pagination/pagination';
-import { DEFAULT_PAGE } from '../common/constant';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
 import { FavoritePopup } from '../components/popup-favorite/popup-favorite';
 import { SearchBar } from '../components/search-bar/search-bar';
 import { MovieDetails } from '../components/movie-details/movie-details';
 import { useRequestParamsContext } from '../hooks/params-provider';
 import { useTheme } from '../hooks/theme-provider';
+import { GetServerSideProps } from 'next';
+import store from '../store/store';
+import { parseParams } from '../utils/params';
+import { MovieAdaptResponse, MoviesDetails } from '../types/api';
+import { useRouter } from 'next/router';
 
-const Movies: React.FC = () => {
+interface MoviesProps {
+  initialDataList: MovieAdaptResponse;
+  initialDataDetails?: MoviesDetails;
+}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { dispatch } = store;
+  const { query, page, details } = context.query;
+  const params = parseParams({ query, page, details });
+  const result = await dispatch(moviesApi.endpoints.getMovie.initiate(params));
+
+  const movie = params.details
+    ? await dispatch(
+        moviesApi.endpoints.getMovieByID.initiate(params.details.toString())
+      )
+    : null;
+  return {
+    props: {
+      initialDataList: result.data,
+      ...(movie && { initialDataDetails: movie.data }),
+    },
+  };
+};
+
+const Movies: React.FC<MoviesProps> = ({
+  initialDataList,
+  initialDataDetails,
+}) => {
+  console.log('initialDataDetails', initialDataDetails);
+  const router = useRouter();
   const { params } = useRequestParamsContext();
-  const { data, error, isLoading } = useGetMovieQuery(params);
-  const { results, totalPages } = data || {};
+  const { data, error, isLoading } = useGetMovieQuery(params, {
+    skip: !!initialDataList,
+  });
+  const { results, totalPages } = data || initialDataList || {};
   const { isDarkTheme } = useTheme();
   const movieRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
-  const [selectedMovieId, setSelectedMovieId] = useState(0);
 
   const setMovieRef = (id: number, ref: HTMLLIElement | null): void => {
     movieRefs.current[id] = ref;
   };
 
   useEffect(() => {
-    if (selectedMovieId && movieRefs.current[selectedMovieId]) {
-      movieRefs.current[selectedMovieId].scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      });
-    }
-  }, [selectedMovieId]);
+    const handleRouteChange = () => {
+      const params = new URLSearchParams(window.location.href.split('?')[1]);
+      const details = params.get('details');
+
+      if (details && movieRefs.current[details]) {
+        requestAnimationFrame(() => {
+          movieRefs.current[details]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+          });
+        });
+      }
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    handleRouteChange();
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   const renderContent = (): React.ReactElement => {
     if (isLoading) return <Loader />;
@@ -40,7 +88,7 @@ const Movies: React.FC = () => {
         <ListView
           data={results || []}
           setMovieRef={setMovieRef}
-          setSelectedMovieId={setSelectedMovieId}
+          // setSelectedMovieId={setSelectedMovieId}
         />
         <Pagination
           currentPage={params.page}
@@ -61,7 +109,12 @@ const Movies: React.FC = () => {
           <SearchBar />
           {renderContent()}
         </div>
-        {params.details !== 0 && <MovieDetails movieId={params.details} />}
+        {params.details !== DEFAULT_DETAILS && (
+          <MovieDetails
+            movieId={params.details}
+            initialData={initialDataDetails}
+          />
+        )}
       </div>
     </div>
   );
