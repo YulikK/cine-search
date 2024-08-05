@@ -13,13 +13,15 @@ import { GetServerSideProps } from 'next';
 import store from '../store/store';
 import { parseParams } from '../utils/params';
 import { MovieAdaptResponse, MoviesDetails } from '../types/api';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 
-interface MoviesProps {
+export interface MoviesProps {
   initialDataList: MovieAdaptResponse;
   initialDataDetails?: MoviesDetails;
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<MoviesProps> = async (
+  context
+) => {
   const { dispatch } = store;
   const { query, page, details } = context.query;
   const params = parseParams({ query, page, details });
@@ -30,6 +32,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         moviesApi.endpoints.getMovieByID.initiate(params.details.toString())
       )
     : null;
+
+  if (!result.data) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       initialDataList: result.data,
@@ -50,6 +59,7 @@ const Movies: React.FC<MoviesProps> = ({
   const { results, totalPages } = data || initialDataList || {};
   const { isDarkTheme } = useTheme();
   const movieRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
+  const [loading, setLoading] = React.useState(true);
 
   const setMovieRef = (id: number, ref: HTMLLIElement | null): void => {
     movieRefs.current[id] = ref;
@@ -78,8 +88,25 @@ const Movies: React.FC<MoviesProps> = ({
     };
   }, [router.events]);
 
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
+
   const renderContent = (): React.ReactElement => {
-    if (isLoading) return <Loader />;
+    if (isLoading || loading) return <Loader />;
     if (error) return <div>Error loading movies</div>;
 
     return (
@@ -94,6 +121,14 @@ const Movies: React.FC<MoviesProps> = ({
     );
   };
 
+  const renderMovieDetails = () => {
+    if (params.details) {
+      if (isLoading || loading) return;
+      if (initialDataDetails)
+        return <MovieDetails selectedMovie={initialDataDetails} />;
+    }
+  };
+
   return (
     <div
       data-theme={isDarkTheme ? 'dark' : 'light'}
@@ -104,9 +139,7 @@ const Movies: React.FC<MoviesProps> = ({
           <SearchBar />
           {renderContent()}
         </div>
-        {initialDataDetails && (
-          <MovieDetails selectedMovie={initialDataDetails} />
-        )}
+        {renderMovieDetails()}
       </div>
     </div>
   );

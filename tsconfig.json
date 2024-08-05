@@ -4,11 +4,7 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     /* Bundler mode */
@@ -32,12 +28,11 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     /* Testing */
-    "types": [
-      "vitest/globals"
-    ],
+    "types": ["vitest", "vitest/globals"],
     "allowJs": true,
     "incremental": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "plugins": [
       {
         "name": "next"
@@ -59,17 +54,10 @@
     "./dist/types/**/*.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "./node_modules"
-  ],
+  "exclude": ["./node_modules"],
   "plugins": [
     {
       "name": "next"
     }
-  ],
-  "esModuleInterop": true,
-  "jsx": "preserve",
-  "allowJs": true,
-  "forceConsistentCasingInFileNames": true,
-  "incremental": true
+  ]
 }

@@ -10,7 +10,7 @@ import { MovieCard } from './movie-card.tsx';
 import store from '../../store/store.tsx';
 
 const mockMovie: MoviesItem = {
-  id: '1',
+  id: 1,
   name: 'Test Movie',
   posterPath: '/test-poster.jpg',
   rating: 5,

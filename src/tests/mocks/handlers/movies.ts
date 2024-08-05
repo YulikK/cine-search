@@ -1,6 +1,10 @@
 import { HttpResponse, http } from 'msw';
 
-import { DEFAULT_MOVIE_LIST, URL_API } from '../../../common/constant.tsx';
+import {
+  DEFAULT_MOVIE_LIST,
+  URL_API,
+  URL_SEARCH_API,
+} from '../../../common/constant.tsx';
 
 export const testMovieList = {
   page: 1,
@@ -47,6 +51,7 @@ const handlers = [
   http.get(`${URL_API}/${DEFAULT_MOVIE_LIST}`, () =>
     HttpResponse.json(testMovieList)
   ),
+  http.get(`${URL_SEARCH_API}`, () => HttpResponse.json(testMovieList)),
 ];
 
 export default handlers;

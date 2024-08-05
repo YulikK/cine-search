@@ -22,14 +22,14 @@ const setSelectedMovieId = vi.fn();
 
 const mockData: MoviesItem[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Movie 1',
     description: 'Description 1',
     posterPath: 'path1',
     rating: 5,
   },
   {
-    id: '2',
+    id: 2,
     name: 'Movie 2',
     description: 'Description 2',
     posterPath: 'path2',
