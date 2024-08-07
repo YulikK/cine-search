@@ -1,69 +1,59 @@
 import React, { useEffect, useRef } from 'react';
-import { moviesApi, useGetMovieQuery } from '../services/api';
-import { Loader } from '../components/loader/loader';
+import {
+  getMovie,
+  getMovieByID,
+  getRunningQueriesThunk,
+  useGetMovieByIDQuery,
+  useGetMovieQuery,
+} from '../services/api';
 import { ListView } from '../components/list-view/list-view';
 import { Pagination } from '../components/pagination/pagination';
-import { DEFAULT_PAGE } from '../common/constant';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
 import { FavoritePopup } from '../components/popup-favorite/popup-favorite';
 import { SearchBar } from '../components/search-bar/search-bar';
-import { MovieDetails } from '../components/movie-details/movie-details';
-import { useRequestParamsContext } from '../hooks/params-provider';
 import { useTheme } from '../hooks/theme-provider';
-import { GetServerSideProps } from 'next';
-import store from '../store/store';
-import { parseParams } from '../utils/params';
-import { MovieAdaptResponse, MoviesDetails } from '../types/api';
-import { Router, useRouter } from 'next/router';
+import { wrapper } from '../store/store';
+import { getParams, setParams } from '../utils/params';
+import { useRouter } from 'next/router';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { getSearchQuery, saveSearchQuery } from '../services/storage';
+import { MovieCardDetails } from '../components/movie-card-details/movie-card-details';
 
-export interface MoviesProps {
-  initialDataList: MovieAdaptResponse;
-  initialDataDetails?: MoviesDetails;
-}
-export const getServerSideProps: GetServerSideProps<MoviesProps> = async (
-  context
-) => {
-  const { dispatch } = store;
-  const { query, page, details } = context.query;
-  const params = parseParams({ query, page, details });
-  const result = await dispatch(moviesApi.endpoints.getMovie.initiate(params));
-
-  const movie = params.details
-    ? await dispatch(
-        moviesApi.endpoints.getMovieByID.initiate(params.details.toString())
-      )
-    : null;
-
-  if (!result.data) {
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { query, page, details } = context.query;
+    const params = getParams(page, query, details);
+    await store.dispatch(getMovie.initiate(params));
+    if (params.details) {
+      await store.dispatch(getMovieByID.initiate(params.details));
+    }
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
     return {
-      notFound: true,
+      props: {},
     };
   }
+);
 
-  return {
-    props: {
-      initialDataList: result.data,
-      ...(movie && { initialDataDetails: movie.data }),
-    },
-  };
-};
-
-const Movies: React.FC<MoviesProps> = ({
-  initialDataList,
-  initialDataDetails,
-}) => {
+const Movies: React.FC = () => {
   const router = useRouter();
-  const { params } = useRequestParamsContext();
-  const { data, error, isLoading } = useGetMovieQuery(params, {
-    skip: !!initialDataList,
-  });
-  const { results, totalPages } = data || initialDataList || {};
+  const { page, query, details } = router.query;
+  const params = getParams(page, query, details);
+  const { results: movieList, totalPages } =
+    useGetMovieQuery(params ?? skipToken).data || {};
+  const movieDetails = params.details
+    ? useGetMovieByIDQuery(params.details ?? skipToken).data
+    : null;
   const { isDarkTheme } = useTheme();
   const movieRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
-  const [loading, setLoading] = React.useState(true);
-
   const setMovieRef = (id: number, ref: HTMLLIElement | null): void => {
     movieRefs.current[id] = ref;
   };
+  if (!query && !page && !details) {
+    const savedQuery = getSearchQuery('');
+    if (savedQuery) {
+      handleQueryChange(savedQuery);
+    }
+  }
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -88,33 +78,54 @@ const Movies: React.FC<MoviesProps> = ({
     };
   }, [router.events]);
 
-  useEffect(() => {
-    const start = () => {
-      setLoading(true);
+  function handleQueryChange(newSearchQuery: string) {
+    const newParams = {
+      ...params,
+      query: newSearchQuery,
+      page: DEFAULT_PAGE,
     };
-    const end = () => {
-      setLoading(false);
-    };
-    Router.events.on('routeChangeStart', start);
-    Router.events.on('routeChangeComplete', end);
-    Router.events.on('routeChangeError', end);
-    return () => {
-      Router.events.off('routeChangeStart', start);
-      Router.events.off('routeChangeComplete', end);
-      Router.events.off('routeChangeError', end);
-    };
-  }, []);
+    saveSearchQuery(newSearchQuery);
+    setParams(router, newParams);
+  }
 
+  function handlePageChange(page: number) {
+    const newParams = {
+      ...params,
+      page,
+    };
+    setParams(router, newParams);
+  }
+
+  function handleDetailsClose(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    event.preventDefault();
+    const newParams = {
+      ...params,
+      details: DEFAULT_DETAILS,
+    };
+    setParams(router, newParams);
+  }
+
+  function handleDetailsOpen(details: number) {
+    const newParams = {
+      ...params,
+      details,
+    };
+    setParams(router, newParams);
+  }
   const renderContent = (): React.ReactElement => {
-    if (isLoading || loading) return <Loader />;
-    if (error) return <div>Error loading movies</div>;
-
     return (
       <>
-        <ListView data={results || []} setMovieRef={setMovieRef} />
+        <ListView
+          data={movieList || []}
+          setMovieRef={setMovieRef}
+          handleDetailsOpen={handleDetailsOpen}
+        />
         <Pagination
-          currentPage={params.page}
+          page={params.page}
           totalPages={totalPages || DEFAULT_PAGE}
+          handlePageChange={handlePageChange}
         />
         <FavoritePopup />
       </>
@@ -122,10 +133,13 @@ const Movies: React.FC<MoviesProps> = ({
   };
 
   const renderMovieDetails = () => {
-    if (params.details) {
-      if (isLoading || loading) return;
-      if (initialDataDetails)
-        return <MovieDetails selectedMovie={initialDataDetails} />;
+    if (movieDetails) {
+      return (
+        <MovieCardDetails
+          movie={movieDetails}
+          handleDetailsClose={handleDetailsClose}
+        />
+      );
     }
   };
 
@@ -136,7 +150,10 @@ const Movies: React.FC<MoviesProps> = ({
     >
       <div className="flex-1 flex">
         <div className="flex-1 border-r p-4 overflow-y-auto">
-          <SearchBar />
+          <SearchBar
+            searchValue={params.query}
+            handleQueryChange={handleQueryChange}
+          />
           {renderContent()}
         </div>
         {renderMovieDetails()}

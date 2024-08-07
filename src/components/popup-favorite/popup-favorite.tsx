@@ -7,6 +7,7 @@ import { TrashIcon } from '../icons/trash-icon/trash-icon.tsx';
 import { clearFavorites } from '../../store/reducers/favorites.tsx';
 import { MoviesItem } from '../../types/api.tsx';
 import useBaseUrl from '../../hooks/use-base-url.tsx';
+import Link from 'next/link';
 
 export const FavoritePopup: React.FC = () => {
   const favorites: MoviesItem[] = useSelector(
@@ -40,16 +41,19 @@ export const FavoritePopup: React.FC = () => {
       {favorites.length > 0 && (
         <div className="fixed bottom-4 right-4 bg-background rounded-full shadow-md w-16 h-16 flex items-start justify-center hover:w-16 hover:h-36 transition-all duration-300 group z-10">
           <div className="flex items-center justify-center gap-2 flex-col opacity-0 group-hover:opacity-100 group-hover:gap-4 group-hover:py-3 group-hover:px-3 transition-all ">
-            <a
+            <Link
               href={downloadUrl}
               download={`${favorites.length}_movies.csv`}
               className="text-secondary-foreground hover:text-destructive"
+              role="link"
+              aria-label="download"
             >
               <DownloadIcon className="w-6 h-6" />
-            </a>
+            </Link>
             <button
               className="text-secondary-foreground hover:text-destructive"
               onClick={handleClearFavorites}
+              aria-label="clear"
             >
               <TrashIcon className="w-6 h-6" />
             </button>

@@ -3,33 +3,30 @@ import classNames from 'classnames';
 import { MoviesDetails } from '../../types/api.tsx';
 import { XIcon } from '../icons/x-icon/x-icon.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import { DEFAULT_DETAILS, URL_POSTER } from '../../common/constant.tsx';
+import { URL_POSTER } from '../../common/constant.tsx';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
 import Image from 'next/image';
-import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 import { formatNumber } from '../../utils/format.ts';
 
 interface MovieDetailsProps {
   movie: MoviesDetails;
+  handleDetailsClose: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   const selectedMovie = props.movie;
-  const { params, setParams } = useRequestParamsContext();
 
   const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
 
-  const handleCloseClick = (): void => {
-    setParams({ ...params, details: DEFAULT_DETAILS });
-  };
-
   return (
-    <>
+    <div className="flex-1 bg-background p-6 overflow-y-auto h-screen sticky top-0">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-3xl font-bold text-foreground">
           {selectedMovie.title}
         </h1>
-        <button onClick={handleCloseClick}>
+        <button onClick={props.handleDetailsClose}>
           <XIcon className="w-6 h-6 text-muted-foreground hover:text-accent-foreground" />
         </button>
       </div>
@@ -125,6 +122,6 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

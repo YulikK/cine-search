@@ -5,49 +5,26 @@ import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
 import Image from 'next/image';
-import { useRequestParamsContext } from '../../hooks/params-provider.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
   setRef: (ref: HTMLLIElement | null) => void;
+  handleDetailsOpen: (details: number) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
-  const { params, setParams } = useRequestParamsContext();
 
-  const handleMovieClick: React.MouseEventHandler<HTMLLIElement> = (evt) => {
-    const isClickInsideFavoriteButton = (
-      target: HTMLElement | SVGElement | null
-    ): boolean => {
-      let element: HTMLElement | SVGElement | null = target;
-      while (element && element !== evt.currentTarget) {
-        if (
-          element.tagName === 'BUTTON' &&
-          element.classList.contains('favorite-button')
-        ) {
-          return true;
-        }
-        element = element.parentElement;
-      }
-      return false;
-    };
-
-    if (
-      evt.target instanceof SVGElement &&
-      isClickInsideFavoriteButton(evt.target)
-    ) {
-      return;
-    }
-    setParams({ ...params, details: movie.id });
-  };
-
+  function onClick(event: React.MouseEvent<HTMLLIElement>) {
+    event.stopPropagation();
+    props.handleDetailsOpen(movie.id);
+  }
   return (
     <li
       key={movie.id}
       ref={props.setRef}
+      onClick={onClick}
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
-      onClick={handleMovieClick}
     >
       <Image
         src={

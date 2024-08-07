@@ -1,17 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { ButtonBackHome } from '../components/button-back-home/button-back-home';
-import { useRequestParamsContext } from '../hooks/params-provider';
 import { useTheme } from '../hooks/theme-provider';
-import { DEFAULT_DETAILS } from '../common/constant';
 
 const Page404: React.FC = () => {
-  const { setParams } = useRequestParamsContext();
   const { isDarkTheme } = useTheme();
-
-  useEffect(() => {
-    setParams({ page: 0, query: '', details: DEFAULT_DETAILS });
-  }, []);
 
   return (
     <div

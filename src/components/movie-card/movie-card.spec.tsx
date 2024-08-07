@@ -1,13 +1,11 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import NO_POSTER_IMG from '../../assets/img/placeholder.svg';
 import { MoviesItem } from '../../types/api.tsx';
 import { MovieCard } from './movie-card.tsx';
-import store from '../../store/store.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
+import { NO_POSTER_IMG } from '../../common/constant.tsx';
 
 const mockMovie: MoviesItem = {
   id: 1,
@@ -18,20 +16,16 @@ const mockMovie: MoviesItem = {
 };
 
 const setRef = vi.fn();
-const setSelectedMovieId = vi.fn();
+const handleDetailsOpen = vi.fn();
 
 describe('MovieCard Component', () => {
   it('renders correctly with movie data', () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MovieCard
-            movie={mockMovie}
-            setRef={setRef}
-            setSelectedMovieId={setSelectedMovieId}
-          />
-        </MemoryRouter>
-      </Provider>
+    customRender(
+      <MovieCard
+        movie={mockMovie}
+        setRef={setRef}
+        handleDetailsOpen={handleDetailsOpen}
+      />
     );
 
     expect(screen.getByText(mockMovie.name)).toBeInTheDocument();
@@ -39,21 +33,17 @@ describe('MovieCard Component', () => {
     expect(screen.getByText(mockMovie.description)).toBeInTheDocument();
 
     const image: HTMLImageElement = screen.getByAltText(mockMovie.name);
-    expect(image.src).toContain(mockMovie.posterPath);
+    expect(image.src).toMatch(/test-poster\.jpg/);
   });
 
   it('uses NO_POSTER_IMG when posterPath is not provided', () => {
     const movieWithoutPoster = { ...mockMovie, posterPath: '' };
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MovieCard
-            movie={movieWithoutPoster}
-            setRef={setRef}
-            setSelectedMovieId={setSelectedMovieId}
-          />
-        </MemoryRouter>
-      </Provider>
+    customRender(
+      <MovieCard
+        movie={movieWithoutPoster}
+        setRef={setRef}
+        handleDetailsOpen={handleDetailsOpen}
+      />
     );
     const image: HTMLImageElement = screen.getByAltText(mockMovie.name);
     expect(image.src).toContain('/placeholder.svg');
@@ -62,19 +52,15 @@ describe('MovieCard Component', () => {
 
   it('navigates to movie page on card click', async () => {
     const user = userEvent.setup();
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <MovieCard
-            movie={mockMovie}
-            setRef={setRef}
-            setSelectedMovieId={setSelectedMovieId}
-          />
-        </MemoryRouter>
-      </Provider>
+    customRender(
+      <MovieCard
+        movie={mockMovie}
+        setRef={setRef}
+        handleDetailsOpen={handleDetailsOpen}
+      />
     );
 
     await user.click(screen.getByText(mockMovie.name));
-    expect(setSelectedMovieId).toHaveBeenCalledWith(mockMovie.id);
+    expect(handleDetailsOpen).toHaveBeenCalledWith(mockMovie.id);
   });
 });

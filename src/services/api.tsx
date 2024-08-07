@@ -14,6 +14,10 @@ import {
   MoviesDetailsServerResponse,
   QueryParams,
 } from '../types/api.tsx';
+import { HYDRATE } from 'next-redux-wrapper';
+import { Action, PayloadAction } from '@reduxjs/toolkit';
+
+type RootState = any;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: URL_API,
@@ -54,7 +58,7 @@ export const moviesApi = createApi({
         })),
       }),
     }),
-    getMovieByID: builder.query<MoviesDetails, string>({
+    getMovieByID: builder.query<MoviesDetails, number>({
       query: (id) => `${URL_API}/${id}`,
       transformResponse: (
         response: MoviesDetailsServerResponse
@@ -84,7 +88,21 @@ export const moviesApi = createApi({
       }),
     }),
   }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (isHydrateAction(action)) {
+      return action.payload[reducerPath];
+    }
+  },
 });
 
-export const { useGetMovieQuery, useGetMovieByIDQuery } = moviesApi;
+function isHydrateAction(action: Action): action is PayloadAction<RootState> {
+  return action.type === HYDRATE;
+}
+
+export const {
+  useGetMovieQuery,
+  useGetMovieByIDQuery,
+  util: { getRunningQueriesThunk },
+} = moviesApi;
 export const { middleware: moviesApiMiddleware } = moviesApi;
+export const { getMovie, getMovieByID } = moviesApi.endpoints;

@@ -14,9 +14,12 @@ export const FavoriteButton: React.FC<{ movie: MoviesItem }> = (props) => {
   const favorites: MoviesItem[] = useSelector(
     (state: RootState) => state.favorites
   );
-  const isFavorite = favorites.includes(props.movie);
+  const isFavorite = favorites.some(
+    (favorite) => favorite.id === props.movie.id
+  );
 
-  const handleFavorite = (): void => {
+  const handleFavorite = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.stopPropagation();
     if (isFavorite) {
       dispatch(removeFavorite(props.movie));
     } else {

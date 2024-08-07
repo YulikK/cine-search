@@ -1,16 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MemoryRouter } from 'react-router-dom';
 import { NoResults } from './no-results.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
 
 describe('NoResults component', () => {
   it('renders correctly', () => {
-    render(
-      <MemoryRouter>
-        <NoResults />
-      </MemoryRouter>
-    );
+    customRender(<NoResults />);
     expect(screen.getByText(/No results found/i)).toBeInTheDocument();
     expect(
       screen.getByText(

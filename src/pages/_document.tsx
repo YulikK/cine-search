@@ -10,7 +10,7 @@ class MyDocument extends Document {
             name="description"
             content="React Movie is a movie app built with React."
           />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
         <body>
           <Main />

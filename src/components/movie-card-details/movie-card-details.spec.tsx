@@ -1,9 +1,9 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import { MovieCardDetails } from './movie-card-details.tsx';
 import { MoviesDetails } from '../../types/api.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
 
 const mockMovie: MoviesDetails = {
   id: '1',
@@ -23,32 +23,15 @@ const mockMovie: MoviesDetails = {
   revenue: 850000000,
 };
 
-vi.mock('../../hooks/use-request-params', () => ({
-  useRequestParams: (): {
-    searchParams: URLSearchParams;
-    setSearchParams: () => void;
-  } => ({
-    searchParams: new URLSearchParams(),
-    setSearchParams: vi.fn(),
-  }),
-}));
-
-vi.mock('react-router-dom', async (importOriginal): Promise<object> => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useNavigate: (): void => {
-      vi.fn();
-    },
-  };
-});
+const handleDetailsClose = vi.fn();
 
 describe('<MovieCardDetails />', () => {
   it('renders movie details correctly', () => {
-    render(
-      <MemoryRouter>
-        <MovieCardDetails movie={mockMovie} />
-      </MemoryRouter>
+    customRender(
+      <MovieCardDetails
+        movie={mockMovie}
+        handleDetailsClose={handleDetailsClose}
+      />
     );
 
     expect(screen.getByText(mockMovie.title)).toBeInTheDocument();

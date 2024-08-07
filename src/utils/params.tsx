@@ -20,16 +20,15 @@ export function updateParams(
 }
 
 export function getParams(
-  router: NextRouter,
-  defaultQuery?: string
+  page: queryType,
+  query: queryType,
+  details: queryType
 ): QueryParams {
-  const urlQuery = Array.isArray(router.query.query)
-    ? router.query.query[0]
-    : router.query.query;
-  const urlPage = router.query.page;
-  const urlDetails = router.query.details;
+  const urlQuery = Array.isArray(query) ? query[0] : query;
+  const urlPage = page;
+  const urlDetails = details;
 
-  const currentQuery: string = (urlQuery ? urlQuery : defaultQuery) || '';
+  const currentQuery: string = urlQuery || '';
   const currentPage = parseInt(
     Array.isArray(urlPage) ? urlPage[0] : urlPage || DEFAULT_PAGE.toString(),
     10
@@ -61,4 +60,14 @@ export function parseParams(queryParams: queryParamsType): QueryParams {
     details: currentDetails,
   };
   return params;
+}
+
+export function setParams(router: NextRouter, params: QueryParams) {
+  router.push({
+    query: {
+      ...(params.page && { page: params.page }),
+      ...(params.query && { query: params.query }),
+      ...(params.details && { details: params.details }),
+    },
+  });
 }

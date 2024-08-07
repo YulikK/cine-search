@@ -1,12 +1,9 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-
-import { Provider } from 'react-redux';
+import { screen } from '@testing-library/react';
 import { ListView } from './list-view.tsx';
 import { MoviesItem } from '../../types/api.tsx';
-import store from '../../store/store.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
 
 vi.mock('./movie-card/movie-card.tsx', () => ({
   MovieCard: ({ movie }: { movie: MoviesItem }): JSX.Element => (
@@ -18,7 +15,7 @@ vi.mock('./no-results.tsx', () => ({
 }));
 
 const setRef = vi.fn();
-const setSelectedMovieId = vi.fn();
+const handleDetailsOpen = vi.fn();
 
 const mockData: MoviesItem[] = [
   {
@@ -39,16 +36,12 @@ const mockData: MoviesItem[] = [
 
 describe('ListView Component', () => {
   it('renders movie cards when data is provided', () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>
-          <ListView
-            data={mockData}
-            setMovieRef={setRef}
-            setSelectedMovieId={setSelectedMovieId}
-          />
-        </MemoryRouter>
-      </Provider>
+    customRender(
+      <ListView
+        data={mockData}
+        setMovieRef={setRef}
+        handleDetailsOpen={handleDetailsOpen}
+      />
     );
     const movieCards = screen.getAllByRole('listitem');
     expect(movieCards.length).toBe(2);
@@ -56,16 +49,12 @@ describe('ListView Component', () => {
     expect(movieCards[1]).toHaveTextContent(mockData[1].name);
   });
   it('renders "No Results" when data is empty', () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>
-          <ListView
-            data={[]}
-            setMovieRef={setRef}
-            setSelectedMovieId={setSelectedMovieId}
-          />
-        </MemoryRouter>
-      </Provider>
+    customRender(
+      <ListView
+        data={[]}
+        setMovieRef={setRef}
+        handleDetailsOpen={handleDetailsOpen}
+      />
     );
     expect(screen.getByText('No results found')).toBeInTheDocument();
   });

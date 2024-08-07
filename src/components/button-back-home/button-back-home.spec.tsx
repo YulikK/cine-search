@@ -1,35 +1,33 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ButtonBackHome } from './button-back-home.tsx';
+import { DEFAULT_PAGE } from '../../common/constant.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
+
+const mockPush = vi.fn();
+
+vi.mock('next/router', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}));
 
 describe('ButtonBackHome', () => {
   test('renders correctly', () => {
-    render(
-      <MemoryRouter>
-        <ButtonBackHome />
-      </MemoryRouter>
-    );
+    customRender(<ButtonBackHome />);
+
     expect(
       screen.getByRole('link', { name: /back to homepage/i })
     ).toBeInTheDocument();
   });
 
   test('navigates to the homepage on click', async () => {
-    render(
-      <MemoryRouter initialEntries={['/initial']}>
-        <Routes>
-          <Route path="/initial" element={<ButtonBackHome />} />
-          <Route path="/" element={<h1>Homepage</h1>} />
-        </Routes>
-      </MemoryRouter>
-    );
+    customRender(<ButtonBackHome />);
 
-    await userEvent.click(
-      screen.getByRole('link', { name: /back to homepage/i })
-    );
+    const link = screen.getByRole('link', { name: /back to homepage/i });
+    expect(link).toHaveAttribute('href', `?page=${DEFAULT_PAGE}`);
 
-    expect(window.location.pathname).toBe('/');
+    await userEvent.click(link);
   });
 });
