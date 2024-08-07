@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+import Image from 'next/image';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
-import Image from 'next/image';
 
 interface MovieCardProps {
   movie: MoviesItem;
@@ -15,7 +15,7 @@ interface MovieCardProps {
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
 
-  function onClick(event: React.MouseEvent<HTMLLIElement>) {
+  function onClick(event: React.MouseEvent<HTMLLIElement>): void {
     event.stopPropagation();
     props.handleDetailsOpen(movie.id);
   }

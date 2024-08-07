@@ -1,23 +1,26 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { reducer as favoritesReducer } from './reducers/favorites.tsx';
-import { moviesApi, moviesApiMiddleware } from '../services/api.tsx';
 import { createWrapper } from 'next-redux-wrapper';
+import { reducer as favoritesReducer } from './reducers/favorites.tsx';
+import { reducer as moviesReducer } from './reducers/movies.tsx';
 
 const rootReducer = combineReducers({
   favorites: favoritesReducer,
-  [moviesApi.reducerPath]: moviesApi.reducer,
+  movies: moviesReducer,
 });
 
-export const makeStore = (preloadedState?: PreloadStore) =>
+export type RootState = ReturnType<typeof rootReducer>;
+export type PreloadStore = Partial<RootState>;
+export type TypeStore = ReturnType<typeof configureStore>;
+
+export const makeStore = (preloadedState?: PreloadStore): TypeStore =>
   configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(moviesApiMiddleware),
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
     preloadedState,
   });
 
-export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof makeStore>;
-export type PreloadStore = Partial<RootState>;
-
 export const wrapper = createWrapper<AppStore>(() => makeStore());

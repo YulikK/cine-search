@@ -9,12 +9,19 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
     'prettier',
+    'next',
+    'next/core-web-vitals',
   ],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: [
+    'dist',
+    '.eslintrc.cjs',
+    '**/*.spec.tsx',
+    'src/tests/**/*.*',
+  ],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', 'react-compiler', 'import', '@typescript-eslint'],
   rules: {
@@ -45,6 +52,7 @@ module.exports = {
         ignorePropertyModificationsFor: ['state'],
       },
     ],
+    'react-refresh/only-export-components': 'off',
   },
 
   settings: {

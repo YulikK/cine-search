@@ -1,6 +1,6 @@
 import { NextRouter } from 'next/router';
-import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
-import { QueryParams } from '../types/api';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant.tsx';
+import { QueryParams } from '../types/api.tsx';
 
 type queryType = string | string[] | undefined;
 type queryParamsType = {
@@ -62,12 +62,14 @@ export function parseParams(queryParams: queryParamsType): QueryParams {
   return params;
 }
 
-export function setParams(router: NextRouter, params: QueryParams) {
-  router.push({
-    query: {
-      ...(params.page && { page: params.page }),
-      ...(params.query && { query: params.query }),
-      ...(params.details && { details: params.details }),
-    },
-  });
+export function setParams(router: NextRouter, params: QueryParams): void {
+  router
+    .push({
+      query: {
+        ...(params.page && { page: params.page }),
+        ...(params.query && { query: params.query }),
+        ...(params.details && { details: params.details }),
+      },
+    })
+    .catch(console.error);
 }

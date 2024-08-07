@@ -1,7 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
 import {
   JSON_ACCEPT_HEADER,
+  HTTP_METHODS,
   TOKEN,
   URL_API,
   URL_SEARCH_API,
@@ -12,97 +11,109 @@ import {
   MovieAdaptResponse,
   MoviesDetails,
   MoviesDetailsServerResponse,
+  MoviesItem,
   QueryParams,
 } from '../types/api.tsx';
-import { HYDRATE } from 'next-redux-wrapper';
-import { Action, PayloadAction } from '@reduxjs/toolkit';
+import { isMovieDetailsData, isMovieListData } from '../types/validation.tsx';
 
-type RootState = any;
+export class ApiService {
+  static async fetchMovie(
+    params: QueryParams
+  ): Promise<MovieAdaptResponse | null> {
+    const fetchUrl = ApiService.makeURL(params);
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: URL_API,
-  prepareHeaders: (headers) => {
-    headers.set('Authorization', `Bearer ${TOKEN}`);
-    headers.set('Accept', JSON_ACCEPT_HEADER);
-    return headers;
-  },
-});
-
-export const moviesApi = createApi({
-  reducerPath: 'moviesApi',
-  baseQuery,
-  endpoints: (builder) => ({
-    getMovie: builder.query<MovieAdaptResponse, QueryParams>({
-      query: (params) => {
-        const url = params.query
-          ? URL_SEARCH_API
-          : `${URL_API}/${DEFAULT_MOVIE_LIST}`;
-        const page = params.page ? params.page : 1;
-        let result = `${url}?page=${page}`;
-        if (params.query) {
-          result += `&query=${encodeURIComponent(params.query)}`;
-        }
-        return result;
-      },
-      transformResponse: (response: {
-        results: Movie[];
-        total_pages: number;
-      }): MovieAdaptResponse => ({
-        totalPages: response.total_pages,
-        results: response.results.map((item) => ({
-          id: parseInt(item.id.toString()),
-          name: item.title,
-          description: item.overview,
-          posterPath: item.poster_path || '',
-          rating: parseFloat(item.vote_average.toFixed(1)),
-        })),
-      }),
-    }),
-    getMovieByID: builder.query<MoviesDetails, number>({
-      query: (id) => `${URL_API}/${id}`,
-      transformResponse: (
-        response: MoviesDetailsServerResponse
-      ): MoviesDetails => ({
-        id: response.id.toString(),
-        title: response.title,
-        overview: response.overview,
-        backdropPath: response.backdrop_path,
-        posterPath: response.poster_path,
-        genres: response.genres.map((genre) => genre.name),
-        originalLanguage: response.original_language,
-        releaseDate: new Date(response.release_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }
-        ),
-        adult: response.adult,
-        budget: response.budget,
-        revenue: response.revenue,
-        runtime: `${Math.floor(response.runtime / 60)}h ${response.runtime % 60}m`,
-        status: response.status,
-        tagline: response.tagline,
-        voteAverage: parseFloat(response.vote_average.toFixed(1)),
-      }),
-    }),
-  }),
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (isHydrateAction(action)) {
-      return action.payload[reducerPath];
+    const data: unknown = await ApiService.getData(fetchUrl);
+    if (isMovieListData(data)) {
+      const result: MovieAdaptResponse = {
+        totalPages: data.total_pages,
+        results: ApiService.adaptListToClient(data.results),
+      };
+      return result;
     }
-  },
-});
+    return null;
+  }
 
-function isHydrateAction(action: Action): action is PayloadAction<RootState> {
-  return action.type === HYDRATE;
+  static async fetchMovieByID(id: number): Promise<MoviesDetails | null> {
+    const fetchUrl = `${URL_API}/${id}`;
+    const data: unknown = await ApiService.getData(fetchUrl);
+    if (isMovieDetailsData(data)) {
+      const result: MoviesDetails = ApiService.adaptDetailsToClient(data);
+      return result;
+    }
+    return null;
+  }
+
+  static async getData(url: string): Promise<unknown> {
+    try {
+      const response = await fetch(url, {
+        method: HTTP_METHODS.GET,
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          accept: JSON_ACCEPT_HEADER,
+        },
+      });
+      const data: unknown = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  }
+
+  static adaptListToClient(data: Movie[]): MoviesItem[] {
+    return data.map((item) => ({
+      id: Number(item.id),
+      name: item.title,
+      description: item.overview,
+      posterPath: item.poster_path || '',
+      rating: parseFloat(item.vote_average.toFixed(1)),
+    }));
+  }
+
+  static adaptDetailsToClient(
+    data: MoviesDetailsServerResponse
+  ): MoviesDetails {
+    const releaseDate = new Date(data.release_date);
+    const formattedDate = releaseDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    const hours = Math.floor(data.runtime / 60);
+    const minutes = data.runtime % 60;
+
+    return {
+      id: data.id.toString(),
+      title: data.title,
+      overview: data.overview,
+      backdropPath: data.backdrop_path,
+      posterPath: data.poster_path,
+      genres: data.genres.map((genre) => genre.name),
+      originalLanguage: data.original_language,
+      releaseDate: formattedDate,
+      adult: data.adult,
+      budget: data.budget,
+      revenue: data.revenue,
+      runtime: `${hours}h ${minutes}m`,
+      status: data.status,
+      tagline: data.tagline,
+      voteAverage: parseFloat(data.vote_average.toFixed(1)),
+    };
+  }
+
+  static makeURL(params: QueryParams): string {
+    const url = params.query
+      ? URL_SEARCH_API
+      : `${URL_API}/${DEFAULT_MOVIE_LIST}`;
+    const page = params.page ? params.page : 1;
+
+    let result = `${url}?page=${page}`;
+
+    if (params.query) {
+      result += `&query=${encodeURIComponent(params.query)}`;
+    }
+
+    return result;
+  }
 }
-
-export const {
-  useGetMovieQuery,
-  useGetMovieByIDQuery,
-  util: { getRunningQueriesThunk },
-} = moviesApi;
-export const { middleware: moviesApiMiddleware } = moviesApi;
-export const { getMovie, getMovieByID } = moviesApi.endpoints;

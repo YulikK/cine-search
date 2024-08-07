@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
+import Link from 'next/link';
 import { RootState } from '../../store/store.tsx';
 import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
 import { DownloadIcon } from '../icons/download-icon/download-icon.tsx';
@@ -7,7 +8,6 @@ import { TrashIcon } from '../icons/trash-icon/trash-icon.tsx';
 import { clearFavorites } from '../../store/reducers/favorites.tsx';
 import { MoviesItem } from '../../types/api.tsx';
 import useBaseUrl from '../../hooks/use-base-url.tsx';
-import Link from 'next/link';
 
 export const FavoritePopup: React.FC = () => {
   const favorites: MoviesItem[] = useSelector(

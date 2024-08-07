@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ButtonBackHome } from '../components/button-back-home/button-back-home';
-import { useTheme } from '../hooks/theme-provider';
+import { ButtonBackHome } from '../components/button-back-home/button-back-home.tsx';
+import { useTheme } from '../hooks/theme-provider.tsx';
 
 const Page404: React.FC = () => {
   const { isDarkTheme } = useTheme();

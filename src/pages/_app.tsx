@@ -1,23 +1,23 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import '../assets/styles/global.scss';
-import { ThemeProvider } from '../hooks/theme-provider';
-import { ErrorBoundary } from '../components/error-boundary/error-boundary';
 import React, { useEffect, useState } from 'react';
-import { wrapper } from '../store/store';
 import { useRouter } from 'next/router';
-import { Loader } from '../components/loader/loader';
+import { ThemeProvider } from '../hooks/theme-provider.tsx';
+import { ErrorBoundary } from '../components/error-boundary/error-boundary.tsx';
+import { wrapper } from '../store/store.tsx';
+import { Loader } from '../components/loader/loader.tsx';
 
-const MyApp = ({ Component, ...pageProps }: AppProps) => {
+const MyApp = ({ Component, ...pageProps }: AppProps): React.ReactElement => {
   const { store } = wrapper.useWrappedStore(pageProps);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const start = () => {
+  const start = (): void => {
     setIsLoading(true);
   };
 
-  const end = () => {
+  const end = (): void => {
     setIsLoading(false);
   };
 
@@ -26,7 +26,7 @@ const MyApp = ({ Component, ...pageProps }: AppProps) => {
     router.events.on('routeChangeComplete', end);
     router.events.on('routeChangeError', end);
 
-    return () => {
+    return (): void => {
       router.events.off('routeChangeStart', start);
       router.events.off('routeChangeComplete', end);
       router.events.off('routeChangeError', end);

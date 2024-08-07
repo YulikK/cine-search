@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import Image from 'next/image';
 import { MoviesDetails } from '../../types/api.tsx';
 import { XIcon } from '../icons/x-icon/x-icon.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
-import Image from 'next/image';
 import { formatNumber } from '../../utils/format.ts';
 
 interface MovieDetailsProps {
