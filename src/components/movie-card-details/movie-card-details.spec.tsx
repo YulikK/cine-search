@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
-import { MovieCardDetails } from './movie-card-details.tsx';
+import { MovieCardDetails } from '../../app/(details)/movie-card-details.tsx';
 import { MoviesDetails } from '../../types/api.tsx';
 import { customRender } from '../../tests/custom-render.tsx';
 

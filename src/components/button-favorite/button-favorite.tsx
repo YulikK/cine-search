@@ -1,6 +1,7 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
 import {
   addFavorite,

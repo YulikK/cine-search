@@ -3,50 +3,41 @@
 import React from 'react';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 import { MoviesDetails } from '../../types/api.tsx';
-import { XIcon } from '../icons/x-icon/x-icon.tsx';
+
+import { URL_POSTER } from '../../common/constant.tsx';
+
+import { formatNumber } from '../../utils/format.ts';
+import { CloseButton } from '../button-close/button-close.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import { DEFAULT_DETAILS, URL_POSTER } from '../../common/constant.tsx';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
-import { formatNumber } from '../../utils/format.ts';
-import { getParams, setParams } from '../../utils/params.tsx';
+import { setMovieDetails } from '../../store/reducers/movies.tsx';
 
-interface MovieDetailsProps {
+interface DetailsViewProps {
   movie: MoviesDetails;
 }
-export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
-  const selectedMovie = props.movie;
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
-  const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
+export const DetailsView: React.FC<DetailsViewProps> = (props) => {
+  const { movie } = props;
+  const poster = movie?.backdropPath || movie?.posterPath || '';
+  const dispatch = useDispatch();
 
-  function handleDetailsClose(): void {
-    const params = getParams(
-      searchParams && searchParams.get('page'),
-      searchParams && searchParams.get('query'),
-      DEFAULT_DETAILS.toString()
-    );
-
-    setParams(router, params);
-  }
+  React.useEffect(() => {
+    dispatch(setMovieDetails(movie));
+  }, [movie]);
 
   return (
     <div className="flex-1 bg-background p-6 overflow-y-auto h-screen sticky top-0">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold text-foreground">
-          {selectedMovie.title}
-        </h1>
-        <button onClick={handleDetailsClose}>
-          <XIcon className="w-6 h-6 text-muted-foreground hover:text-accent-foreground" />
-        </button>
+        <h1 className="text-3xl font-bold text-foreground">{movie.title}</h1>
+        <CloseButton />
       </div>
       <div className="grid gap-4">
         <Image
           src={poster ? `${URL_POSTER}${poster}` : '/images/no-poster.png'}
-          alt={selectedMovie.title}
+          alt={movie.title}
           height={450}
           width={300}
           className={classNames('w-full', 'object-cover', 'rounded-lg', {
@@ -60,10 +51,10 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
               <div className="flex items-center gap-2">
                 <StarIcon className="w-5 h-5 text-yellow-500" />
                 <div className="text-2xl font-bold text-foreground">
-                  {selectedMovie.voteAverage}
+                  {movie.voteAverage}
                 </div>
               </div>
-              {selectedMovie.adult && (
+              {movie.adult && (
                 <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                   18+
                 </div>
@@ -72,29 +63,25 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
             <div className="flex items-center justify-self-end gap-4">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="w-5 h-5 text-muted-foreground" />
-                <div className="text-muted-foreground">
-                  {selectedMovie.releaseDate}
-                </div>
+                <div className="text-muted-foreground">{movie.releaseDate}</div>
               </div>
               <div className="flex items-center gap-2">
                 <ClockIcon className="w-5 h-5 text-muted-foreground" />
-                <div className="text-muted-foreground">
-                  {selectedMovie.runtime}
-                </div>
+                <div className="text-muted-foreground">{movie.runtime}</div>
               </div>
             </div>
           </div>
           <div>
             <div className="text-base text-foreground italic">
-              {selectedMovie.tagline}
+              {movie.tagline}
             </div>
           </div>
 
-          <p className="text-muted-foreground mb-5">{selectedMovie.overview}</p>
+          <p className="text-muted-foreground mb-5">{movie.overview}</p>
 
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-5">
-              {selectedMovie.genres.map((genre, index) => (
+              {movie.genres.map((genre, index) => (
                 <div
                   key={index}
                   className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium"
@@ -111,25 +98,23 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
                 Original Language
               </div>
               <div className="text-base text-foreground ">
-                {selectedMovie.originalLanguage.toUpperCase()}
+                {movie.originalLanguage.toUpperCase()}
               </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Status</div>
-              <div className="text-base text-foreground ">
-                {selectedMovie.status}
-              </div>
+              <div className="text-base text-foreground ">{movie.status}</div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Budget</div>
               <div className="text-base text-foreground ">
-                ${formatNumber(selectedMovie.budget)}
+                ${formatNumber(movie.budget)}
               </div>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Revenue</div>
               <div className="text-base text-foreground ">
-                ${formatNumber(selectedMovie.revenue)}
+                ${formatNumber(movie.revenue)}
               </div>
             </div>
           </div>

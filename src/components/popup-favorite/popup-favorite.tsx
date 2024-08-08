@@ -1,8 +1,9 @@
 'use client';
 
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store.tsx';
 import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
 import { DownloadIcon } from '../icons/download-icon/download-icon.tsx';
