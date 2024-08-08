@@ -16,12 +16,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: [
-    'dist',
-    '.eslintrc.cjs',
-    '**/*.spec.tsx',
-    'src/tests/**/*.*',
-  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', 'react-compiler', 'import', '@typescript-eslint'],
   rules: {
@@ -53,6 +48,7 @@ module.exports = {
       },
     ],
     'react-refresh/only-export-components': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 
   settings: {

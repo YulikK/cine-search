@@ -1,13 +1,19 @@
+'use client';
+
 import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronLeftIcon } from '../icons/chevron-left-icon/chevron-left-icon.tsx';
 import { ChevronRightIcon } from '../icons/chevron-right-icon/chevron-right-icon.tsx';
+import { getParams, setParams } from '../../utils/params.tsx';
 
 interface PaginationProps {
   page: number;
   totalPages: number;
-  handlePageChange: (page: number) => void;
 }
 export const Pagination: React.FC<PaginationProps> = (props) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const getPageNumbers = (): number[] => {
     const maxPagesToShow = 5;
     let startPage = Math.max(1, props.page - 2);
@@ -26,20 +32,30 @@ export const Pagination: React.FC<PaginationProps> = (props) => {
     return pages;
   };
 
+  function pageChange(newPage: number): void {
+    const params = getParams(
+      newPage.toString(),
+      searchParams && searchParams.get('query'),
+      searchParams && searchParams.get('details')
+    );
+
+    setParams(router, params);
+  }
+
   const handlePrevious = (): void => {
     if (props.page > 1) {
-      props.handlePageChange(props.page - 1);
+      pageChange(props.page - 1);
     }
   };
 
   const handleNext = (): void => {
     if (props.page < props.totalPages) {
-      props.handlePageChange(props.page + 1);
+      pageChange(props.page + 1);
     }
   };
 
   const onPageClick = (newPage: number): void => {
-    props.handlePageChange(newPage);
+    pageChange(newPage);
   };
 
   return (

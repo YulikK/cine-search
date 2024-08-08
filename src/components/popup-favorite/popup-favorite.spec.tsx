@@ -1,12 +1,12 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import { FavoritePopup } from './popup-favorite';
-import { customRender } from '../../tests/custom-render';
-import { MoviesItem } from '../../types/api';
+import { FavoritePopup } from './popup-favorite.tsx';
+import { customRender } from '../../tests/custom-render.tsx';
+import { MoviesItem } from '../../types/api.tsx';
 
-vi.mock('../path/to/hooks', () => ({
-  useBaseUrl: () => 'http://example.com',
-}));
+// vi.mock('../path/to/hooks', () => ({
+//   useBaseUrl: () => 'http://example.com',
+// }));
 
 vi.mock('../path/to/actions', () => ({
   clearFavorites: vi.fn(),
@@ -30,8 +30,6 @@ const favorites: MoviesItem[] = [
 ];
 
 describe('FavoritePopup', () => {
-  // let store;
-
   beforeEach(() => {
     vi.clearAllMocks();
   });

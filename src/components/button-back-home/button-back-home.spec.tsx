@@ -5,13 +5,13 @@ import { ButtonBackHome } from './button-back-home.tsx';
 import { DEFAULT_PAGE } from '../../common/constant.tsx';
 import { customRender } from '../../tests/custom-render.tsx';
 
-const mockPush = vi.fn();
+// const mockPush = vi.fn();
 
-vi.mock('next/router', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-}));
+// vi.mock('next/router', () => ({
+//   useRouter: () => ({
+//     push: mockPush,
+//   }),
+// }));
 
 describe('ButtonBackHome', () => {
   test('renders correctly', () => {

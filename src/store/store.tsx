@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { createWrapper } from 'next-redux-wrapper';
 import { reducer as favoritesReducer } from './reducers/favorites.tsx';
 import { reducer as moviesReducer } from './reducers/movies.tsx';
 
@@ -23,4 +22,3 @@ export const makeStore = (preloadedState?: PreloadStore): TypeStore =>
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
-export const wrapper = createWrapper<AppStore>(() => makeStore());

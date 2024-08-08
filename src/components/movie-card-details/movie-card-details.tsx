@@ -1,24 +1,37 @@
+'use client';
+
 import React from 'react';
 import classNames from 'classnames';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MoviesDetails } from '../../types/api.tsx';
 import { XIcon } from '../icons/x-icon/x-icon.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import { URL_POSTER } from '../../common/constant.tsx';
+import { DEFAULT_DETAILS, URL_POSTER } from '../../common/constant.tsx';
 import { CalendarIcon } from '../icons/calendar-icon/calendar-icon.tsx';
 import { ClockIcon } from '../icons/clock-icon/clock-icon.tsx';
 import { formatNumber } from '../../utils/format.ts';
+import { getParams, setParams } from '../../utils/params.tsx';
 
 interface MovieDetailsProps {
   movie: MoviesDetails;
-  handleDetailsClose: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void;
 }
 export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
   const selectedMovie = props.movie;
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const poster = selectedMovie.backdropPath || selectedMovie.posterPath || '';
+
+  function handleDetailsClose(): void {
+    const params = getParams(
+      searchParams && searchParams.get('page'),
+      searchParams && searchParams.get('query'),
+      DEFAULT_DETAILS.toString()
+    );
+
+    setParams(router, params);
+  }
 
   return (
     <div className="flex-1 bg-background p-6 overflow-y-auto h-screen sticky top-0">
@@ -26,7 +39,7 @@ export const MovieCardDetails: React.FC<MovieDetailsProps> = (props) => {
         <h1 className="text-3xl font-bold text-foreground">
           {selectedMovie.title}
         </h1>
-        <button onClick={props.handleDetailsClose}>
+        <button onClick={handleDetailsClose}>
           <XIcon className="w-6 h-6 text-muted-foreground hover:text-accent-foreground" />
         </button>
       </div>

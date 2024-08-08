@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 import { MoviesDetails, MoviesItem } from '../../types/api.tsx';
 
 export interface MoviesState {
@@ -14,15 +13,6 @@ const initialState: MoviesState = {
   details: null,
 };
 
-interface HydrateActionPayload {
-  movies: MoviesState;
-}
-
-interface HydrateAction {
-  type: typeof HYDRATE;
-  payload: HydrateActionPayload;
-}
-
 const moviesSlice = createSlice({
   name: 'movies',
   initialState,
@@ -36,13 +26,6 @@ const moviesSlice = createSlice({
     setMovieDetails(state, action: PayloadAction<MoviesDetails | null>) {
       state.details = action.payload;
     },
-  },
-
-  extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: HydrateAction) => ({
-      ...state,
-      ...action.payload.movies,
-    }));
   },
 });
 

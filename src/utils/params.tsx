@@ -1,8 +1,8 @@
-import { NextRouter } from 'next/router';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant.tsx';
 import { QueryParams } from '../types/api.tsx';
 
-type queryType = string | string[] | undefined;
+type queryType = string | string[] | undefined | null;
 type queryParamsType = {
   query: queryType;
   page: queryType;
@@ -62,14 +62,17 @@ export function parseParams(queryParams: queryParamsType): QueryParams {
   return params;
 }
 
-export function setParams(router: NextRouter, params: QueryParams): void {
-  router
-    .push({
-      query: {
-        ...(params.page && { page: params.page }),
-        ...(params.query && { query: params.query }),
-        ...(params.details && { details: params.details }),
-      },
-    })
-    .catch(console.error);
+export function setParams(
+  router: AppRouterInstance,
+  params: QueryParams
+): void {
+  const query = {
+    ...(params.page && { page: params.page.toString() }),
+    ...(params.query && { query: params.query }),
+    ...(params.details && { details: params.details.toString() }),
+  };
+
+  const queryString = new URLSearchParams(query).toString();
+
+  router.push(`/?${queryString}`);
 }

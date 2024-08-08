@@ -1,28 +1,37 @@
+'use client';
+
 import React from 'react';
 import classNames from 'classnames';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MoviesItem } from '../../types/api.tsx';
 import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
+import { getParams, setParams } from '../../utils/params.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
-  setRef: (ref: HTMLLIElement | null) => void;
-  handleDetailsOpen: (details: number) => void;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
   const { movie } = props;
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   function onClick(event: React.MouseEvent<HTMLLIElement>): void {
     event.stopPropagation();
-    props.handleDetailsOpen(movie.id);
+    const params = getParams(
+      searchParams && searchParams.get('page'),
+      searchParams && searchParams.get('query'),
+      movie.id.toString()
+    );
+
+    setParams(router, params);
   }
   return (
     <li
       key={movie.id}
-      ref={props.setRef}
       onClick={onClick}
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
     >

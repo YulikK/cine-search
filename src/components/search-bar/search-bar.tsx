@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { SearchIcon } from '../icons/search-icon/search-icon.tsx';
-import { ErrorGenerator } from '../error-generator/error-generator.tsx';
 import { ThemeToggle } from '../button-theme/button-theme.tsx';
+import { getParams, setParams } from '../../utils/params.tsx';
+import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../../common/constant.tsx';
+import { getSearchQuery, saveSearchQuery } from '../../services/storage.tsx';
 
 interface SearchBarProps {
   searchValue: string;
-  handleQueryChange: (query: string) => void;
 }
 export const SearchBar: React.FC<SearchBarProps> = (props) => {
   const [inputValue, setInputValue] = useState(props.searchValue);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const query = searchParams && searchParams.get('query');
+    const page = searchParams && searchParams.get('page');
+    const details = searchParams && searchParams.get('details');
+    if (!page && !query && !details) {
+      const savedQuery = getSearchQuery('');
+      if (savedQuery) {
+        const params = getParams(
+          DEFAULT_PAGE.toString(),
+          savedQuery,
+          DEFAULT_DETAILS.toString()
+        );
+        setParams(router, params);
+        setInputValue(savedQuery);
+      }
+    }
+  }, [searchParams]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setInputValue(event.target.value);
@@ -16,7 +40,15 @@ export const SearchBar: React.FC<SearchBarProps> = (props) => {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    props.handleQueryChange(inputValue.trim());
+    const newSearchQuery = inputValue.trim();
+    const params = getParams(
+      DEFAULT_PAGE.toString(),
+      newSearchQuery,
+      searchParams && searchParams.get('details')
+    );
+
+    saveSearchQuery(newSearchQuery);
+    setParams(router, params);
   }
 
   return (
@@ -39,7 +71,7 @@ export const SearchBar: React.FC<SearchBarProps> = (props) => {
         >
           <SearchIcon className="h-5 w-5" />
         </button>
-        <ErrorGenerator />
+        {/* <ErrorGenerator />  */}
         <ThemeToggle />
       </div>
     </form>
