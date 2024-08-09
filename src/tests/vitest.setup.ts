@@ -23,7 +23,7 @@ const mockRouter = {
   isReady: true,
 };
 
-vi.mock('next/router', async (importOriginal) => {
+vi.mock('next/router', async (importOriginal): Promise<object> => {
   const actual: object = await importOriginal();
   return {
     ...actual,

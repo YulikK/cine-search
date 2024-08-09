@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MoviesItem } from '../../types/api.tsx';
+import { MoviesItem } from '../../types/api';
 
 const initialState: MoviesItem[] = [];
 
@@ -19,4 +19,4 @@ const favoritesSlice = createSlice({
 export const { addFavorite, removeFavorite, clearFavorites } =
   favoritesSlice.actions;
 
-export const { reducer } = favoritesSlice;
+export const favoritesReducer = favoritesSlice.reducer;

@@ -30,8 +30,6 @@ const favorites: MoviesItem[] = [
 ];
 
 describe('FavoritePopup', () => {
-  // let store;
-
   beforeEach(() => {
     vi.clearAllMocks();
   });

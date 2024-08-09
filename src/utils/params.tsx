@@ -2,11 +2,11 @@ import { NextRouter } from 'next/router';
 import { DEFAULT_DETAILS, DEFAULT_PAGE } from '../common/constant';
 import { QueryParams } from '../types/api';
 
-type queryType = string | string[] | undefined;
-type queryParamsType = {
-  query: queryType;
-  page: queryType;
-  details: queryType;
+type QueryType = string | string[] | undefined;
+type QueryParamsType = {
+  query: QueryType;
+  page: QueryType;
+  details: QueryType;
 };
 
 export function updateParams(
@@ -20,9 +20,9 @@ export function updateParams(
 }
 
 export function getParams(
-  page: queryType,
-  query: queryType,
-  details: queryType
+  page: QueryType,
+  query: QueryType,
+  details: QueryType
 ): QueryParams {
   const urlQuery = Array.isArray(query) ? query[0] : query;
   const urlPage = page;
@@ -45,7 +45,7 @@ export function getParams(
   return queryParams;
 }
 
-export function parseParams(queryParams: queryParamsType): QueryParams {
+export function parseParams(queryParams: QueryParamsType): QueryParams {
   const { query, page, details } = queryParams;
   const urlQuery = Array.isArray(query) ? query[0] : query;
   const urlPage = Array.isArray(page) ? page[0] : page;
@@ -62,12 +62,14 @@ export function parseParams(queryParams: queryParamsType): QueryParams {
   return params;
 }
 
-export function setParams(router: NextRouter, params: QueryParams) {
-  router.push({
-    query: {
-      ...(params.page && { page: params.page }),
-      ...(params.query && { query: params.query }),
-      ...(params.details && { details: params.details }),
-    },
-  });
+export function setParams(router: NextRouter, params: QueryParams): void {
+  router
+    .push({
+      query: {
+        ...(params.page && { page: params.page }),
+        ...(params.query && { query: params.query }),
+        ...(params.details && { details: params.details }),
+      },
+    })
+    .catch(console.error);
 }

@@ -47,7 +47,7 @@ export interface MoviesDetails {
   voteAverage: number;
 }
 
-type genresServer = {
+type GenresServer = {
   id: number;
   name: string;
 };
@@ -58,7 +58,7 @@ export interface MoviesDetailsServerResponse {
   overview: string;
   backdrop_path: string;
   poster_path: string;
-  genres: genresServer[];
+  genres: GenresServer[];
   original_language: string;
   release_date: string;
   adult: boolean;

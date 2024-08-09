@@ -1,11 +1,11 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import '../assets/styles/global.scss';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { ThemeProvider } from '../hooks/theme-provider';
 import { ErrorBoundary } from '../components/error-boundary/error-boundary';
-import React, { useEffect, useState } from 'react';
 import { wrapper } from '../store/store';
-import { useRouter } from 'next/router';
 import { Loader } from '../components/loader/loader';
 
 const MyApp = ({ Component, ...pageProps }: AppProps) => {

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { Router } from 'next/router';
+import { GetServerSidePropsContext } from 'next';
 import { testMovieList } from '../../tests/mocks/handlers/movies.ts';
 import Movies, { getServerSideProps } from '../index.tsx';
-import { Router } from 'next/router';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { customRender } from '../../tests/custom-render.tsx';
 
 vi.mock('../services/moviesApi', () => ({

@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { MoviesItem } from '../../types/api.tsx';
-import { URL_POSTER } from '../../common/constant.tsx';
-import { StarIcon } from '../icons/star-icon/star-icon.tsx';
-import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
 import Image from 'next/image';
+import { MoviesItem } from '../../types/api';
+import { URL_POSTER } from '../../common/constant';
+import { StarIcon } from '../icons/star-icon/star-icon';
+import { FavoriteButton } from '../button-favorite/button-favorite';
 
 interface MovieCardProps {
   movie: MoviesItem;
@@ -13,19 +13,20 @@ interface MovieCardProps {
 }
 
 export const MovieCard: React.FC<MovieCardProps> = (props) => {
-  const { movie } = props;
+  const { movie, setRef, handleDetailsOpen } = props;
 
   function onClick(event: React.MouseEvent<HTMLLIElement>) {
-    event.stopPropagation();
-    props.handleDetailsOpen(movie.id);
+    event.preventDefault();
+    handleDetailsOpen(movie.id);
   }
   return (
     <li
       key={movie.id}
-      ref={props.setRef}
+      ref={setRef}
       onClick={onClick}
       className="cursor-pointer rounded-md bg-background p-4 hover:drop-shadow-md flex flex-col items-start gap-4 w-[330px]"
     >
+      {/* <button type="button" onClick={onClick} className="link-button"> */}
       <Image
         src={
           movie.posterPath
@@ -57,6 +58,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
           {movie.description}
         </p>
       </div>
+      {/* </button> */}
     </li>
   );
 };

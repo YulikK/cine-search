@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 
+const IS_DARK_THEME_DEFAULT = false;
+
+export const ThemeContext = createContext<ThemeContextType>({
+  isDarkTheme: IS_DARK_THEME_DEFAULT,
+  toggleTheme: () => {},
+});
+
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -15,13 +22,6 @@ export interface ThemeContextType {
   isDarkTheme: boolean;
   toggleTheme: () => void;
 }
-
-const IS_DARK_THEME_DEFAULT = false;
-
-export const ThemeContext = createContext<ThemeContextType>({
-  isDarkTheme: IS_DARK_THEME_DEFAULT,
-  toggleTheme: () => {},
-});
 
 export const ThemeProvider = ({
   children,

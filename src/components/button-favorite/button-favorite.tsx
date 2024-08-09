@@ -1,29 +1,25 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { HeartIcon } from '../icons/heart-icon/heart-icon.tsx';
-import {
-  addFavorite,
-  removeFavorite,
-} from '../../store/reducers/favorites.tsx';
-import { RootState } from '../../store/store.tsx';
-import { MoviesItem } from '../../types/api.tsx';
+import { HeartIcon } from '../icons/heart-icon/heart-icon';
+import { addFavorite, removeFavorite } from '../../store/reducers/favorites';
+import { RootState } from '../../store/store';
+import { MoviesItem } from '../../types/api';
 
 export const FavoriteButton: React.FC<{ movie: MoviesItem }> = (props) => {
+  const { movie } = props;
   const dispatch = useDispatch();
   const favorites: MoviesItem[] = useSelector(
     (state: RootState) => state.favorites
   );
-  const isFavorite = favorites.some(
-    (favorite) => favorite.id === props.movie.id
-  );
+  const isFavorite = favorites.some((favorite) => favorite.id === movie.id);
 
   const handleFavorite = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     if (isFavorite) {
-      dispatch(removeFavorite(props.movie));
+      dispatch(removeFavorite(movie));
     } else {
-      dispatch(addFavorite(props.movie));
+      dispatch(addFavorite(movie));
     }
   };
 
@@ -31,6 +27,7 @@ export const FavoriteButton: React.FC<{ movie: MoviesItem }> = (props) => {
     <button
       className="favorite-button rounded-full  text-gray-900"
       onClick={handleFavorite}
+      type="button"
     >
       <HeartIcon
         className={classNames(

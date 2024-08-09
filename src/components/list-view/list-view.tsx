@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { MoviesItem } from '../../types/api.tsx';
-import { MovieCard } from '../movie-card/movie-card.tsx';
-import { NoResults } from '../no-results/no-results.tsx';
+import { MoviesItem } from '../../types/api';
+import { MovieCard } from '../movie-card/movie-card';
+import { NoResults } from '../no-results/no-results';
 
 interface ListViewProps {
   data: MoviesItem[];
@@ -11,22 +11,22 @@ interface ListViewProps {
 }
 
 export const ListView: React.FC<ListViewProps> = (props) => {
-  const { data } = props;
+  const { data, setMovieRef, handleDetailsOpen } = props;
 
   const setRef =
     (movieId: number) =>
     (ref: HTMLLIElement | null): void => {
-      props.setMovieRef(movieId, ref);
+      setMovieRef(movieId, ref);
     };
 
   return data.length ? (
     <ul className={classNames('gap-4', 'flex', 'flex-wrap', 'justify-evenly')}>
-      {data.map((item, index) => (
+      {data.map((item) => (
         <MovieCard
-          key={index}
+          key={item.id}
           movie={item}
           setRef={setRef(item.id)}
-          handleDetailsOpen={props.handleDetailsOpen}
+          handleDetailsOpen={handleDetailsOpen}
         />
       ))}
     </ul>

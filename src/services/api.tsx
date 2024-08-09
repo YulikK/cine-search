@@ -1,23 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
+import { HYDRATE } from 'next-redux-wrapper';
+import { Action, PayloadAction } from '@reduxjs/toolkit';
 import {
   JSON_ACCEPT_HEADER,
   TOKEN,
   URL_API,
   URL_SEARCH_API,
   DEFAULT_MOVIE_LIST,
-} from '../common/constant.tsx';
+} from '../common/constant';
 import {
   Movie,
   MovieAdaptResponse,
   MoviesDetails,
   MoviesDetailsServerResponse,
   QueryParams,
-} from '../types/api.tsx';
-import { HYDRATE } from 'next-redux-wrapper';
-import { Action, PayloadAction } from '@reduxjs/toolkit';
-
-type RootState = any;
+} from '../types/api';
+import { RootStateApi } from '../types/store';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: URL_API,
@@ -27,10 +25,21 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+function isHydrateAction(
+  action: Action
+): action is PayloadAction<RootStateApi> {
+  return action.type === HYDRATE;
+}
 
 export const moviesApi = createApi({
   reducerPath: 'moviesApi',
   baseQuery,
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (isHydrateAction(action)) {
+      return action.payload[reducerPath];
+    }
+    return undefined;
+  },
   endpoints: (builder) => ({
     getMovie: builder.query<MovieAdaptResponse, QueryParams>({
       query: (params) => {
@@ -50,7 +59,7 @@ export const moviesApi = createApi({
       }): MovieAdaptResponse => ({
         totalPages: response.total_pages,
         results: response.results.map((item) => ({
-          id: parseInt(item.id.toString()),
+          id: parseInt(item.id.toString(), 10),
           name: item.title,
           description: item.overview,
           posterPath: item.poster_path || '',
@@ -88,16 +97,7 @@ export const moviesApi = createApi({
       }),
     }),
   }),
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (isHydrateAction(action)) {
-      return action.payload[reducerPath];
-    }
-  },
 });
-
-function isHydrateAction(action: Action): action is PayloadAction<RootState> {
-  return action.type === HYDRATE;
-}
 
 export const {
   useGetMovieQuery,

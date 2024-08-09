@@ -9,14 +9,14 @@ const handleQueryChange = vi.fn();
 describe('SearchBar', () => {
   it('renders correctly', () => {
     customRender(
-      <SearchBar searchValue={''} handleQueryChange={handleQueryChange} />
+      <SearchBar searchValue="" handleQueryChange={handleQueryChange} />
     );
     expect(screen.getByPlaceholderText('Search movies...')).toBeInTheDocument();
   });
 
   it('updates input value on change', () => {
     customRender(
-      <SearchBar searchValue={''} handleQueryChange={handleQueryChange} />
+      <SearchBar searchValue="" handleQueryChange={handleQueryChange} />
     );
     const input: HTMLInputElement =
       screen.getByPlaceholderText('Search movies...');
@@ -26,7 +26,7 @@ describe('SearchBar', () => {
 
   it('calls handleQueryChange with correct parameters on form submit', () => {
     customRender(
-      <SearchBar searchValue={''} handleQueryChange={handleQueryChange} />
+      <SearchBar searchValue="" handleQueryChange={handleQueryChange} />
     );
     const input = screen.getByPlaceholderText('Search movies...');
     fireEvent.change(input, { target: { value: 'Matrix' } });

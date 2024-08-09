@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { SearchIcon } from '../icons/search-icon/search-icon.tsx';
-import { ErrorGenerator } from '../error-generator/error-generator.tsx';
-import { ThemeToggle } from '../button-theme/button-theme.tsx';
+import { SearchIcon } from '../icons/search-icon/search-icon';
+import { ErrorGenerator } from '../error-generator/error-generator';
+import { ThemeToggle } from '../button-theme/button-theme';
 
 interface SearchBarProps {
   searchValue: string;
   handleQueryChange: (query: string) => void;
 }
 export const SearchBar: React.FC<SearchBarProps> = (props) => {
-  const [inputValue, setInputValue] = useState(props.searchValue);
+  const { searchValue, handleQueryChange } = props;
+  const [inputValue, setInputValue] = useState(searchValue);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setInputValue(event.target.value);
@@ -16,7 +17,7 @@ export const SearchBar: React.FC<SearchBarProps> = (props) => {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    props.handleQueryChange(inputValue.trim());
+    handleQueryChange(inputValue.trim());
   }
 
   return (

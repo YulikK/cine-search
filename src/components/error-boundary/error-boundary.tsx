@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { AlertIcon } from '../icons/alert-icon/alert-icon.tsx';
+import { AlertIcon } from '../icons/alert-icon/alert-icon';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -11,10 +11,13 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
-  state: State = {
-    hasError: false,
-    errorMessage: '',
-  };
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+      errorMessage: '',
+    };
+  }
 
   static getDerivedStateFromError(): State {
     return { hasError: true, errorMessage: '' };
@@ -26,7 +29,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
   }
 
   render(): ReactNode {
-    if (this.state.hasError) {
+    const { hasError, errorMessage } = this.state;
+    const { children } = this.props;
+    if (hasError) {
       return (
         <div className="mb-6 flex items-center justify-center bg-background">
           <div className="bg-red-500 text-red-50 p-6 rounded-2xl shadow-lg w-full max-w-md">
@@ -38,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
                 <h2 className="text-2xl font-bold">
                   Oops, something went wrong!
                 </h2>
-                <p className="text-sm mt-1">{this.state.errorMessage}</p>
+                <p className="text-sm mt-1">{errorMessage}</p>
               </div>
             </div>
           </div>
@@ -46,6 +51,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
