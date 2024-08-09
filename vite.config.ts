@@ -17,7 +17,7 @@ export default defineConfig({
         'vite.config.ts',
         'postcss.config.js',
         'tailwind.config.js',
-        '.eslintrc.js',
+        '.eslintrc.cjs',
         'svg.d.ts',
         'typings.d.ts',
         '**/*.spec.{js,jsx,ts,tsx}',

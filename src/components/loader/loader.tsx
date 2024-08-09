@@ -11,6 +11,7 @@ export const Loader: React.FC = () => (
         height={100}
         width={100}
       />
+      <p className="text-gray-500">Loading...</p>
     </div>
   </div>
 );

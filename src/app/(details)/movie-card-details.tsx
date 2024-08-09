@@ -17,7 +17,9 @@ export const getData = async (
   return movieDetails;
 };
 
-export const MovieCardDetails: React.FC<MovieDetailsProps> = async (props) => {
+export const MovieCardDetails = async (
+  props: MovieDetailsProps
+): Promise<React.ReactElement> => {
   const selectedMovie = await getData(props.details);
 
   if (!selectedMovie) {

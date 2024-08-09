@@ -4,5 +4,5 @@ import { Loader } from './loader.tsx';
 
 test('renders Loader correctly', () => {
   render(<Loader />);
-  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  expect(screen.getByAltText('Loader')).toBeInTheDocument();
 });

@@ -9,7 +9,6 @@ import { URL_POSTER } from '../../common/constant.tsx';
 import { StarIcon } from '../icons/star-icon/star-icon.tsx';
 import { FavoriteButton } from '../button-favorite/button-favorite.tsx';
 import { getParams, setParams } from '../../utils/params.tsx';
-// import { LoaderWrap } from '../loader-wrapper/loader-wrapper.tsx';
 
 interface MovieCardProps {
   movie: MoviesItem;
@@ -31,7 +30,6 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
     setParams(router, params);
   }
   return (
-    // <LoaderWrap>
     <li
       key={movie.id}
       onClick={onClick}
@@ -69,6 +67,5 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
         </p>
       </div>
     </li>
-    // </LoaderWrap>
   );
 };

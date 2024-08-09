@@ -14,9 +14,6 @@ vi.mock('./no-results.tsx', () => ({
   NoResults: (): React.ReactElement => <div>No Results Found</div>,
 }));
 
-const setRef = vi.fn();
-const handleDetailsOpen = vi.fn();
-
 const mockData: MoviesItem[] = [
   {
     id: 1,
@@ -36,26 +33,14 @@ const mockData: MoviesItem[] = [
 
 describe('ListView Component', () => {
   it('renders movie cards when data is provided', () => {
-    customRender(
-      <ListView
-        data={mockData}
-        setMovieRef={setRef}
-        handleDetailsOpen={handleDetailsOpen}
-      />
-    );
+    customRender(<ListView data={mockData} />);
     const movieCards = screen.getAllByRole('listitem');
     expect(movieCards.length).toBe(2);
     expect(movieCards[0]).toHaveTextContent(mockData[0].name);
     expect(movieCards[1]).toHaveTextContent(mockData[1].name);
   });
   it('renders "No Results" when data is empty', () => {
-    customRender(
-      <ListView
-        data={[]}
-        setMovieRef={setRef}
-        handleDetailsOpen={handleDetailsOpen}
-      />
-    );
+    customRender(<ListView data={[]} />);
     expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 });

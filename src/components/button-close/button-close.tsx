@@ -21,7 +21,6 @@ export const CloseButton: React.FC = () => {
       DEFAULT_DETAILS.toString()
     );
 
-    // dispatch(setMovieDetails(null));
     setParams(router, params);
     dispatch(setMovieDetails(null));
   }

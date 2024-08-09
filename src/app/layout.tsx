@@ -3,7 +3,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { ThemeProvider } from '../hooks/theme-provider.tsx';
 import { StoreWrap } from '../components/store-wrap/store-wrap.tsx';
-import { LoaderWrap } from '../components/loader-wrapper/loader-wrapper.tsx';
+import { ThemeWrap } from '../components/theme-wrap/theme-wrap.tsx';
 
 export const metadata: Metadata = {
   title: 'React Movie',
@@ -32,7 +32,7 @@ const RootLayout = ({
       <React.StrictMode>
         <StoreWrap>
           <ThemeProvider>
-            <LoaderWrap>{children}</LoaderWrap>
+            <ThemeWrap>{children}</ThemeWrap>
           </ThemeProvider>
         </StoreWrap>
       </React.StrictMode>

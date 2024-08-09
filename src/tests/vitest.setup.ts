@@ -6,30 +6,16 @@ if (typeof window !== 'undefined') {
   global.URL.createObjectURL = vi.fn(() => 'http://localhost/fakeUrl');
 }
 
-// const mockRouter = {
-//   events: {
-//     on: vi.fn(),
-//     off: vi.fn(),
-//     emit: vi.fn(),
-//   },
-//   query: {},
-//   push: vi.fn(),
-//   replace: vi.fn(),
-//   pathname: '',
-//   route: '',
-//   asPath: '',
-//   basePath: '',
-//   isLocaleDomain: false,
-//   isReady: true,
-// };
+export const testGetParams = vi.fn();
+export const testRouterPush = vi.fn();
 
-// vi.mock('next/router', async (importOriginal) => {
-//   const actual: object = await importOriginal();
-//   return {
-//     ...actual,
-//     useRouter: () => mockRouter,
-//   };
-// });
+vi.mock('next/navigation', () => ({
+  useRouter: (): { push: () => void } => ({ push: testRouterPush }),
+  usePathname: (): string => '/',
+  useSearchParams: (): object => ({
+    get: testGetParams,
+  }),
+}));
 
 beforeAll(() => {
   server.listen({

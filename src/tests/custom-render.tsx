@@ -8,7 +8,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore;
 }
 export function customRender(
-  ui: ReactElement,
+  component: ReactElement,
   {
     preloadedState = {},
     store = makeStore(preloadedState),
@@ -19,5 +19,8 @@ export function customRender(
     return <Provider store={store}>{children}</Provider>;
   }
 
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  return {
+    store,
+    ...render(component, { wrapper: Wrapper, ...renderOptions }),
+  };
 }
