@@ -1,8 +1,8 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
-import { SearchBar } from './search-bar.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { SearchBar } from './search-bar';
+import { customRender } from '../../tests/custom-render';
 
 const handleQueryChange = vi.fn();
 

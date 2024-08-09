@@ -1,6 +1,6 @@
 import React from 'react';
-import { SearchIcon } from '../icons/search-icon/search-icon.tsx';
-import { ButtonBackHome } from '../button-back-home/button-back-home.tsx';
+import { SearchIcon } from '../icons/search-icon/search-icon';
+import { ButtonBackHome } from '../button-back-home/button-back-home';
 
 export const NoResults: React.FC = () => (
   <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">

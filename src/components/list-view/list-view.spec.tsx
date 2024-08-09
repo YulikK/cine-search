@@ -1,16 +1,16 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
-import { ListView } from './list-view.tsx';
-import { MoviesItem } from '../../types/api.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { ListView } from './list-view';
+import { MoviesItem } from '../../types/api';
+import { customRender } from '../../tests/custom-render';
 
-vi.mock('./movie-card/movie-card.tsx', () => ({
+vi.mock('./movie-card/movie-card', () => ({
   MovieCard: ({ movie }: { movie: MoviesItem }): JSX.Element => (
     <div data-tested="movie-card">{movie.name}</div>
   ),
 }));
-vi.mock('./no-results.tsx', () => ({
+vi.mock('./no-results', () => ({
   NoResults: (): React.ReactElement => <div>No Results Found</div>,
 }));
 

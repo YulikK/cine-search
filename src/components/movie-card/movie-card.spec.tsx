@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MoviesItem } from '../../types/api.tsx';
-import { MovieCard } from './movie-card.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
-import { NO_POSTER_IMG } from '../../common/constant.tsx';
+import { MoviesItem } from '../../types/api';
+import { MovieCard } from './movie-card';
+import { customRender } from '../../tests/custom-render';
+import { NO_POSTER_IMG } from '../../common/constant';
 
 const mockMovie: MoviesItem = {
   id: 1,

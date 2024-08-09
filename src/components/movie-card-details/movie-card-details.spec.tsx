@@ -1,9 +1,9 @@
 import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
-import { MovieCardDetails } from './movie-card-details.tsx';
-import { MoviesDetails } from '../../types/api.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { MovieCardDetails } from './movie-card-details';
+import { MoviesDetails } from '../../types/api';
+import { customRender } from '../../tests/custom-render';
 
 const mockMovie: MoviesDetails = {
   id: '1',

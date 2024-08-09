@@ -3,9 +3,9 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Router } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
-import { testMovieList } from '../../tests/mocks/handlers/movies.ts';
-import Movies, { getServerSideProps } from '../index.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { testMovieList } from '../../tests/mocks/handlers/movies';
+import Movies, { getServerSideProps } from '../index';
+import { customRender } from '../../tests/custom-render';
 
 vi.mock('../services/moviesApi', () => ({
   useGetMovieQuery: vi.fn(),

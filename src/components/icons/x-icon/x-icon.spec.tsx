@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { XIcon } from './x-icon.tsx';
+import { XIcon } from './x-icon';
 
 describe('XIcon', () => {
   it('renders successfully', () => {

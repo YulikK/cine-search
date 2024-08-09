@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { BugIcon } from './bug-icon.tsx';
+import { BugIcon } from './bug-icon';
 
 describe('BugIcon', () => {
   it('renders successfully', () => {

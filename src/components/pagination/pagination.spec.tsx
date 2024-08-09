@@ -2,8 +2,8 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Pagination } from './pagination.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { Pagination } from './pagination';
+import { customRender } from '../../tests/custom-render';
 
 const handlePageChange = vi.fn();
 const user = userEvent.setup();

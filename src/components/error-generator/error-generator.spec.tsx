@@ -3,7 +3,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ErrorGenerator } from './error-generator.tsx';
+import { ErrorGenerator } from './error-generator';
 
 describe('ErrorGenerator Component', () => {
   it('renders without crashing', () => {

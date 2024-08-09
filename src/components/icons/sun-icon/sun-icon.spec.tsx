@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SunIcon } from './sun-icon.tsx';
+import { SunIcon } from './sun-icon';
 
 describe('SunIcon', () => {
   it('renders successfully', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SearchIcon } from './search-icon.tsx';
+import { SearchIcon } from './search-icon';
 
 describe('SearchIcon', () => {
   it('renders successfully', () => {

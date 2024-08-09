@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { AppStore, makeStore, PreloadStore } from '../store/store.tsx';
+import { AppStore, makeStore, PreloadStore } from '../store/store';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadStore;

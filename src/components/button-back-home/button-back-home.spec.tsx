@@ -1,9 +1,8 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ButtonBackHome } from './button-back-home.tsx';
-import { DEFAULT_PAGE } from '../../common/constant.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { ButtonBackHome } from './button-back-home';
+import { DEFAULT_PAGE } from '../../common/constant';
+import { customRender } from '../../tests/custom-render';
 
 const mockPush = vi.fn();
 
@@ -26,8 +25,6 @@ describe('ButtonBackHome', () => {
     customRender(<ButtonBackHome />);
 
     const link = screen.getByRole('link', { name: /back to homepage/i });
-    expect(link).toHaveAttribute('href', `?page=${DEFAULT_PAGE}`);
-
-    await userEvent.click(link);
+    expect(link).toHaveAttribute('href', `/?page=${DEFAULT_PAGE}`);
   });
 });

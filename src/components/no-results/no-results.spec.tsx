@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NoResults } from './no-results.tsx';
-import { customRender } from '../../tests/custom-render.tsx';
+import { NoResults } from './no-results';
+import { customRender } from '../../tests/custom-render';
 
 describe('NoResults component', () => {
   it('renders correctly', () => {

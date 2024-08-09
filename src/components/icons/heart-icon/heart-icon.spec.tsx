@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { HeartIcon } from './heart-icon.tsx';
+import { HeartIcon } from './heart-icon';
 
 describe('HeartIcon', () => {
   it('renders successfully', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { DownloadIcon } from './download-icon.tsx';
+import { DownloadIcon } from './download-icon';
 
 describe('DownloadIcon', () => {
   it('renders successfully', () => {

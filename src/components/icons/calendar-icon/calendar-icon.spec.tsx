@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { CalendarIcon } from './calendar-icon.tsx';
+import { CalendarIcon } from './calendar-icon';
 
 describe('CalendarIcon', () => {
   it('renders successfully', () => {

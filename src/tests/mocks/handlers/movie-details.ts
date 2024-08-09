@@ -1,6 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
-import { URL_API } from '../../../common/constant.tsx';
+import { URL_API } from '../../../common/constant';
 
 const noResult = {
   success: false,

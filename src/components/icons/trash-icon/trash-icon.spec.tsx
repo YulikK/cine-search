@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TrashIcon } from './trash-icon.tsx';
+import { TrashIcon } from './trash-icon';
 
 describe('TrashIcon', () => {
   it('renders successfully', () => {

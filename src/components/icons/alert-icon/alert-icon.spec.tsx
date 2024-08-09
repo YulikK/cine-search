@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { AlertIcon } from './alert-icon.tsx';
+import { AlertIcon } from './alert-icon';
 
 describe('AlertIcon', () => {
   it('renders successfully', () => {

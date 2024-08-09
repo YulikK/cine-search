@@ -1,4 +1,4 @@
-import { server } from './mocks/server.ts';
+import { server } from './mocks/server';
 import '@testing-library/jest-dom';
 
 if (typeof window !== 'undefined') {
@@ -13,7 +13,7 @@ const mockRouter = {
     emit: vi.fn(),
   },
   query: {},
-  push: vi.fn(),
+  push: vi.fn().mockResolvedValue(undefined),
   replace: vi.fn(),
   pathname: '',
   route: '',

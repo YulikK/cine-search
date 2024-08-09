@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { ErrorBoundary } from './error-boundary.tsx';
+import { ErrorBoundary } from './error-boundary';
 
 const ProblematicComponent: React.FC = () => {
   throw new Error('Test error');

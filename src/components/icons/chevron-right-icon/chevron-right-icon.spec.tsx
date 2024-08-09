@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ChevronRightIcon } from './chevron-right-icon.tsx';
+import { ChevronRightIcon } from './chevron-right-icon';
 
 describe('ChevronRightIcon', () => {
   it('renders successfully', () => {

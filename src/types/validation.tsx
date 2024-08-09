@@ -1,4 +1,4 @@
-import { MoviesDetailsServerResponse, MovieServerResponse } from './api.tsx';
+import { MoviesDetailsServerResponse, MovieServerResponse } from './api';
 
 export function isMovieListData(data: unknown): data is MovieServerResponse {
   return Boolean(

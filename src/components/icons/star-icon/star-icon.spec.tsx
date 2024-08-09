@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StarIcon } from './star-icon.tsx';
+import { StarIcon } from './star-icon';
 
 describe('StarIcon', () => {
   it('renders successfully', () => {

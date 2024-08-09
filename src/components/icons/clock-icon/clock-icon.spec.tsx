@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ClockIcon } from './clock-icon.tsx';
+import { ClockIcon } from './clock-icon';
 
 describe('ClockIcon', () => {
   it('renders successfully', () => {

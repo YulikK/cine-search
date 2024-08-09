@@ -4,7 +4,7 @@ import {
   DEFAULT_MOVIE_LIST,
   URL_API,
   URL_SEARCH_API,
-} from '../../../common/constant.tsx';
+} from '../../../common/constant';
 
 export const testMovieList = {
   page: 1,

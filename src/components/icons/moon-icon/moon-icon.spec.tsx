@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MoonIcon } from './moon-icon.tsx';
+import { MoonIcon } from './moon-icon';
 
 describe('MoonIcon', () => {
   it('renders successfully', () => {

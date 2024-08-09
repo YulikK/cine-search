@@ -1,4 +1,4 @@
-import { GUID_STORE } from '../common/constant.tsx';
+import { GUID_STORE } from '../common/constant';
 
 export const saveSearchQuery = (query: string): void => {
   if (typeof window !== 'undefined') {
