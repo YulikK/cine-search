@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import React from 'react';
-import Page404 from '../404';
-import { customRender } from '../../tests/custom-render';
+import Page404 from '../../pages/404';
+import { customRender } from '../custom-render';
 
 describe('Page404', () => {
   it('renders the 404 page correctly', () => {

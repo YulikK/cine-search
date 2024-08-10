@@ -20,8 +20,8 @@ import { getParams, setParams } from '../utils/params';
 import { getSearchQuery, saveSearchQuery } from '../services/storage';
 import { MovieCardDetails } from '../components/movie-card-details/movie-card-details';
 
-export const getServerSideProps: GetServerSideProps =
-  wrapper.getServerSideProps((store) => async (context) => {
+const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
     const { query, page, details } = context.query;
     const params = getParams(page, query, details);
 
@@ -38,7 +38,8 @@ export const getServerSideProps: GetServerSideProps =
     return {
       props: {},
     };
-  });
+  }
+);
 
 const Movies: React.FC = () => {
   const router = useRouter();
@@ -171,3 +172,4 @@ const Movies: React.FC = () => {
 };
 
 export default Movies;
+export { getServerSideProps };

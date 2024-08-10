@@ -17,6 +17,7 @@ export const MovieCard: React.FC<MovieCardProps> = (props) => {
 
   function onClick(event: React.MouseEvent<HTMLLIElement>) {
     event.preventDefault();
+    event.stopPropagation();
     handleDetailsOpen(movie.id);
   }
   return (

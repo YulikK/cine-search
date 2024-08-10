@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
-import Link from 'next/link';
 import { RootState } from '../../store/store';
 import { HeartIcon } from '../icons/heart-icon/heart-icon';
 import { DownloadIcon } from '../icons/download-icon/download-icon';
@@ -40,15 +39,14 @@ export const FavoritePopup: React.FC = () => {
     favorites.length > 0 && (
       <div className="fixed bottom-4 right-4 bg-background rounded-full shadow-md w-16 h-16 flex items-start justify-center hover:w-16 hover:h-36 transition-all duration-300 group z-10">
         <div className="flex items-center justify-center gap-2 flex-col opacity-0 group-hover:opacity-100 group-hover:gap-4 group-hover:py-3 group-hover:px-3 transition-all ">
-          <Link
+          <a
             href={downloadUrl}
             download={`${favorites.length}_movies.csv`}
             className="text-secondary-foreground hover:text-destructive"
-            role="link"
             aria-label="download"
           >
             <DownloadIcon className="w-6 h-6" />
-          </Link>
+          </a>
           <button
             type="button"
             className="text-secondary-foreground hover:text-destructive"
