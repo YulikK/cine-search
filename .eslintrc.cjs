@@ -1,55 +1,89 @@
+/**
+ * This is intended to be a basic starting point for linting in your app.
+ * It relies on recommended configs out of the box for simplicity, but you can
+ * and should modify this configuration to best suit your team's needs.
+ */
+
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'airbnb-base',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:react/recommended',
-    'prettier',
-  ],
   parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
-  },
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'react-compiler', 'import', '@typescript-eslint'],
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    'import/prefer-default-export': 'off',
-    'no-console': ['error', { allow: ['warn', 'error'] }],
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unsafe-assignment': 'error',
-    'react-compiler/react-compiler': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: [
-          '**/*.spec.tsx',
-          '**/*.spec.ts',
-          '**/vitest.setup.ts',
-        ],
-      },
-    ],
-    'no-param-reassign': [
-      'error',
-      {
-        props: true,
-        ignorePropertyModificationsFor: ['state'],
-      },
-    ],
-  },
-
-  settings: {
-    react: {
-      version: 'detect',
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
     },
   },
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
+  },
+  ignorePatterns: ['!**/.server', '!**/.client', 'public/build/**'],
+
+  // Base config
+  extends: ['eslint:recommended'],
+
+  overrides: [
+    // React
+    {
+      files: ['**/*.{js,jsx,ts,tsx}'],
+      plugins: ['react', 'jsx-a11y'],
+      extends: [
+        'plugin:react/recommended',
+        'plugin:react/jsx-runtime',
+        'plugin:react-hooks/recommended',
+        'plugin:jsx-a11y/recommended',
+      ],
+      settings: {
+        react: {
+          version: 'detect',
+        },
+        formComponents: ['Form'],
+        linkComponents: [
+          { name: 'Link', linkAttribute: 'to' },
+          { name: 'NavLink', linkAttribute: 'to' },
+        ],
+        'import/resolver': {
+          typescript: {},
+        },
+      },
+    },
+
+    // Typescript
+    {
+      files: ['**/*.{ts,tsx}'],
+      plugins: ['@typescript-eslint', 'import'],
+      parser: '@typescript-eslint/parser',
+      settings: {
+        'import/internal-regex': '^~/',
+        'import/resolver': {
+          node: {
+            extensions: ['.ts', '.tsx'],
+          },
+          typescript: {
+            alwaysTryTypes: true,
+          },
+        },
+      },
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
+      ],
+      rules: {
+        'jsx-a11y/no-noninteractive-element-interactions': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off',
+        'react-hooks/exhaustive-deps': 'off',
+      },
+    },
+
+    // Node
+    {
+      files: ['.eslintrc.cjs'],
+      env: {
+        node: true,
+      },
+    },
+  ],
 };
