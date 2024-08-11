@@ -1,5 +1,5 @@
 echo "Running tests..."
-npx vitest run
+npx vitest run --config vite.config.vitest.ts
 
 status=$?
 if [ $status -ne 0 ]; then
