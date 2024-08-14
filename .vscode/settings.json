@@ -3,5 +3,6 @@
     "tsbuildinfo"
   ],
   "css.customData": [".vscode/tailwind.json"],
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "prettier.prettierPath": "node_modules/prettier/index.cjs",
 }
