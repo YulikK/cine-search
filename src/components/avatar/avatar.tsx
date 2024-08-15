@@ -11,7 +11,7 @@ export const Avatar = (props: PropsType) => {
   const avatarSrc = src || getRandomAvatar();
 
   return (
-    <span className="relative flex shrink-0 overflow-hidden rounded-full h-24 w-24 bg-white">
+    <span className="relative flex shrink-0 overflow-hidden rounded-full h-24 w-24 bg-white border">
       <img
         className="aspect-square h-full w-full"
         alt="avatar"

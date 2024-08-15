@@ -6,7 +6,7 @@ type PropsType = {
 };
 export const UserCard = ({ user }: PropsType) => {
   return (
-    <div className="container p-4 md:px-6 shadow-sm bg-card border rounded-lg">
+    <div className="container p-4 md:px-6 shadow-sm bg-card border rounded-lg w-max">
       <div className="flex items-center gap-4">
         <Avatar src={user.avatar} />
         <div className="flex flex-col gap-2">
