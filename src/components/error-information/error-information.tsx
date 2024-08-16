@@ -31,8 +31,9 @@ const ErrorInformation = <T extends FieldValues>({
         touchedFields,
         field
       );
-      const errorMessage =
-        isTouched && errors[field] ? getErrorMessage(errors[field]) : '';
+      const isHasError =
+        (field === 'gender' && errors[field]) || (isTouched && errors[field]);
+      const errorMessage = isHasError ? getErrorMessage(errors[field]) : '';
       return errorMessage;
     })
     .filter((message) => message !== '');

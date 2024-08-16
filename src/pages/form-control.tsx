@@ -8,7 +8,15 @@ import { useEffect } from 'react';
 import Input from '../components/input/input';
 import ErrorInformation from '../components/error-information/error-information';
 import { RadioButton } from '../components/radio-button/radio-button';
-import PasswordLevel from '../components/password-level/password-level';
+// import PasswordLevel from '../components/password-level/password-level';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../store/store';
+import CountryAutocomplete from '../components/country-autocomplite/country-autocomplite';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+// import ShowPassword from '../components/show-password/show-password';
+import { PasswordInput } from '../components/password-input/password-input';
+import { CheckboxButton } from '../components/checkbox/checkbox';
 
 export interface FormInput {
   name: string;
@@ -17,85 +25,146 @@ export interface FormInput {
   gender: Gender;
   password: string;
   confirmPassword: string;
+  country: string;
+  terms: boolean;
 }
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .matches(/^[A-Z]/, 'Must start with an uppercase letter')
-    .required('Name is required'),
-  age: yup
-    .number()
-    .transform((value, originalValue) =>
-      originalValue.trim() === '' ? null : value
-    )
-    .nullable()
-    .positive('Age must be a positive number')
-    .required('Age is required'),
-  gender: yup
-    .mixed<Gender>()
-    .oneOf(Object.values(Gender), 'Gender must be either male or female')
-    .required('Gender is required'),
-  email: yup
-    .string()
-    .matches(
-      /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,
-      'Email must be a valid email'
-    )
-    .required('Email is required'),
-  password: yup.string().required('Password is required'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'Passwords must match')
-    .required('Confirm Password is required'),
-});
-
 const FormControlPage = () => {
+  const countries = useSelector(
+    (state: RootState) => state.countries.countries
+  );
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .matches(/^[A-Z]/, 'Must start with an uppercase letter')
+      .required('Name is required'),
+    age: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue.trim() === '' ? null : value
+      )
+      .nullable()
+      .positive('Age must be a positive number')
+      .required('Age is required'),
+    gender: yup
+      .mixed<Gender>()
+      .oneOf(Object.values(Gender), 'Gender must be either male or female')
+      .required('Gender is required'),
+    email: yup
+      .string()
+      .matches(
+        /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,
+        'Email must be a valid email'
+      )
+      .required('Email is required'),
+    password: yup.string().required('Password is required'),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password')], 'Passwords must match')
+      .required('Confirm Password is required'),
+    country: yup
+      .string()
+      .required('Country is required')
+      .test(
+        'is-valid-country',
+        'Country must be one of the available options',
+        (value) => {
+          return countries.includes(value || '');
+        }
+      ),
+    terms: yup
+      .boolean()
+      .oneOf([true], 'You must accept the terms and conditions')
+      .required('Country is required'),
+  });
+
   const {
     register,
     handleSubmit,
     trigger,
     watch,
+    setError,
     formState: { errors, touchedFields, isValid },
   } = useForm<FormInput>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver<FormInput>(schema),
     mode: 'all',
   });
 
-  const name = watch('name');
-  const email = watch('email');
-  const age = watch('age');
+  // const name = watch('name');
+  // const email = watch('email');
+  // const age = watch('age');
   const gender = watch('gender');
   const password = watch('password');
-  const confirmPassword = watch('confirmPassword');
+  const terms = watch('terms');
+  // console.log(gender);
+  // const confirmPassword = watch('confirmPassword');
+  // const country = watch('country');
 
-  useEffect(() => {
-    trigger('name');
-  }, [name, trigger]);
+  // useEffect(() => {
+  //   trigger('name');
+  //   allFieldsValidExceptGender()
+  // }, [name, trigger]);
 
-  useEffect(() => {
-    trigger('email');
-  }, [email, trigger]);
+  // useEffect(() => {
+  //   trigger('email');
+  //   allFieldsValidExceptGender()
+  // }, [email, trigger]);
 
-  useEffect(() => {
-    trigger('age');
-  }, [age, trigger]);
+  // useEffect(() => {
+  //   trigger('age');
+  //   allFieldsValidExceptGender()
+  // }, [age, trigger]);
 
-  useEffect(() => {
-    trigger('gender');
-  }, [gender, trigger]);
+  // useEffect(() => {
+  //   trigger('gender');
+  // }, [gender, trigger]);
 
   useEffect(() => {
     trigger('password');
     trigger('confirmPassword');
   }, [password, trigger]);
 
-  useEffect(() => {
-    trigger('confirmPassword');
-  }, [confirmPassword, trigger]);
+  // useEffect(() => {
+  //   allFieldsValidExceptGender();
+  // }, [password, name, email, age, confirmPassword, country, gender]);
+
+  // useEffect(() => {
+  //   trigger('confirmPassword');
+  //   allFieldsValidExceptGender()
+  // }, [confirmPassword, trigger]);
+
+  // useEffect(() => {
+  //   trigger('country');
+  //   allFieldsValidExceptGender()
+  // }, [country, trigger]);
 
   const onSubmit = (data: Partial<User>) => {
     console.log(data);
+  };
+
+  const allFieldsValidExceptGender = () => {
+    const { gender: errorGender, ...otherErrors } = errors;
+    const { gender: touchedGender, ...otherTouchedFields } = touchedFields;
+
+    const allFieldsValid = Object.keys(otherErrors).length === 0;
+    const allFieldsTouched =
+      Object.keys(otherTouchedFields).length ===
+      Object.keys(schema.fields).length - 1;
+
+    if (
+      allFieldsValid &&
+      allFieldsTouched &&
+      !touchedGender &&
+      !gender &&
+      !errorGender
+    ) {
+      setError('gender', {
+        type: 'manual',
+        message: 'Gender is required',
+      });
+    }
+
+    return !gender && allFieldsValid && allFieldsTouched;
   };
 
   return (
@@ -154,6 +223,8 @@ const FormControlPage = () => {
                       <RadioButton
                         htmlFor={`gender-${Gender.F}`}
                         checked={gender === Gender.F}
+                        errors={errors}
+                        isError={allFieldsValidExceptGender()}
                       >
                         <Input
                           id={'gender'}
@@ -173,6 +244,8 @@ const FormControlPage = () => {
                       <RadioButton
                         htmlFor={`gender-${Gender.M}`}
                         checked={gender === Gender.M}
+                        errors={errors}
+                        isError={allFieldsValidExceptGender()}
                       >
                         <Input
                           id={'gender'}
@@ -195,7 +268,7 @@ const FormControlPage = () => {
                 <ErrorInformation
                   errors={errors}
                   touchedFields={touchedFields}
-                  fields={['age']}
+                  fields={['age', 'gender']}
                 />
               </div>
               <div className="space-y-2">
@@ -213,39 +286,23 @@ const FormControlPage = () => {
                   touchedFields={touchedFields}
                   fields={['email']}
                 />
-                {/* {touchedFields.email && errors.email && (
-                  <p>{errors.email.message}</p>
-                )} */}
               </div>
-              <div>
+              <div className="space-y-2">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Input
-                        id={'password'}
-                        autoComplete={'new-password'}
-                        type={'password'}
-                        register={register}
-                        errors={errors}
-                        touchedFields={touchedFields}
-                      />
-                      <PasswordLevel password={password} />
-                      {/* <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <img
-                          className="h-5 w-5"
-                          src="/icons/password-1.png"
-                          alt="password level"
-                        />
-                      </div> */}
-                    </div>
+                    <PasswordInput
+                      id={'password'}
+                      register={register}
+                      errors={errors}
+                      touchedFields={touchedFields}
+                      password={password}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
+                    <PasswordInput
                       id={'confirmPassword'}
-                      autoComplete={'confirm-new-password'}
-                      type={'password'}
                       register={register}
                       errors={errors}
                       touchedFields={touchedFields}
@@ -257,6 +314,42 @@ const FormControlPage = () => {
                   touchedFields={touchedFields}
                   fields={['password', 'confirmPassword']}
                 />
+              </div>
+              <div className="space-y-2">
+                <CountryAutocomplete
+                  id={'country'}
+                  register={register}
+                  errors={errors}
+                  touchedFields={touchedFields}
+                />
+                <ErrorInformation
+                  errors={errors}
+                  touchedFields={touchedFields}
+                  fields={['country']}
+                />
+              </div>
+              <div className="space-y-1 flex flex-col">
+                <CheckboxButton
+                  htmlFor={`terms`}
+                  checked={terms}
+                  // errors={errors}
+                  // isError={allFieldsValidExceptGender()}
+                >
+                  <Input
+                    id={'terms'}
+                    autoComplete={'new-terms'}
+                    type={'checkbox'}
+                    register={register}
+                    errors={errors}
+                    touchedFields={touchedFields}
+                  />
+                </CheckboxButton>
+                <ErrorInformation
+                  errors={errors}
+                  touchedFields={touchedFields}
+                  fields={['terms']}
+                />
+                {/* <Label htmlFor="terms">I accept Terms&Conditions</Label> */}
               </div>
             </div>
             <div className="flex items-center p-6">
@@ -272,27 +365,3 @@ const FormControlPage = () => {
 };
 
 export default FormControlPage;
-
-{
-  /* <div>
-      <h1>Form Control Page</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input id="name" {...register('name')} />
-          {errors.name && <p>{errors.name.message}</p>}
-        </div>
-        <div>
-          <label htmlFor="age">Age</label>
-          <input id="age" type="number" {...register('age')} />
-          {errors.age && <p>{errors.age.message}</p>}
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" {...register('email')} />
-          {errors.email && <p>{errors.email.message}</p>}
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div> */
-}

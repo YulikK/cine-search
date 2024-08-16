@@ -8,6 +8,8 @@ import IndexPage from './pages';
 import NotFoundPage from './pages/not-found';
 import FormControlPage from './pages/form-control';
 import FormUncontrolledPage from './pages/form-uncontrolled';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,4 +22,8 @@ const router = createBrowserRouter(
   )
 );
 
-export const App = () => <RouterProvider router={router} />;
+export const App = () => (
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);

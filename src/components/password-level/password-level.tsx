@@ -40,12 +40,14 @@ const PasswordLevel: React.FC<PropsType> = ({ password }) => {
   };
 
   return (
-    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-      <img
-        className="h-5 w-5"
-        src={`/icons/password-${getLevel()}.png`}
-        alt="password level"
-      />
+    <div className="absolute right-2 top-1/2 -translate-y-1/2">
+      {password && (
+        <img
+          className="h-5 w-5"
+          src={`/icons/password-${getLevel()}.png`}
+          alt="password level"
+        />
+      )}
     </div>
   );
 };
