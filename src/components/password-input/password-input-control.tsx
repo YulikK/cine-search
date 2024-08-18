@@ -30,14 +30,10 @@ export const PasswordInputControl = <T extends FieldValues>({
   touchedFields,
   isHasLevel,
 }: PropsType<T>) => {
-  // const showPasswordRef = useRef(false);
-  // const levelRef = useRef<number>(0);
   const [showPassword, setShowPassword] = useState(false);
   const [level, setLevel] = useState<number>(0);
 
   const toggleShowPassword = () => {
-    // showPasswordRef.current = !showPasswordRef.current;
-    // setShowPasswordState(showPasswordRef.current);
     setShowPassword(!showPassword);
   };
 
@@ -45,7 +41,6 @@ export const PasswordInputControl = <T extends FieldValues>({
     if (e.target.value && isHasLevel) {
       const strength = getPasswordStrength(e.target.value);
       const level = getLevel(strength);
-      // levelRef.current = level;
       setLevel(level);
     }
   };

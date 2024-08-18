@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FormFields } from '../../types';
+import { User } from '../../types';
 
 interface FormState {
-  submissions: FormFields[];
+  submissions: User[];
 }
 
 const initialState: FormState = {
@@ -13,7 +13,7 @@ const formSlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    addSubmission: (state, action: PayloadAction<FormFields>) => {
+    addSubmission: (state, action: PayloadAction<User>) => {
       state.submissions.push(action.payload);
     },
   },

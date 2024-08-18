@@ -4,17 +4,6 @@ import {
   UseFormStateReturn,
 } from 'react-hook-form';
 
-export interface User {
-  name: string;
-  email: string;
-  avatar: string;
-  age: number;
-  gender: Gender;
-  country: string;
-  terms: boolean;
-  password: string;
-}
-
 export enum Gender {
   M = 'Male',
   F = 'Female',
@@ -29,8 +18,12 @@ export interface FormFields {
   confirmPassword: string;
   country: string;
   terms: boolean;
-  avatar: File[] | string;
+  avatar: File | FileList;
 }
+
+export type User = Omit<FormFields, 'confirmPassword' | 'avatar'> & {
+  avatar: string;
+};
 
 export const FormFieldsName = {
   name: 'name',
@@ -47,11 +40,9 @@ export const FormFieldsName = {
 export type FormFieldsNameType = keyof typeof FormFieldsName;
 
 export interface BaseFormProps {
-  register?: UseFormRegister<Record<FormFieldsNameType, string>>;
-  errors?: FieldErrors<Record<FormFieldsNameType, string>>;
-  touchedFields?: UseFormStateReturn<
-    Record<FormFieldsNameType, string>
-  >['touchedFields'];
+  register?: UseFormRegister<FormFields>;
+  errors?: FieldErrors<FormFields>;
+  touchedFields?: UseFormStateReturn<FormFields>['touchedFields'];
 }
 
 export enum PasswordStrength {

@@ -1,10 +1,3 @@
-// import {
-//   FieldErrors,
-//   FieldValues,
-//   Path,
-//   UseFormRegister,
-//   UseFormStateReturn,
-// } from 'react-hook-form';
 import ErrorInformation from '../../error-information/error-information';
 import { Label } from '../../label/label';
 
@@ -16,19 +9,7 @@ import {
 import { PasswordInputControl } from '../../password-input/password-input-control';
 import { PasswordInputUncontrolled } from '../../password-input/password-input-uncontrol';
 
-// interface PropsType<T extends FieldValues> {
-//   idPassword: Path<T>;
-//   idPasswordConfirm: Path<T>;
-//   // password?: string;
-//   register?: UseFormRegister<T>;
-//   errors?: FieldErrors<T>;
-//   touchedFields?: UseFormStateReturn<T>['touchedFields'];
-// }
-
 export const PasswordFields = ({
-  // idPassword,
-  // idPasswordConfirm,
-  // password,
   register,
   errors,
   touchedFields,

@@ -1,10 +1,3 @@
-// import {
-//   FieldErrors,
-//   FieldValues,
-//   Path,
-//   UseFormRegister,
-//   UseFormStateReturn,
-// } from 'react-hook-form';
 import ErrorInformation from '../../error-information/error-information';
 import Input from '../../input/input';
 import { Label } from '../../label/label';
@@ -16,19 +9,7 @@ import {
   Gender,
 } from '../../../types';
 
-// interface PropsType<T extends FieldValues> {
-//   idAge: Path<T>;
-//   idGender: Path<T>;
-//   // gender?: Gender;
-//   register?: UseFormRegister<T>;
-//   errors?: FieldErrors<T>;
-//   touchedFields?: UseFormStateReturn<T>['touchedFields'];
-// }
-
 export const AgeGenderFields = ({
-  // idAge,
-  // idGender,
-  // gender,
   register,
   errors,
   touchedFields,
@@ -54,12 +35,10 @@ export const AgeGenderFields = ({
           <div className="flex gap-2">
             <RadioButton
               htmlFor={`${idGender}-${Gender.F}`}
-              // checked={gender === Gender.F}
               {...(errors ? { errors } : {})}
             >
               <Input
                 id={idGender}
-                // autoComplete={idGender}
                 type={'radio'}
                 {...(register ? { register } : {})}
                 {...(errors ? { errors } : {})}
@@ -74,12 +53,10 @@ export const AgeGenderFields = ({
             </RadioButton>
             <RadioButton
               htmlFor={`${idGender}-${Gender.M}`}
-              // checked={gender === Gender.M}
               {...(errors ? { errors } : {})}
             >
               <Input
                 id={idGender}
-                // autoComplete={idGender}
                 type={'radio'}
                 value={Gender.M}
                 {...(register ? { register } : {})}

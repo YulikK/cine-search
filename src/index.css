@@ -69,3 +69,11 @@ label:has(input[type='checkbox']:checked) span {
   background-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
 }
+
+.custom-grid > *:nth-child(2n) {
+  justify-self: end;
+}
+
+.profile-list-grid > *:last-child {
+  background-color: hsl(var(--secondary));
+}

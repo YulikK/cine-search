@@ -12,6 +12,7 @@ export function getValidationSchema(countries: string[]) {
       .transform((value, originalValue) =>
         originalValue.trim() === '' ? null : value
       )
+      .max(120, 'Age must be less than or equal to 120')
       .nullable()
       .positive('Age must be a positive number')
       .required('Age is required'),
@@ -41,25 +42,18 @@ export function getValidationSchema(countries: string[]) {
           return countries.includes(value || '');
         }
       ),
-    terms: yup
-      .boolean()
-      .oneOf([true], 'You must accept the terms and conditions')
-      .required('Country is required'),
+    terms: yup.boolean().required('You must accept the terms and conditions'),
     avatar: yup
-      .mixed<FileList>()
+      .mixed<File | FileList>()
       .required('Picture is required')
-      .test('fileAdd', 'Picture is required', (value) => {
-        return !(
-          value &&
-          value.length &&
-          value[0] instanceof File &&
-          value[0].name === ''
-        );
-      })
       .test('fileSize', 'File Size is too large', (value) => {
-        if (!value || value.length === 0 || !(value[0] instanceof File))
+        if (
+          !value ||
+          (value instanceof FileList && !value.length) ||
+          (value instanceof File && value.name === '')
+        )
           return true;
-        const file = value[0];
+        const file = value instanceof FileList ? value[0] : value;
         return file.size <= 2 * 1024 * 1024;
       })
       .test('fileType', 'Unsupported File Format', (value) => {

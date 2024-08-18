@@ -1,10 +1,3 @@
-// import {
-//   FieldErrors,
-//   FieldValues,
-//   Path,
-//   UseFormRegister,
-//   UseFormStateReturn,
-// } from 'react-hook-form';
 import ErrorInformation from '../../error-information/error-information';
 import CountryAutocomplete from '../../country-autocomplite/country-autocomplite';
 import {
@@ -13,16 +6,7 @@ import {
   FormFieldsNameType,
 } from '../../../types';
 
-// interface PropsType<T extends FieldValues> {
-//   id: Path<T>;
-
-//   register: UseFormRegister<T>;
-//   errors: FieldErrors<T>;
-//   touchedFields: UseFormStateReturn<T>['touchedFields'];
-// }
-
 export const CountryField = ({
-  // id,
   register,
   errors,
   touchedFields,

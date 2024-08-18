@@ -7,7 +7,7 @@ interface FormWrapperProps {
 
 const FormWrapper: React.FC<FormWrapperProps> = ({ onSubmit, children }) => {
   return (
-    <section className="flex-1 bg-background py-12 md:py-20">
+    <section className="flex-1 bg-background ">
       <div className="container px-4 md:px-6">
         <div className="mx-auto max-w-md space-y-6">
           <form

@@ -2,21 +2,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { Label } from '../label/label';
 import Input from '../input/input';
-// import {
-//   FieldErrors,
-//   FieldValues,
-//   Path,
-//   UseFormRegister,
-//   UseFormStateReturn,
-// } from 'react-hook-form';
 import { BaseFormProps, FormFieldsNameType } from '../../types';
 
-// interface PropsType<T extends FieldValues> {
-//   id: Path<T>;
-//   register?: UseFormRegister<T>;
-//   errors?: FieldErrors<T>;
-//   touchedFields?: UseFormStateReturn<T>['touchedFields'];
-// }
 interface PropsType extends BaseFormProps {
   id: FormFieldsNameType;
 }

@@ -1,10 +1,3 @@
-// import {
-//   FieldErrors,
-//   FieldValues,
-//   Path,
-//   UseFormRegister,
-//   UseFormStateReturn,
-// } from 'react-hook-form';
 import ErrorInformation from '../../error-information/error-information';
 import Input from '../../input/input';
 import { Label } from '../../label/label';
@@ -14,15 +7,7 @@ import {
   FormFieldsNameType,
 } from '../../../types';
 
-// interface PropsType<T extends FieldValues> {
-//   id: Path<T>;
-//   register?: UseFormRegister<T>;
-//   errors?: FieldErrors<T>;
-//   touchedFields?: UseFormStateReturn<T>['touchedFields'];
-// }
-
 export const EmailField = ({
-  // id,
   register,
   errors,
   touchedFields,

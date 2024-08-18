@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getValidationSchema } from '../types/validation/controll-schema';
-// import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
-// import { addSubmission } from '../store/reducers/history-slice';
 import FormWrapper from '../components/form/form-wrap/form-wrap';
 import { FormTitle } from '../components/form/form-title/form-title';
 import { NameField } from '../components/form/name-field/name-field';
@@ -19,6 +17,7 @@ import { img64Converter } from '../utils/img-64-converter';
 import { useNavigate } from 'react-router-dom';
 import { addSubmission } from '../store/reducers/history-slice';
 import { isFormFields } from '../types/validation/types';
+import { BackHomeButton } from '../components/back-home-button/back-home-button';
 
 const FormUncontrolledPage = () => {
   const countries = useSelector(
@@ -42,7 +41,7 @@ const FormUncontrolledPage = () => {
         confirmPassword: formData.get('confirmPassword'),
         country: formData.get('country'),
         terms: formData.get('terms') === 'on',
-        avatar: formData.getAll('avatar') as File[],
+        avatar: formData.get('avatar') as File,
       };
 
       try {
@@ -71,27 +70,29 @@ const FormUncontrolledPage = () => {
 
         setErrors(validationErrors);
         console.error(validationErrors);
-        // Handle validation errors here
       }
     }
   };
 
   return (
-    <FormWrapper onSubmit={onSubmit}>
-      <FormTitle />
-      <div className="p-6 space-y-1">
-        <NameField errors={errors} />
-        <AgeGenderFields errors={errors} />
-        <EmailField errors={errors} />
-        <PasswordFields errors={errors} />
-        <CountryField errors={errors} />
-        <TermsField errors={errors} />
-        <AvatarUpload errors={errors} />
-      </div>
-      <div className="flex items-center p-6">
-        <Button type="submit">Submit</Button>
-      </div>
-    </FormWrapper>
+    <main className="flex items-center justify-center flex-col py-12 md:py-20 gap-4">
+      <BackHomeButton />
+      <FormWrapper onSubmit={onSubmit}>
+        <FormTitle />
+        <div className="p-6 space-y-1">
+          <NameField errors={errors} />
+          <AgeGenderFields errors={errors} />
+          <EmailField errors={errors} />
+          <PasswordFields errors={errors} />
+          <CountryField errors={errors} />
+          <TermsField errors={errors} />
+          <AvatarUpload errors={errors} />
+        </div>
+        <div className="flex items-center p-6">
+          <Button type="submit">Submit</Button>
+        </div>
+      </FormWrapper>
+    </main>
   );
 };
 
