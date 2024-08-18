@@ -1,14 +1,16 @@
 import { Avatar } from '../avatar/avatar';
-import { User } from '../../types';
+import { FormFields } from '../../types';
 
 type PropsType = {
-  user: User;
+  user: FormFields;
 };
 export const UserCard = ({ user }: PropsType) => {
   return (
     <div className="container p-4 md:px-6 shadow-sm bg-card border rounded-lg w-max">
       <div className="flex items-center gap-4">
-        <Avatar src={user.avatar} />
+        <Avatar
+          src={typeof user.avatar === 'string' ? user.avatar : 'icons/user.png'}
+        />
         <div className="flex flex-col gap-2">
           <h2 className="flex gap-4 items-center text-xl font-bold">
             {user.name}

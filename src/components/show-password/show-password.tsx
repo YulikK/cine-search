@@ -4,6 +4,7 @@ type PropsType = {
 const ShowPassword = ({ toggleShowPassword }: PropsType) => {
   return (
     <button
+      type="button"
       className="absolute left-2 top-1/2 -translate-y-1/2"
       onClick={toggleShowPassword}
     >

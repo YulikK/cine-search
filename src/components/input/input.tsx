@@ -10,13 +10,15 @@ import {
 interface PropsType<T extends FieldValues> {
   id: Path<T>;
   type: string;
-  autoComplete: string;
+  autoComplete?: string;
   placeholder?: string;
   list?: string;
-  register: UseFormRegister<T>;
+  register?: UseFormRegister<T>;
   value?: string;
-  errors: FieldErrors<T>;
-  touchedFields: UseFormStateReturn<T>['touchedFields'];
+  accept?: string;
+  errors?: FieldErrors<T>;
+  touchedFields?: UseFormStateReturn<T>['touchedFields'];
+  onChangeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input = <T extends FieldValues>({
@@ -27,22 +29,30 @@ const Input = <T extends FieldValues>({
   list,
   register,
   value,
+  accept,
   errors,
   touchedFields,
+  onChangeHandler,
 }: PropsType<T>) => {
-  const isTouched = Object.prototype.hasOwnProperty.call(touchedFields, id);
-  const isError = isTouched && errors[id];
+  const isTouched = touchedFields
+    ? Object.prototype.hasOwnProperty.call(touchedFields, id)
+    : errors && Object.keys(errors).length;
+  const isError =
+    (touchedFields && isTouched && errors && errors[id]) ||
+    (!touchedFields && errors && errors[id]);
 
   return (
     <input
       id={`${id.toString()}${type === 'radio' ? `-${value}` : ''}`}
       type={type}
+      {...(!register ? { name: id } : {})}
       autoComplete={autoComplete}
       {...(value ? { value } : {})}
+      {...(accept ? { accept } : {})}
       {...(placeholder ? { placeholder } : {})}
       {...(list ? { list } : {})}
       className={classNames(
-        'flex  h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        'flex rounded-md border border-input bg-background  text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
         {
           'border-b-2 border-b-destructive ': isError,
         },
@@ -50,20 +60,19 @@ const Input = <T extends FieldValues>({
           'border-b-2 border-b-green-600 ': isTouched && !isError,
         },
         {
-          'absolute opacity-0 w-0 h-0': type === 'radio' || type === 'checkbox',
+          'absolute opacity-0 w-0 h-0 p-0 m-0':
+            type === 'radio' || type === 'checkbox' || type === 'file',
         },
         {
-          'w-full': type !== 'radio' && type !== 'checkbox',
+          'w-full h-10 px-3 py-2':
+            type !== 'radio' && type !== 'checkbox' && type !== 'file',
         },
         {
           'px-8': id === 'password' || id === 'confirmPassword',
         }
-        // {
-        //   'peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground':
-        //     type === 'checkbox',
-        // }
       )}
-      {...register(id)}
+      {...(!register ? { onChange: onChangeHandler } : {})}
+      {...(register ? { ...register(id, { onChange: onChangeHandler }) } : {})}
     />
   );
 };

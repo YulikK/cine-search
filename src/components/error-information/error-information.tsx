@@ -7,8 +7,8 @@ import {
 
 interface PropsType<T extends FieldValues> {
   fields: Path<T>[];
-  errors: FieldErrors<T>;
-  touchedFields: UseFormStateReturn<T>['touchedFields'];
+  errors?: FieldErrors<T>;
+  touchedFields?: UseFormStateReturn<T>['touchedFields'];
 }
 
 const ErrorInformation = <T extends FieldValues>({
@@ -27,12 +27,12 @@ const ErrorInformation = <T extends FieldValues>({
   };
   const errorMessages = fields
     .map((field: Path<T>) => {
-      const isTouched = Object.prototype.hasOwnProperty.call(
-        touchedFields,
-        field
-      );
+      const isTouched = touchedFields
+        ? Object.prototype.hasOwnProperty.call(touchedFields, field)
+        : true;
       const isHasError =
-        (field === 'gender' && errors[field]) || (isTouched && errors[field]);
+        (field === 'gender' && errors && errors[field]) ||
+        (isTouched && errors && errors[field]);
       const errorMessage = isHasError ? getErrorMessage(errors[field]) : '';
       return errorMessage;
     })

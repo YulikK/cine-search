@@ -34,7 +34,7 @@
   }
 
   body {
-    @apply bg-muted min-h-screen text-foreground font-body;
+    @apply bg-background min-h-screen text-foreground font-body;
   }
 
   h1,
@@ -50,7 +50,6 @@
 .error-message {
   opacity: 0;
   transform: translateY(-10px);
-  /* margin-top: 0; */
   animation: fadeIn 0.5s forwards;
 }
 
@@ -58,6 +57,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
-    /* margin-top: 10px; */
   }
+}
+
+label:has(input[type='radio']:checked) {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+label:has(input[type='checkbox']:checked) span {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
 }
