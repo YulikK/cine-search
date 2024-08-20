@@ -12,9 +12,10 @@ dist
 dist-ssr
 .next
 *.local
+.cache/
+.vscode
 
 # Editor directories and files
-!.vscode/extensions.json
 coverage
 .vite
 .idea
