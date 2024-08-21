@@ -90,7 +90,9 @@ export const moviesApi = createApi({
         adult: response.adult,
         budget: response.budget,
         revenue: response.revenue,
-        runtime: `${Math.floor(response.runtime / 60)}h ${response.runtime % 60}m`,
+        runtime: `${Math.floor(response.runtime / 60)}h ${
+          response.runtime % 60
+        }m`,
         status: response.status,
         tagline: response.tagline,
         voteAverage: parseFloat(response.vote_average.toFixed(1)),

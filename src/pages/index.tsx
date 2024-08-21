@@ -125,22 +125,6 @@ const Movies: React.FC = () => {
     }
   }
 
-  const renderContent = (): React.ReactElement => (
-    <>
-      <ListView
-        data={movieList || []}
-        setMovieRef={setMovieRef}
-        handleDetailsOpen={handleDetailsOpen}
-      />
-      <Pagination
-        page={params.page}
-        totalPages={totalPages || DEFAULT_PAGE}
-        handlePageChange={handlePageChange}
-      />
-      <FavoritePopup />
-    </>
-  );
-
   const renderMovieDetails = () => {
     if (movieDetails) {
       return (
@@ -163,7 +147,17 @@ const Movies: React.FC = () => {
             searchValue={params.query}
             handleQueryChange={handleQueryChange}
           />
-          {renderContent()}
+          <ListView
+            data={movieList || []}
+            setMovieRef={setMovieRef}
+            handleDetailsOpen={handleDetailsOpen}
+          />
+          <Pagination
+            page={params.page}
+            totalPages={totalPages || DEFAULT_PAGE}
+            handlePageChange={handlePageChange}
+          />
+          <FavoritePopup />
         </div>
         {renderMovieDetails()}
       </div>
