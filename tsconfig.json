@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "preserve",
+    /* Linting */
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    /* Testing */
+    "types": ["vitest", "vitest/globals"],
+    "allowJs": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "src",
+    "typings.d.ts",
+    "svg.d.ts",
+    "vite.config.ts",
+    "src/tests/vitest.setup.ts",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "src/tests/vitest.setup.ts",
+    "next.config.js",
+    "next-env.d.ts",
+    "pages",
+    "./dist/types/**/*.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["./node_modules"],
+  "plugins": [
+    {
+      "name": "next"
+    }
+  ]
+}
