@@ -1,16 +1,20 @@
 # CineSearch App
 
-[🚀Deploy](https://cinesearch-yulikk.netlify.app/)
+[🚀 Deploy](https://cinesearch-yulikk.netlify.app/)
 
 Welcome to the CineSearch App project! This project was created as part of the RSSchool React course in 2024. The Movie Explorer website allows users to interact with a movie library, view detailed information about selected films, search the library, add movies to their favorites, and download a CSV file with the list of favorite films. The site also includes a dark/light theme toggle feature.
 
 ## Technology stack
 
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![NextJs](https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000) !![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![Tailwind](https://img.shields.io/badge/Tailwind-%230081CB.svg?style=for-the-badge&logo=tailwindcss&logoColor=white) ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![NextJs](https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000) ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![Tailwind](https://img.shields.io/badge/Tailwind-%230081CB.svg?style=for-the-badge&logo=tailwindcss&logoColor=white) ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7)
 
-branch "hooks-and-routing": ![Remix](https://img.shields.io/badge/Remix-%23000000.svg?style=for-the-badge&logo=remix&logoColor=#00C7B7)
+### Branch "hooks-and-routing"
 
-branch "remix-ssr": ![React Router](<https://img.shields.io/badge/react> router-%23000000.svg?style=for-the-badge&logo=react-router&logoColor=#00C7B7)
+![React Router](https://img.shields.io/badge/react-router-%23000000.svg?style=for-the-badge&logo=react-router)
+
+### Branch "remix-ssr"
+
+![Remix](https://img.shields.io/badge/Remix-%23000000.svg?style=for-the-badge&logo=remix)
 
 ## Getting Started
 
